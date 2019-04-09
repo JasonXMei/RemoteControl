@@ -9,10 +9,9 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>rc-server</artifactId>
-
-	<name>rc-server</name>
-	<description>remote-control project's server-side</description>
+	<artifactId>rc-monitor</artifactId>
+	<name>rc-monitor</name>
+	<description>monitor remote-control project state</description>
 
 	<dependencies>
 	</dependencies>

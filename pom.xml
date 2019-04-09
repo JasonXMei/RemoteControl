@@ -1,17 +1,21 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
 	<modelVersion>4.0.0</modelVersion>
+	
 	<groupId>com.jason</groupId>
-	<artifactId>remotecontrol</artifactId>
+	<artifactId>remote-control</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
+	
 	<packaging>pom</packaging>
 
-	<name>remotecontrol</name>
+	<name>remote-control</name>
+	<description>remote control project parent pom to manage dependencies</description>
 
 	<properties>
-		<junit.version>4.12</junit.version>
 		<netty.version>4.1.21.Final</netty.version>
 		<logback.version>1.0.13</logback.version>
+		<fastjson.version>1.2.31</fastjson.version>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -19,6 +23,18 @@
 		<java.version>1.8</java.version>
 
 		<swagger.version>2.5.0</swagger.version>
+		
+		<mybatisplus.version>3.1.0</mybatisplus.version>
+		<mysql.version>5.1.6</mysql.version>
+		<druid.version>1.1.10</druid.version>
+
+		<springboot.version>2.1.3.RELEASE</springboot.version>
+		<spring-boot-admin.version>2.1.3</spring-boot-admin.version>
+		
+		<ok-http.version>3.3.1</ok-http.version>
+		
+		<google-guava.version>19.0</google-guava.version>
+		<google-protobuf.version>3.4.0</google-protobuf.version>
 	</properties>
 
 	<modules>
@@ -27,32 +43,46 @@
 		<module>rc-common</module>
 	</modules>
 
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
+				<groupId>com.jason</groupId>
+				<artifactId>rc-common</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			
+			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-parent</artifactId>
-				<version>1.5.6.RELEASE</version>
+				<version>${springboot.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>de.codecentric</groupId>
 				<artifactId>spring-boot-admin-starter-client</artifactId>
-				<version>1.5.7</version>
+				<version>${spring-boot-admin.version}</version>
 			</dependency>
+			
 			<dependency>
 				<groupId>com.squareup.okhttp3</groupId>
 				<artifactId>okhttp</artifactId>
-				<version>3.3.1</version>
+				<version>${ok-http.version}</version>
 			</dependency>
 		
-			<dependency>
-				<groupId>com.jason</groupId>
-				<artifactId>rc-common</artifactId>
-				<version>1.0.0-SNAPSHOT</version>
-			</dependency>			
-
 			<dependency>
 				<groupId>io.springfox</groupId>
 				<artifactId>springfox-swagger2</artifactId>
@@ -72,27 +102,38 @@
 			</dependency>
 
 			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>${junit.version}</version>
-			</dependency>
-
-			<dependency>
 				<groupId>com.alibaba</groupId>
 				<artifactId>fastjson</artifactId>
-				<version>1.2.31</version>
+				<version>${fastjson.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
-				<version>19.0</version>
+				<version>${google-guava.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.protobuf</groupId>
 				<artifactId>protobuf-java</artifactId>
-				<version>3.4.0</version>
+				<version>${google-protobuf.version}</version>
 			</dependency>			
 		</dependencies>
 	</dependencyManagement>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
 </project>
