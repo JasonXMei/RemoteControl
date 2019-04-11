@@ -1,0 +1,9 @@
+2019-04-11 08:16:22,905 [main] INFO  com.jason.rcmonitor.LoggerTests 50 - Starting LoggerTests on Lenovo-PC with PID 4032 (started by meitao in C:\Users\meitao\Desktop\workspace_sts\remote-control\rc-monitor)
+2019-04-11 08:16:22,905 [main] INFO  com.jason.rcmonitor.LoggerTests 675 - No active profile set, falling back to default profiles: default
+2019-04-11 08:16:26,406 [main] INFO  o.s.s.c.ThreadPoolTaskExecutor 171 - Initializing ExecutorService 'applicationTaskExecutor'
+2019-04-11 08:16:26,980 [main] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration 108 - Cannot find template location: classpath:/templates/ (please add some templates or check your Thymeleaf configuration)
+2019-04-11 08:16:28,750 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver 59 - Exposing 2 endpoint(s) beneath base path '/actuator'
+2019-04-11 08:16:28,877 [main] INFO  com.jason.rcmonitor.LoggerTests 59 - Started LoggerTests in 6.582 seconds (JVM running for 7.626)
+2019-04-11 08:16:29,158 [main] WARN  com.jason.rcmonitor.LoggerTests 33 - warn
+2019-04-11 08:16:29,174 [main] INFO  com.jason.rcmonitor.LoggerTests 28 - info
+2019-04-11 08:16:29,205 [Thread-4] INFO  o.s.s.c.ThreadPoolTaskExecutor 208 - Shutting down ExecutorService 'applicationTaskExecutor'

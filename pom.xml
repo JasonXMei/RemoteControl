@@ -29,7 +29,7 @@
 		<druid.version>1.1.10</druid.version>
 
 		<springboot.version>2.1.3.RELEASE</springboot.version>
-		<spring-boot-admin.version>2.1.3</spring-boot-admin.version>
+		<spring-boot-admin.version>2.1.0</spring-boot-admin.version>
 		
 		<ok-http.version>3.3.1</ok-http.version>
 		
@@ -38,6 +38,7 @@
 	</properties>
 
 	<modules>
+		<module>rc-monitor</module>
 		<module>rc-server</module>
 		<module>rc-client</module>
 		<module>rc-common</module>
@@ -71,9 +72,20 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			
 			<dependency>
 				<groupId>de.codecentric</groupId>
 				<artifactId>spring-boot-admin-starter-client</artifactId>
+				<version>${spring-boot-admin.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>de.codecentric</groupId>
+				<artifactId>spring-boot-admin-server</artifactId>
+				<version>${spring-boot-admin.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>de.codecentric</groupId>
+				<artifactId>spring-boot-admin-server-ui</artifactId>
 				<version>${spring-boot-admin.version}</version>
 			</dependency>
 			
