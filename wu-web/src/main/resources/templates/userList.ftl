@@ -3,6 +3,14 @@
 <head>
 <title>用户列表</title>
 <#include "headerSource.ftl">
+<style type="text/css">
+#searchForm{
+margin: 10px 0px;
+}
+#paymentCodeImgDiv{
+margin-left: 0px;
+}
+</style>
 </head>
 <body>
 <!-- include nav-->
@@ -11,7 +19,10 @@
 	<!-- include left-nav-->
 	<#include "left-nav.ftl">
 	<div class="col-md-10">
-		<form id="userinfo" action="#" method="post" class="form-inline" role="form" style="margin: 10px 0px;">
+		<button class="btn btn-default" data-toggle="modal" data-target="#imgModal">
+			<span class="glyphicon glyphicon-repeat"></span>
+		</button>
+		<form id="searchForm" action="#" method="post" class="form-inline" role="form">
 			<div class="form-group">
 				<a href="#">
 					<button class="btn btn-default">
@@ -35,7 +46,7 @@
 				<button class="btn btn-default" onclick="#">
 					<span class="glyphicon glyphicon-search"></span>
 				</button>
-				<button class="btn btn-default" onclick="#">
+				<button class="btn btn-default" data-toggle="modal" data-target="#imgModal">
 					<span class="glyphicon glyphicon-repeat"></span>
 				</button>
 			</div>
@@ -53,13 +64,34 @@
 				<td><label>操作</label></td>
 			</tr>
 		</table>
-		<nav>
-			<ul class="pager">
-				<li><a class="btn btn-default" style="background-color:#428bca;" href="javascript:void(0);"><span aria-hidden="true">&larr;</span> 上一页</a></li>
-				<li><a class="btn btn-default" style="background-color:#428bca;" href="javascript:void(0);">下一页 <span aria-hidden="true">&rarr;</span></a></li>
-			</ul>
-		</nav>
+		<#include "footer.ftl">
 	</div>
 </div>
+<div id="imgModal" class="modal fade" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">扫码返款</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row" id="paymentCodeImgDiv">
+					<div class="col-md-2"></div>
+					<div class="col-md-8">
+						<a href="#" class="thumbnail"> 
+							<img src="images/zf.jpg" alt="...">
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-warning" data-dismiss="modal">取消</button>
+				<button type="button" class="btn btn-info" data-dismiss="modal">确定</button>
+			</div>
+		</div> <!-- /.modal-content -->
+	</div> <!-- /.modal-dialog -->
+</div> <!-- /.modal -->	
 </body>
 </html>
