@@ -4,13 +4,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<groupId>com.jason</groupId>
-	<artifactId>remote-control</artifactId>
+	<artifactId>wisdom-union</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	
 	<packaging>pom</packaging>
 
-	<name>remote-control</name>
-	<description>remote control project parent pom to manage dependencies</description>
+	<name>wisdom-union</name>
+	<description>wisdom-union project parent pom to manage dependencies</description>
 
 	<properties>
 		<netty.version>4.1.21.Final</netty.version>
@@ -38,10 +38,12 @@
 	</properties>
 
 	<modules>
-		<module>rc-monitor</module>
-		<module>rc-server</module>
-		<module>rc-client</module>
-		<module>rc-common</module>
+		<module>wu-monitor</module>
+		<module>wu-web</module>
+		<module>wu-server</module>
+		<module>wu-client</module>
+		<module>wu-common</module>
+		<module>wu-service</module>
 	</modules>
 
 	<dependencies>
@@ -61,7 +63,7 @@
 		<dependencies>
 			<dependency>
 				<groupId>com.jason</groupId>
-				<artifactId>rc-common</artifactId>
+				<artifactId>wu-common</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			
@@ -128,7 +130,33 @@
 				<groupId>com.google.protobuf</groupId>
 				<artifactId>protobuf-java</artifactId>
 				<version>${google-protobuf.version}</version>
-			</dependency>			
+			</dependency>	
+			
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>mybatis-plus-boot-starter</artifactId>
+				<version>${mybatisplus.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>mybatis-plus</artifactId>
+				<version>${mybatisplus.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>mybatis-plus-generator</artifactId>
+				<version>${mybatisplus.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>${mysql.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>druid-spring-boot-starter</artifactId>
+				<version>${druid.version}</version>
+			</dependency>		
 		</dependencies>
 	</dependencyManagement>
 	
