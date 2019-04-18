@@ -15,5 +15,9 @@
 	<description>common module for wisdom-union project</description>
 	
 	<dependencies>
+		<dependency>
+		      <groupId>com.auth0</groupId>
+		      <artifactId>java-jwt</artifactId>
+		</dependency>
 	</dependencies>
 </project>

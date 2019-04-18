@@ -2,26 +2,16 @@
 <html>
 <head>
 <title>用户管理-详情</title>
-<meta http-equiv="content-Type" content="text/html; charset=utf-8">
-<link type="text/css" href="css/bootstrap.css" rel="stylesheet"/>
-<link type="text/css" href="css/bootstrap-select.min.css" rel="stylesheet"/>
-<link type="text/css" href="css/bootstrap-datetimepicker.css" rel="stylesheet"/>
-<link rel="icon" type="image/x-icon" href="/images/logo.jpg">
-
-<script type="text/javascript" src="js/jquery.js"></script>
-<script type="text/javascript" src="js/bootstrap.js"></script>
-<script type="text/javascript" src="js/bootstrap-select.min.js"></script>
-<script type="text/javascript" src="js/moment-with-locales.js"></script> 
-<script type="text/javascript" src="js/bootstrap-datetimepicker.js"></script> 
+<#include "../headerSource.ftl">
 <style type="text/css">
 </style>
 </head>
 <body>
 <!-- include nav-->
-<#include "nav.ftl">
+<#include "../nav.ftl">
 <div class="row main-top">
 	<!-- include left-nav-->
-	<#include "left-nav.ftl">
+	<#include "../left-nav.ftl">
 	<div class="col-md-10" style="margin-right: -15px;margin-top: 21px;">          
 		<form class="form-inline" role="form" style="margin-right: 10px">
 		  <div class="form-group" style="margin-top: -13px;">

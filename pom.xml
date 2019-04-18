@@ -35,6 +35,8 @@
 		
 		<google-guava.version>19.0</google-guava.version>
 		<google-protobuf.version>3.4.0</google-protobuf.version>
+		
+		<jwt.version>3.4.0</jwt.version>
 	</properties>
 
 	<modules>
@@ -156,8 +158,16 @@
 				<groupId>com.alibaba</groupId>
 				<artifactId>druid-spring-boot-starter</artifactId>
 				<version>${druid.version}</version>
-			</dependency>		
+			</dependency>
+					
+			<dependency>
+			      <groupId>com.auth0</groupId>
+			      <artifactId>java-jwt</artifactId>
+			      <version>${jwt.version}</version>
+			</dependency>
 		</dependencies>
+		
+				
 	</dependencyManagement>
 	
 	<build>

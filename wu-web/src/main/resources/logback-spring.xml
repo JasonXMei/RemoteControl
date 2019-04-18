@@ -71,7 +71,7 @@
 	</appender>
 
 	<!-- TRACE < DEBUG < INFO < WARN < ERROR < FATAL -->
-	<root level="INFO">
+	<root level="DEBUG">
 		<appender-ref ref="console" />
 		<appender-ref ref="fileInfoLog" />
 		<appender-ref ref="fileErrorLog" />
