@@ -17,7 +17,6 @@ public class JWTUtilTest {
 	@Test
 	public void aCreateToken(){
 		jwtToken = JWTUtil.createToken(password, userId);
-		System.out.println(jwtToken);
 	}
 	
 	@Test
