@@ -4,13 +4,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class LoggerUtil {
 	
-	private static Logger logger = LoggerFactory.getLogger(LoggerUtil.class);
-	
-	public static void printErrorLog(Exception e){
+	public static void printErrorLog(Logger logger, Exception e){
 		ByteArrayOutputStream baos = null;
 		PrintStream ps = null;
 		try {
@@ -30,8 +27,4 @@ public class LoggerUtil {
 			}
 		}
 	} 
-	
-	public static void main(String[] args) {
-		printErrorLog(new NullPointerException("null"));
-	}
 }

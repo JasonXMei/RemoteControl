@@ -1,12 +1,14 @@
-package com.jason.web.entity;
+package com.jason.common.po;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.jason.common.enums.AccountStatusEnum;
+import com.jason.common.enums.PermissionEnum;
+import com.jason.common.enums.SexEnum;
 
 /**
  * <p>
@@ -19,9 +21,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class User extends Model<User> {
-
-    private static final long serialVersionUID = 1L;
+public class User{
 
     /**
      * 主键
@@ -42,7 +42,7 @@ public class User extends Model<User> {
     /**
      * 性别（1：男，2：女）
      */
-    private Integer sex;
+    private SexEnum sex;
 
     /**
      * 年龄
@@ -77,12 +77,12 @@ public class User extends Model<User> {
     /**
      * 权限(0：超级管理员，1：普通智慧联盟账号)
      */
-    private Integer permission;
+    private PermissionEnum permission;
 
     /**
      * 账号状态(1：正常，2：禁用，3：删除)
      */
-    private Integer status;
+    private AccountStatusEnum status;
 
     /**
      * 账号每日刷单上限次数
@@ -93,11 +93,4 @@ public class User extends Model<User> {
      * 有效时间
      */
     private Integer validTime;
-
-
-    @Override
-    protected Serializable pkVal() {
-        return this.id;
-    }
-
 }

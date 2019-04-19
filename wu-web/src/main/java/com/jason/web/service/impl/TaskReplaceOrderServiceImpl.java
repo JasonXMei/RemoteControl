@@ -1,10 +1,11 @@
 package com.jason.web.service.impl;
 
-import com.jason.web.entity.TaskReplaceOrder;
+import org.springframework.stereotype.Service;
+
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.jason.common.po.TaskReplaceOrder;
 import com.jason.web.mapper.TaskReplaceOrderMapper;
 import com.jason.web.service.TaskReplaceOrderService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.stereotype.Service;
 
 /**
  * <p>

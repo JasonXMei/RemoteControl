@@ -1,7 +1,7 @@
 package com.jason.web.service;
 
-import com.jason.web.entity.TaskTag;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.jason.common.po.TaskTag;
 
 /**
  * <p>

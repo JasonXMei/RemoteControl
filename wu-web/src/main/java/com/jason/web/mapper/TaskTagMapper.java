@@ -1,7 +1,7 @@
 package com.jason.web.mapper;
 
-import com.jason.web.entity.TaskTag;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.jason.common.po.TaskTag;
 
 /**
  * <p>

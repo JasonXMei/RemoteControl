@@ -1,7 +1,7 @@
 package com.jason.web.service;
 
-import com.jason.web.entity.SubUserTask;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.jason.common.po.SubUserTask;
 
 /**
  * <p>

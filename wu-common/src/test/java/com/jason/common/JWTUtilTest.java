@@ -16,12 +16,18 @@ public class JWTUtilTest {
 	
 	@Test
 	public void aCreateToken(){
-		jwtToken = JWTUtil.createToken(password, userId);
+		jwtToken = "Bearer " +JWTUtil.createToken(password, userId);
+	}
+	
+	@Test
+	public void bCheckToken(){
+		System.out.println("handle before:" +jwtToken);
+		jwtToken = JWTUtil.checkAndHandleToken(jwtToken);
+		System.out.println("handle after:" +jwtToken);
 	}
 	
 	@Test
 	public void bDecodeToken(){
-		System.out.println(jwtToken);
 		Assert.assertEquals(userId, JWTUtil.decodeToken(jwtToken));
 	}
 	

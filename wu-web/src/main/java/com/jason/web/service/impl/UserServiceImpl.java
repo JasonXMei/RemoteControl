@@ -1,10 +1,11 @@
 package com.jason.web.service.impl;
 
-import com.jason.web.entity.User;
+import org.springframework.stereotype.Service;
+
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.jason.common.po.User;
 import com.jason.web.mapper.UserMapper;
 import com.jason.web.service.UserService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.stereotype.Service;
 
 /**
  * <p>

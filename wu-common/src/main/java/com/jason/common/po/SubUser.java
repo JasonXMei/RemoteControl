@@ -1,12 +1,14 @@
-package com.jason.web.entity;
+package com.jason.common.po;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.jason.common.enums.ConnectStatusEnum;
+import com.jason.common.enums.TerminalEnum;
+import com.jason.common.enums.UserTypeEnum;
 
 /**
  * <p>
@@ -19,11 +21,9 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class SubUser extends Model<SubUser> {
+public class SubUser {
 
-    private static final long serialVersionUID = 1L;
-
-    /**
+	/**
      * 主键
      */
     @TableId(value = "id", type = IdType.AUTO)
@@ -42,22 +42,15 @@ public class SubUser extends Model<SubUser> {
     /**
      * 终端类型(1：电脑端，2：手机端....)
      */
-    private Integer terminal;
+    private TerminalEnum terminal;
 
     /**
      * 小号类型(1:淘宝，2：京东，3：拼多多...)
      */
-    private Integer userType;
+    private UserTypeEnum userType;
 
     /**
      * 连接状态(1:未连接，2：已连接)
      */
-    private Integer connectStatus;
-
-
-    @Override
-    protected Serializable pkVal() {
-        return this.id;
-    }
-
+    private ConnectStatusEnum connectStatus;
 }

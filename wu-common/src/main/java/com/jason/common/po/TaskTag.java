@@ -1,12 +1,12 @@
-package com.jason.web.entity;
+package com.jason.common.po;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.jason.common.enums.TagTypeEnum;
 
 /**
  * <p>
@@ -19,9 +19,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class TaskTag extends Model<TaskTag> {
-
-    private static final long serialVersionUID = 1L;
+public class TaskTag{
 
     /**
      * 主键
@@ -37,12 +35,5 @@ public class TaskTag extends Model<TaskTag> {
     /**
      * 标签类型(1：收藏，2：加购，3：已拍，4：聊天，5：足迹)
      */
-    private Integer tagType;
-
-
-    @Override
-    protected Serializable pkVal() {
-        return this.id;
-    }
-
+    private TagTypeEnum tagType;
 }

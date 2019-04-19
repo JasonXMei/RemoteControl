@@ -1,7 +1,7 @@
 package com.jason.web.mapper;
 
-import com.jason.web.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.jason.common.po.User;
 
 /**
  * <p>

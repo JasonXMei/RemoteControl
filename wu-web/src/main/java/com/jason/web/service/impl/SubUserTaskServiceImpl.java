@@ -1,10 +1,11 @@
 package com.jason.web.service.impl;
 
-import com.jason.web.entity.SubUserTask;
+import org.springframework.stereotype.Service;
+
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.jason.common.po.SubUserTask;
 import com.jason.web.mapper.SubUserTaskMapper;
 import com.jason.web.service.SubUserTaskService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.stereotype.Service;
 
 /**
  * <p>

@@ -1,12 +1,11 @@
-package com.jason.web.entity;
+package com.jason.common.po;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 
 /**
  * <p>
@@ -19,11 +18,9 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class SubUserTask extends Model<SubUserTask> {
+public class SubUserTask{
 
-    private static final long serialVersionUID = 1L;
-
-    /**
+	/**
      * 主键
      */
     @TableId(value = "id", type = IdType.AUTO)
@@ -40,11 +37,6 @@ public class SubUserTask extends Model<SubUserTask> {
     private Integer shopId;
 
     /**
-     * 垫付状态(1：未垫付，2：已垫付，3：已返款)
-     */
-    private Boolean paymentStatus;
-
-    /**
      * 备注描述
      */
     private String description;
@@ -58,11 +50,4 @@ public class SubUserTask extends Model<SubUserTask> {
      * 更新时间
      */
     private Integer updateTime;
-
-
-    @Override
-    protected Serializable pkVal() {
-        return this.id;
-    }
-
 }

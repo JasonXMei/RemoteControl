@@ -1,12 +1,11 @@
-package com.jason.web.entity;
+package com.jason.common.po;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 
 /**
  * <p>
@@ -19,9 +18,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class UserShop extends Model<UserShop> {
-
-    private static final long serialVersionUID = 1L;
+public class UserShop{
 
     /**
      * 主键
@@ -38,11 +35,4 @@ public class UserShop extends Model<UserShop> {
      * 店铺名
      */
     private String shopName;
-
-
-    @Override
-    protected Serializable pkVal() {
-        return this.id;
-    }
-
 }
