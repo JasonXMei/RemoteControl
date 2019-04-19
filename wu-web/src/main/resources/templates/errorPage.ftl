@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>用户列表</title>
+<title>错误界面</title>
 <#include "/headerSource.ftl">
 <style type="text/css">
 </style>

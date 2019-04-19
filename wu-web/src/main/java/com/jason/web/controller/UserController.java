@@ -1,11 +1,13 @@
 package com.jason.web.controller;
 
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jason.common.po.User;
@@ -28,29 +30,26 @@ public class UserController {
 	private UserService userService;
 	
 	@RequestMapping("/login")
-	public ModelAndView login(User user, RedirectAttributes attributes){
+	public String login(User user, HttpServletRequest request, HttpServletResponse response){
 		User loginUser = userService.getOne(new QueryWrapper<User>()
 				.eq("user_name", user.getUserName())
 				.eq("password", user.getPassword())
 				.last("LIMIT 1"));
 		
-		ModelAndView mav = new ModelAndView();
 		if(loginUser != null){
-			mav.setViewName("redirect:list");
 			String jwt = JWTUtil.createToken(loginUser.getPassword(), loginUser.getId());
-			mav.addObject("jwt", jwt);
-			mav.addObject("user", loginUser);
-			return mav;
+			request.setAttribute("jwt", jwt);
+			request.setAttribute("user", loginUser);
+			return "user/userList";
 		}
-		mav.setViewName("redirect:/errorPage");
-		attributes.addFlashAttribute("message", "登录用户不存在！");
-		return mav;
+		
+		request.setAttribute("message", "登录用户不存在！");
+		return "errorPage";
 	}
 	
 	@RequestMapping("/list")
-	public ModelAndView userList(User user){
-		ModelAndView mav = new ModelAndView("user/userList");
-		return mav;
+	public String userList(User user, HttpServletRequest request, HttpServletResponse response){
+		return "user/userList";
 	}
 	
 	@RequestMapping("/info")

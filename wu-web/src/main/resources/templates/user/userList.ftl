@@ -81,7 +81,7 @@ margin-left: 0px;
 					<div class="col-md-2"></div>
 					<div class="col-md-8">
 						<a href="#" class="thumbnail"> 
-							<img src="../images/zf.jpg">
+							<img src="/static/images/zf.jpg">
 						</a>
 					</div>
 				</div>

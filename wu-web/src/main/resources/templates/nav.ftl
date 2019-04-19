@@ -21,15 +21,19 @@ padding-left: 28px;
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown"> 
-						<span class="glyphicon glyphicon-user"></span> 欢迎您，JasonMei <span class="caret"></span>
+						<#if (user.userName)??>
+							<span class="glyphicon glyphicon-user"></span> 欢迎您，${user.userName} <span class="caret"></span>
+							<ul class="dropdown-menu" role="menu">
+								<li>
+									<a href="#"> 
+										<span class="glyphicon glyphicon-cog"></span> 个人信息设置
+									</a>
+								</li>
+							</ul>
+						<#else>
+							<span class="glyphicon glyphicon-user"></span> 欢迎您，游客  <span class="caret"></span>
+						</#if>
 					</a>
-					<ul class="dropdown-menu" role="menu">
-						<li>
-							<a href="#"> 
-								<span class="glyphicon glyphicon-cog"></span> 个人信息设置
-							</a>
-						</li>
-					</ul>
 				</li>
 			</ul>
 		</div> <!-- /.navbar-collapse -->
