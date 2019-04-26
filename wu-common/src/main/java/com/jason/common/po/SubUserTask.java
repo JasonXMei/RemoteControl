@@ -44,10 +44,10 @@ public class SubUserTask{
     /**
      * 创建时间
      */
-    private Integer createTime;
+    private Long createTime;
 
     /**
      * 更新时间
      */
-    private Integer updateTime;
+    private Long updateTime;
 }

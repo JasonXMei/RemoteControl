@@ -37,6 +37,8 @@
 		<google-protobuf.version>3.4.0</google-protobuf.version>
 		
 		<jwt.version>3.4.0</jwt.version>
+
+		<dozer.version>5.5.1</dozer.version>
 	</properties>
 
 	<modules>
@@ -51,11 +53,6 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
@@ -63,6 +60,12 @@
 	
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>net.sf.dozer</groupId>
+				<artifactId>dozer</artifactId>
+				<version>${dozer.version}</version>
+			</dependency>
+
 			<dependency>
 				<groupId>com.jason</groupId>
 				<artifactId>wu-common</artifactId>

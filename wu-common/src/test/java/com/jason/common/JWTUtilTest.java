@@ -21,9 +21,9 @@ public class JWTUtilTest {
 	
 	@Test
 	public void bCheckToken(){
-		System.out.println("handle before:" +jwtToken);
-		jwtToken = JWTUtil.checkAndHandleToken(jwtToken);
-		System.out.println("handle after:" +jwtToken);
+		System.out.println("handle header before:" +jwtToken);
+		jwtToken = JWTUtil.checkAndHandleSessionToken(jwtToken);
+		System.out.println("handle header after:" +jwtToken);
 	}
 	
 	@Test
@@ -33,6 +33,28 @@ public class JWTUtilTest {
 	
 	@Test
 	public void cVerifyToken(){
-		Assert.assertTrue(JWTUtil.verifyToken(jwtToken, password));
+		JWTUtil.verifyToken(jwtToken, password);
+	}
+
+	@Test
+	public void eCreateToken(){
+		jwtToken = "http://localhost:8082/user/token/" + JWTUtil.createToken(password, userId) + "/";
+	}
+
+	@Test
+	public void fCheckToken(){
+		System.out.println("handle url before:" +jwtToken);
+		jwtToken = JWTUtil.checkAndHandleURLToken(jwtToken);
+		System.out.println("handle url after:" +jwtToken);
+	}
+
+	@Test
+	public void fDecodeToken(){
+		Assert.assertEquals(userId, JWTUtil.decodeToken(jwtToken));
+	}
+
+	@Test
+	public void gVerifyToken(){
+		JWTUtil.verifyToken(jwtToken, password);
 	}
 }

@@ -13,7 +13,7 @@ public enum PermissionEnum {
 	private int type;
 	private String description;
 	
-	private PermissionEnum(int type, String description) {
+	PermissionEnum(int type, String description) {
 		this.type = type;
 		this.description = description;
 	}

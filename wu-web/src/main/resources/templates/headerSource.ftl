@@ -14,3 +14,4 @@
 <#-- bootstrapValidator表单验证中文支持 -->
 <script type="text/javascript" src="/static/js/bootstrapValidator.min.js"></script>
 <script type="text/javascript" src="/static/js/zh_CN.js"></script>
+<#include "normalModal.ftl"/>

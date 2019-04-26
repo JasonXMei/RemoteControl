@@ -7,16 +7,14 @@ import lombok.Getter;
 @Getter
 public enum ConnectStatusEnum {
 	
-	Connected(1, "已连接"),DisConnect(2, "未连接");
+	Connected(0, "已连接"),DisConnect(1, "未连接");
 	
 	@EnumValue
 	private int status;
 	private String description;
 	
-	private ConnectStatusEnum(int status, String description) {
+	ConnectStatusEnum(int status, String description) {
 		this.status = status;
 		this.description = description;
 	}
-	
-	
 }

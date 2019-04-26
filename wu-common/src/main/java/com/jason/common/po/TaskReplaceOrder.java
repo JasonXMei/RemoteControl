@@ -51,12 +51,12 @@ public class TaskReplaceOrder{
     private BigDecimal orderCommission;
 
     /**
-     * 订单类型(1：电脑单，2：手机单....)
+     * 订单类型
      */
     private OrderTypeEnum orderType;
     
     /**
-     * 垫付状态(1：未垫付，2：已垫付，3：已返款)
+     * 垫付状态
      */
     private PaymentStatusEnum paymentStatus;
 }

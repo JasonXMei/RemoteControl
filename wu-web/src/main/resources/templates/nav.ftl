@@ -1,6 +1,9 @@
 <style type="text/css">
 #nav-container{
-padding-left: 28px;
+    padding-left: 28px;
+}
+#bs-example-navbar-collapse-1{
+    cursor: pointer;
 }
 </style>
 <nav class="navbar navbar-default" role="navigation">
@@ -20,13 +23,13 @@ padding-left: 28px;
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown"> 
+					<a class="dropdown-toggle" data-toggle="dropdown">
 						<#if (user.userName)??>
 							<span class="glyphicon glyphicon-user"></span> 欢迎您，${user.userName} <span class="caret"></span>
 							<ul class="dropdown-menu" role="menu">
 								<li>
-									<a href="#"> 
-										<span class="glyphicon glyphicon-cog"></span> 个人信息设置
+									<a onclick="showUserPassModal()">
+										<span class="glyphicon glyphicon-cog"></span> 修改密码
 									</a>
 								</li>
 							</ul>

@@ -5,10 +5,17 @@
 <#include "../headerSource.ftl">
 <style type="text/css">
 #searchForm{
-margin: 10px 0px;
+	margin: 10px 0;
 }
 #paymentCodeImgDiv{
-margin-left: 0px;
+	margin-left: 0;
+}
+#searchName{
+	width: 250px;
+}
+#userListTable td{
+    display:table-cell;
+	vertical-align:middle;
 }
 </style>
 </head>
@@ -19,79 +26,111 @@ margin-left: 0px;
 	<!-- include left-nav-->
 	<#include "../left-nav.ftl">
 	<div class="col-md-10">
-		<button class="btn btn-default" data-toggle="modal" data-target="#imgModal">
-			<span class="glyphicon glyphicon-repeat"></span>
-		</button>
-		<form id="searchForm" action="#" method="post" class="form-inline" role="form">
+		<#--<button class="btn btn-default" data-toggle="modal" data-target="#imgModal">-->
+			<#--<span class="glyphicon glyphicon-repeat"></span>-->
+		<#--</button>-->
+		<form id="searchForm" action="/user/list/0" method="post" class="form-inline" role="form">
 			<div class="form-group">
-				<a href="#">
+				<a>
 					<button class="btn btn-default">
 						<span class="glyphicon glyphicon-user"></span> 
 						<span class="button-left">用户列表</span>
 					</button>
 				</a>
 			</div>
-			<div class="form-group" style="float: right;">
-				<label>内容查询:</label> 
-				<input type="text" class="form-control" id="search" name="searchName" value="" placeholder="用户名/手机号/地址" />
-				<select class="form-control" data-live-search="true" name="searchUserType" id="usertype">
-					<option value="">=请选择类型=</option>
-					<option value="1">业务员</option>
-					<option value="2">财务员</option>
-					<option value="10">天使村民</option>
-					<option value="11">分享村民</option>
-					<option value="12">副卡村民</option>
-					<option value="13">体验村民</option>
+			<div class="form-group pull-right">
+				<input type="text" class="form-control" name="searchName" id="searchName" value="${(userPageList.searchName)!''}" placeholder="用户名/位置/QQ号/手机号" />
+				<select class="form-control" data-live-search="true" name="searchUserStatus" id="searchUserStatus">
+					<option value="-1">==请选择账号状态==</option>
+					<option value="0">正常</option>
+					<option value="1">禁用</option>
+					<option value="3">待审核</option>
 				</select>
-				<button class="btn btn-default" onclick="#">
-					<span class="glyphicon glyphicon-search"></span>
+				<input type="hidden" id="searchCurrent" name="searchCurrent"/>
+				<button class="btn btn-default" type="button" id="searchFormBtn">
+					搜索 <span class="glyphicon glyphicon-search"></span>
 				</button>
-				<button class="btn btn-default" data-toggle="modal" data-target="#imgModal">
-					<span class="glyphicon glyphicon-repeat"></span>
-				</button>
+				<#if (user.permission)?? && (user.permission.type == 0)>
+					<button class="btn btn-success" type="button" onclick="userDetail(0)">
+                        账号注册 <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+				</#if>
 			</div>
 		</form>
-		<table class="table table-striped">
-			<tr class="active" style="font-weight: bold;">
-				<td><label class="">姓名</label></td>
-				<td><label class="">类型</label></td>
-				<td><label class="">性别</label></td>
-				<td><label class="">手机号码</label></td>
-				<td><label class="">积分</label></td>
-				<td><label class="button-left">余额</label></td>
-				<td><label class="button-left">累计消费</label></td>
-				<td><label>地址</label></td>
-				<td><label>操作</label></td>
+		<table class="table table-striped" id="userListTable">
+			<tr class="active">
+				<td>姓名</td>
+				<td>性别</td>
+				<td>年龄</td>
+				<td>位置</td>
+				<td>QQ号</td>
+				<td>手机号</td>
+				<td>补单次数</td>
+				<td>有效时间</td>
+				<td>账号状态</td>
+				<td>操作</td>
 			</tr>
+			<#list userPageList.records as userItem>
+				<tr>
+					<#--<td>${userItem.id}</td>-->
+					<td>${userItem.userName}</td>
+					<td>${userItem.sexStr}</td>
+					<td>${userItem.age}</td>
+					<td>${userItem.location}</td>
+					<td>${userItem.qqNumber}</td>
+					<td>${userItem.mobile}</td>
+					<td>${userItem.allowOrderTimes}</td>
+					<td>${userItem.validTimeStr}</td>
+					<td>${userItem.statusStr}</td>
+					<td>
+						<#--<button type="button" class="btn btn-primary" onclick="showPaymentCodeImg('${userItem.paymentCodeImg}')">返款码</button>-->
+						<button type="button" class="btn btn-info" onclick="userDetail(${userItem.id})">详情</button>
+						<#if (user.permission.type == 0) && (userItem.permissionInt != 0)>
+							<#if userItem.statusStr == "正常">
+								<button type="button" class="btn btn-warning" onclick="handleUser(${userItem.id}, 1)">禁用</button>
+							</#if>
+							<#if userItem.statusStr == "禁用">
+								<button type="button" class="btn btn-success" onclick="handleUser(${userItem.id}, 0)">解除禁用</button>
+							</#if>
+							<button type="button" class="btn btn-danger" onclick="handleUser(${userItem.id}, 2)">删除</button>
+						</#if>
+					</td>
+                </tr>
+			</#list>
 		</table>
 		<#include "../footer.ftl">
 	</div>
 </div>
-<div id="imgModal" class="modal fade" tabindex="-1" role="dialog">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-				<h4 class="modal-title">扫码返款</h4>
-			</div>
-			<div class="modal-body">
-				<div class="row" id="paymentCodeImgDiv">
-					<div class="col-md-2"></div>
-					<div class="col-md-8">
-						<a href="#" class="thumbnail"> 
-							<img src="/static/images/zf.jpg">
-						</a>
-					</div>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-warning" data-dismiss="modal">取消</button>
-				<button type="button" class="btn btn-info" data-dismiss="modal">确定</button>
-			</div>
-		</div> <!-- /.modal-content -->
-	</div> <!-- /.modal-dialog -->
-</div> <!-- /.modal -->	
 </body>
+<script type="text/javascript">
+$(document).ready(function(){
+    var searchUserStatus = ${(userPageList.searchUserStatus)!-1};
+    if(searchUserStatus != -1){
+        $("#searchUserStatus").val(${(userPageList.searchUserStatus)!});
+    }
+
+	$("#searchCurrent").val(${userPageList.current});
+	$("#currentPage").val(${userPageList.current});
+	$("#total").text(${userPageList.total});
+	$("#pages").text(${userPageList.pages});
+
+	$("#searchFormBtn").click(function () {
+        $("#searchCurrent").val(1);
+        $("#searchForm").submit();
+    })
+});
+
+function showPaymentCodeImg(paymentCodeImg) {
+	$("#paymentCodeImgDisplay").attr("src", paymentCodeImg);
+	$("#imgModal").modal("show");
+}
+
+function userDetail(userId) {
+    window.location.href = "/user/info/" + userId + "/";
+}
+
+function handleUser(userId, status) {
+    window.location.href = "/user/handle/" + userId + "/" + status + "/";
+}
+</script>
 </html>

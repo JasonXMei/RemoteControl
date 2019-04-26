@@ -33,7 +33,7 @@ public class TaskTag{
     private Integer taskId;
 
     /**
-     * 标签类型(1：收藏，2：加购，3：已拍，4：聊天，5：足迹)
+     * 标签类型
      */
     private TagTypeEnum tagType;
 }

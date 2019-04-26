@@ -40,17 +40,17 @@ public class SubUser {
     private String subUserName;
 
     /**
-     * 终端类型(1：电脑端，2：手机端....)
+     * 终端类型
      */
     private TerminalEnum terminal;
 
     /**
-     * 小号类型(1:淘宝，2：京东，3：拼多多...)
+     * 小号类型
      */
     private UserTypeEnum userType;
 
     /**
-     * 连接状态(1:未连接，2：已连接)
+     * 连接状态
      */
     private ConnectStatusEnum connectStatus;
 }

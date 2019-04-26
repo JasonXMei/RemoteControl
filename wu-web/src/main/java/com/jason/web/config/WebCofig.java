@@ -28,6 +28,6 @@ public class WebCofig implements WebMvcConfigurer{
 	public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(webInterceptorHandler)
         	.addPathPatterns("/**")
-        	.excludePathPatterns("/user/login", "/user/register", "/errorPage", "/static/**");
+        	.excludePathPatterns("/user/login", "/user/info/**", "/user/saveOrUpdate/**", "/errorPage/**", "/static/**", "/images/**");
 	}
 }

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jason.web.mapper.UserMapper">
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="User">
+    <resultMap id="BaseResultMap" type="com.jason.common.po.User">
         <id column="id" property="id" />
         <result column="user_name" property="userName" />
         <result column="password" property="password" />
@@ -17,11 +17,41 @@
         <result column="status" property="status" />
         <result column="allow_order_times" property="allowOrderTimes" />
         <result column="valid_time" property="validTime" />
+        <result column="connect_status" property="connectStatus" />
+        <result column="invite_code" property="inviteCode" />
+        <result column="referrer_user_id" property="referrerUserId" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, user_name, password, sex, age, location, credit_values, payment_code_img, qq_number, mobile, permission, status, allow_order_times, valid_time
+        id, user_name, password, sex, age, location, credit_values, payment_code_img, qq_number, mobile, permission, status, allow_order_times, valid_time, connect_status, invite_code, referrer_user_id
     </sql>
+
+    <select id="findUserList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM user
+        <where>
+            <choose>
+                <when test="pg.searchUserStatus != null and pg.searchUserStatus != -1">
+                    AND status = #{pg.searchUserStatus}
+                </when>
+                <otherwise>
+                    And status in (0,1,3)
+                </otherwise>
+            </choose>
+            <if test="pg.searchName != null">
+                AND (
+                user_name LIKE concat(#{pg.searchName},'%') OR
+                location LIKE concat(#{pg.searchName},'%') OR
+                qq_number LIKE concat(#{pg.searchName},'%') OR
+                mobile LIKE concat(#{pg.searchName},'%')
+                )
+            </if>
+            <if test="pg.referrerUserId != null">
+                AND referrer_user_id = #{pg.referrerUserId}
+            </if>
+        </where>
+        ORDER BY status ASC, id DESC
+    </select>
 
 </mapper>

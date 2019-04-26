@@ -2,6 +2,8 @@ package com.jason.web.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jason.common.po.User;
+import com.jason.common.vo.UserPage;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -13,4 +15,5 @@ import com.jason.common.po.User;
  */
 public interface UserMapper extends BaseMapper<User> {
 
+    UserPage<User> findUserList(@Param("pg") UserPage<User> userPage);
 }

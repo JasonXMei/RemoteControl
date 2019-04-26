@@ -8,4 +8,10 @@ public class ParamsConfig {
 
 	@Value("${file.upload-path}")
 	public String imagePath;
+
+    @Value("${dafault-password}")
+    public String defaultPassword;
+
+    @Value("${default.session.timeout}")
+    public Integer defaultSessionTimeout;
 }

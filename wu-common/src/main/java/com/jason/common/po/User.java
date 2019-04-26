@@ -1,5 +1,6 @@
 package com.jason.common.po;
 
+import com.jason.common.enums.ConnectStatusEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -40,7 +41,7 @@ public class User{
     private String password;
 
     /**
-     * 性别（1：男，2：女）
+     * 性别
      */
     private SexEnum sex;
 
@@ -75,12 +76,12 @@ public class User{
     private String mobile;
 
     /**
-     * 权限(0：超级管理员，1：普通智慧联盟账号)
+     * 权限
      */
     private PermissionEnum permission;
 
     /**
-     * 账号状态(1：正常，2：禁用，3：删除)
+     * 账号状态
      */
     private AccountStatusEnum status;
 
@@ -92,5 +93,20 @@ public class User{
     /**
      * 有效时间
      */
-    private Integer validTime;
+    private Long validTime;
+
+    /**
+     * 连接状态
+     */
+    private ConnectStatusEnum connectStatus;
+
+    /**
+     * 邀请码
+     */
+    private String inviteCode;
+
+    /**
+     * 推荐人id
+     */
+    private Integer referrerUserId;
 }
