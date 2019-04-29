@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jason.web.mapper.TaskReplaceOrderMapper">
-    <!-- 通用查询映射结果 -->
+
+    <!-- 映射字段 -->
     <resultMap id="BaseResultMap" type="TaskReplaceOrder">
         <id column="id" property="id" />
         <result column="task_id" property="taskId" />
@@ -9,11 +10,60 @@
         <result column="order_amount" property="orderAmount" />
         <result column="order_commission" property="orderCommission" />
         <result column="order_type" property="orderType" />
+        <result column="payment_status" property="paymentStatus" />
+        <result column="description" property="description" />
+        <result column="subUserName" property="subUserName" />
+        <result column="userName" property="userName" />
+        <result column="QQNumber" property="QQNumber" />
+        <result column="paymentCodeImg" property="paymentCodeImg" />
+        <result column="shopName" property="shopName" />
+        <result column="createTime" property="createTime" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, task_id, order_id, order_amount, order_commission, order_type
+        tro.id, tro.task_id, tro.order_id, tro.order_amount, tro.order_commission, tro.order_type, tro.payment_status
     </sql>
 
+    <select id="findReplaceOrderList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> ,
+        sut.description as description,
+        su.sub_user_name as subUserName,
+        us.shop_name as shopName,
+        user.payment_code_img as paymentCodeImg,
+        user.user_name as userName,
+        user.qq_number as QQNumber,
+        sut.create_time as createTime
+        FROM task_replace_order as tro
+        JOIN sub_user_task as sut ON tro.task_id = sut.id
+        JOIN sub_user as su ON sut.sub_user_id = su.id
+        JOIN user_shop as us ON us.id = sut.shop_id
+        JOIN user as user ON user.id = su.user_id
+        <where>
+            <if test="pg.searchUserId != null">
+                AND us.id in (select id from user_shop where user_id = #{pg.searchUserId})
+            </if>
+            <if test="pg.searchStatus != null and pg.searchStatus != -1">
+                AND tro.payment_status = #{pg.searchStatus}
+            </if>
+            <if test="pg.searchName != null">
+                AND (
+                su.sub_user_name LIKE concat(#{pg.searchName},'%') OR
+                us.shop_name LIKE concat(#{pg.searchName},'%') OR
+                tro.order_id LIKE concat(#{pg.searchName},'%') OR
+                user.user_name LIKE concat(#{pg.searchName},'%') OR
+                user.qq_number LIKE concat(#{pg.searchName},'%')
+                )
+            </if>
+            <if test="pg.searchStartDate != null and pg.searchEndDate != null">
+                AND (sut.create_time BETWEEN #{pg.searchStartDate} AND #{pg.searchEndDate})
+            </if>
+            <if test="pg.searchStartDate != null and pg.searchEndDate == null">
+                AND sut.create_time &gt;= #{pg.searchStartDate}
+            </if>
+            <if test="pg.searchStartDate == null and pg.searchEndDate != null">
+                AND sut.create_time &lt;= #{pg.searchEndDate}
+            </if>
+        </where>
+    </select>
 </mapper>

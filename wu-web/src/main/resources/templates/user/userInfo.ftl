@@ -51,6 +51,7 @@
 					<#if (userDetail.userVO.id>0)>
 						<span>用户详情</span>
                         <input type="hidden" name="id" value="${userDetail.userVO.id}"/>
+                        <input type="hidden" name="permissionInt" value="${userDetail.userVO.permissionInt}"/>
 					<#else>
 						<span>用户注册</span>
                         <input type="hidden" name="id" value="0"/>

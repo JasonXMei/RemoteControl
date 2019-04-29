@@ -37,7 +37,7 @@
                     <li class="list-group-item">
                         <a href="/user/list/1">
 		                    <button class="menu-item-left user-button-left">
-	                     		<span class="glyphicon glyphicon-list"></span> 我的推荐列表
+	                     		<span class="glyphicon glyphicon-star"></span> 我的推荐列表
 		                    </button>
                         </a>
                     </li>
@@ -56,12 +56,19 @@
             <div id="collapseListGroup2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseListGroupHeading2">
                 <ul class="list-group">
                     <li class="list-group-item">
-                        <a href="#">
+                        <a href="/replaceOrder/list">
 	                        <button class="menu-item-left user-button-left">
-	                      		<span class="glyphicon glyphicon-list"></span> 补单列表
+	                      		<span class="glyphicon glyphicon-book"></span> 补单列表
 	                        </button>
                         </a> 
                     </li>              
+                    <li class="list-group-item">
+                        <a href="/tag/list">
+	                        <button class="menu-item-left user-button-left">
+	                      		<span class="glyphicon glyphicon-tags"></span> 标签列表
+	                        </button>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div><!--panel end-->

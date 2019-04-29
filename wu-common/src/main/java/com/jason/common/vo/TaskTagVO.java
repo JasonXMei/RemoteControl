@@ -1,27 +1,35 @@
 package com.jason.common.vo;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
-
-import com.jason.common.bo.BaseTaskBO;
-import com.jason.common.po.TaskReplaceOrder;
-import com.jason.common.po.TaskTag;
 
 @Data
 public class TaskTagVO {
-	
-	private BaseTaskBO baseTaskBO;
-	
-	private String createTimeStr;
 
-	private String updateTimeStr;
-	
-	/**
-     * 标签任务
-     */
-    private TaskTag taskTag;
-    
     /**
-     * 补单任务
+     * 主键
      */
-    private TaskReplaceOrder taskReplaceOrder;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
+
+    /**
+     * 逻辑关联sub_user_task表id
+     */
+    private Integer taskId;
+
+    /**
+     * 标签类型
+     */
+    private String tagTypeStr;
+
+    /**
+     * 映射字段
+     */
+    private String description;
+    private String subUserName;
+    private String QQNumber;
+    private String userName;
+    private String shopName;
+    private String createTimeStr;
 }

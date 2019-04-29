@@ -29,29 +29,31 @@
 		<#--<button class="btn btn-default" data-toggle="modal" data-target="#imgModal">-->
 			<#--<span class="glyphicon glyphicon-repeat"></span>-->
 		<#--</button>-->
-		<form id="searchForm" action="/user/list/1" method="post" class="form-inline" role="form">
-			<div class="form-group">
-				<a>
-					<button class="btn btn-default">
-						<span class="glyphicon glyphicon-user"></span> 
-						<span class="button-left">推荐用户列表</span>
-					</button>
-				</a>
-			</div>
-			<div class="form-group pull-right">
-				<input type="text" class="form-control" name="searchName" id="searchName" value="${(userPageList.searchName)!''}" placeholder="用户名/位置/QQ号/手机号" />
-				<select class="form-control" data-live-search="true" name="searchUserStatus" id="searchUserStatus">
-					<option value="-1">==请选择账号状态==</option>
-					<option value="0">正常</option>
-					<option value="1">禁用</option>
-					<option value="3">待审核</option>
-				</select>
-				<input type="hidden" id="searchCurrent" name="searchCurrent"/>
-				<button class="btn btn-default" type="button" id="searchFormBtn">
-					搜索 <span class="glyphicon glyphicon-search"></span>
-				</button>
-			</div>
-		</form>
+        <form id="searchForm" action="/user/list/1" method="post" class="form-inline" role="form">
+            <div class="form-group">
+                <a>
+                    <button class="btn btn-default">
+                        <span class="glyphicon glyphicon-user"></span>
+                        <span class="button-left">推荐用户列表</span>
+                    </button>
+                </a>
+            </div>
+            <div class="form-group pull-right">
+                <input type="text" class="form-control" name="searchName" id="searchName"
+                       value="${(userPageList.searchName)!''}" placeholder="用户名/位置/QQ号/手机号"/>
+                <select class="form-control" data-live-search="true" name="searchUserStatus"
+                        id="searchUserStatus">
+                    <option value="-1">==请选择账号状态==</option>
+                    <option value="0">正常</option>
+                    <option value="1">禁用</option>
+                    <option value="3">待审核</option>
+                </select>
+                <input type="hidden" id="searchCurrent" name="searchCurrent"/>
+                <button class="btn btn-default" type="button" id="searchFormBtn">
+                    搜索 <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </div>
+        </form>
 		<table class="table table-striped" id="userListTable">
 			<tr class="active">
 				<td>姓名</td>

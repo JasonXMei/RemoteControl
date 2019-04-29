@@ -17,4 +17,13 @@ public enum PaymentStatusEnum {
 		this.status = status;
 		this.description = description;
 	}
+
+    public static PaymentStatusEnum getEnum (Integer status){
+        for(PaymentStatusEnum e : PaymentStatusEnum.values()){
+            if(e.getStatus() == status){
+                return e;
+            }
+        }
+        return null;
+    }
 }

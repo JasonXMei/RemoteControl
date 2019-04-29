@@ -2,6 +2,8 @@ package com.jason.web.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jason.common.po.TaskReplaceOrder;
+import com.jason.common.vo.TaskPage;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -13,4 +15,5 @@ import com.jason.common.po.TaskReplaceOrder;
  */
 public interface TaskReplaceOrderMapper extends BaseMapper<TaskReplaceOrder> {
 
+    TaskPage<TaskReplaceOrder> findReplaceOrderList(@Param("pg")TaskPage<TaskReplaceOrder> pages);
 }

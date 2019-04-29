@@ -17,4 +17,13 @@ public enum PermissionEnum {
 		this.type = type;
 		this.description = description;
 	}
+
+    public static PermissionEnum getType(Integer type){
+        for(PermissionEnum e : PermissionEnum.values()){
+            if(e.getType() == type){
+                return e;
+            }
+        }
+        return null;
+    }
 }

@@ -36,4 +36,14 @@ public class TaskTag{
      * 标签类型
      */
     private TagTypeEnum tagType;
+
+    /**
+     * 映射字段
+     */
+    private String description;
+    private String subUserName;
+    private String QQNumber;
+    private String userName;
+    private String shopName;
+    private Long createTime;
 }

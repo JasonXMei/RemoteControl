@@ -12,20 +12,23 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-public class UserPage<T> extends Page<T> {
-    private static final long serialVersionUID = 5194933845448697148L;
+public class TaskPage<T> extends Page<T> {
+    private String searchName = "";
+    private Integer searchStatus = -1;
 
-    private String searchName;
-    private Integer searchUserStatus;
-    private Integer referrerUserId;
+    private String searchStartDateStr = "";
+    private String searchEndDateStr = "";
+    private Long searchStartDate;
+    private Long searchEndDate;
+    private Integer searchUserId;
 
     private long searchCurrent = 1;
     private long pages;
 
-    public  UserPage(){
+    public TaskPage(){
         super();
     }
-    public UserPage(long current, long size) {
+    public TaskPage(long current, long size) {
         super(current, size);
     }
 }

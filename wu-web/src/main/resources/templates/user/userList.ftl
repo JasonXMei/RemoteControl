@@ -29,34 +29,35 @@
 		<#--<button class="btn btn-default" data-toggle="modal" data-target="#imgModal">-->
 			<#--<span class="glyphicon glyphicon-repeat"></span>-->
 		<#--</button>-->
-		<form id="searchForm" action="/user/list/0" method="post" class="form-inline" role="form">
-			<div class="form-group">
-				<a>
-					<button class="btn btn-default">
-						<span class="glyphicon glyphicon-user"></span> 
-						<span class="button-left">用户列表</span>
-					</button>
-				</a>
-			</div>
-			<div class="form-group pull-right">
-				<input type="text" class="form-control" name="searchName" id="searchName" value="${(userPageList.searchName)!''}" placeholder="用户名/位置/QQ号/手机号" />
-				<select class="form-control" data-live-search="true" name="searchUserStatus" id="searchUserStatus">
-					<option value="-1">==请选择账号状态==</option>
-					<option value="0">正常</option>
-					<option value="1">禁用</option>
-					<option value="3">待审核</option>
-				</select>
-				<input type="hidden" id="searchCurrent" name="searchCurrent"/>
-				<button class="btn btn-default" type="button" id="searchFormBtn">
-					搜索 <span class="glyphicon glyphicon-search"></span>
-				</button>
-				<#if (user.permission)?? && (user.permission.type == 0)>
-					<button class="btn btn-success" type="button" onclick="userDetail(0)">
-                        账号注册 <span class="glyphicon glyphicon-plus"></span>
+        <form id="searchForm" action="/user/list/0" method="post" class="form-inline" role="form">
+            <div class="form-group">
+                <a>
+                    <button class="btn btn-default">
+                        <span class="glyphicon glyphicon-user"></span>
+                        <span class="button-left">用户列表</span>
                     </button>
-				</#if>
-			</div>
-		</form>
+                </a>
+            </div>
+            <div class="form-group pull-right">
+                <input type="text" class="form-control" name="searchName" id="searchName"
+                       value="${(userPageList.searchName)!''}" placeholder="用户名/位置/QQ号/手机号"/>
+                <select class="form-control" data-live-search="true" name="searchUserStatus" id="searchUserStatus">
+                    <option value="-1">==请选择账号状态==</option>
+                    <option value="0">正常</option>
+                    <option value="1">禁用</option>
+                    <option value="3">待审核</option>
+                </select>
+                <input type="hidden" id="searchCurrent" name="searchCurrent"/>
+                <button class="btn btn-default" type="button" id="searchFormBtn">
+                    搜索 <span class="glyphicon glyphicon-search"></span>
+                </button>
+                    <#if (user.permission)?? && (user.permission.type == 0)>
+                        <button class="btn btn-success" type="button" onclick="userDetail(0)">
+                            账号注册 <span class="glyphicon glyphicon-plus"></span>
+                        </button>
+                    </#if>
+            </div>
+        </form>
 		<table class="table table-striped" id="userListTable">
 			<tr class="active">
 				<td>姓名</td>
@@ -105,9 +106,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
     var searchUserStatus = ${(userPageList.searchUserStatus)!-1};
-    if(searchUserStatus != -1){
-        $("#searchUserStatus").val(${(userPageList.searchUserStatus)!});
-    }
+    $("#searchUserStatus").val(${(userPageList.searchUserStatus)!});
 
 	$("#searchCurrent").val(${userPageList.current});
 	$("#currentPage").val(${userPageList.current});

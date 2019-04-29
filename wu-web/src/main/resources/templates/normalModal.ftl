@@ -95,16 +95,17 @@
 }
 </style>
 <script type="text/javascript">
-function showPaymentCodeImg(paymentCodeImg, flag) {
+function showPaymentCodeImg(paymentCodeImg, flag, orderId) {
     if(flag == 1){
         $("#paymentCodeImgHeader").text("查看图片");
         $("#imgModalCalBtn").hide();
 	}else{
         $("#paymentCodeImgHeader").text("扫码返款");
         $("#imgModalCalBtn").show();
-        /*$("#imgModalConfimBtn").click(function () {
-            
-        });*/
+        $("#imgModalConfimBtn").click(function () {
+            $("#imgModal").modal("hide");
+            refundAllow(orderId, 2);
+        });
     }
 	$("#paymentCodeImgDisplay").attr("src", paymentCodeImg + "?" + Math.random());
 	$("#imgModal").modal("show");

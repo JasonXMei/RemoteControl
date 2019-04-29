@@ -112,9 +112,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             }
         }
 
-        //保存用户注册信息，获取返回id作为图片名
+        //保存用户信息，获取返回id作为图片名
         User userPO = dozerMapper.map(userVO, User.class);
-        userPO.setPermission(PermissionEnum.NormalUser);
+        if(userVO.getPermissionInt() != null){
+            userPO.setPermission(PermissionEnum.getType(userVO.getPermissionInt()));
+        }else{
+            userPO.setPermission(PermissionEnum.NormalUser);
+        }
         userPO.setStatus(accountStatusEnum);
         userPO.setSex(SexEnum.getSexEnumByType(Integer.valueOf(userVO.getSexStr())));
         try {
@@ -192,12 +196,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public UserPage<UserVO> handleList(UserPage<User> userPage) {
-        if(userPage.getSearchCurrent() == 0){
-            userPage.setCurrent(1);
-        }else{
-            userPage.setCurrent(userPage.getSearchCurrent());
-        }
         userPage.setSize(10);
+        userPage.setCurrent(userPage.getSearchCurrent());
         UserPage<User> userPOPage = baseMapper.findUserList(userPage);
         UserPage<UserVO> userVOPage = new UserPage<>();
         List<UserVO> userVOList = new ArrayList<>();
