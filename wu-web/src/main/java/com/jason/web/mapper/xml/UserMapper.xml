@@ -41,6 +41,7 @@
             </choose>
             <if test="pg.searchName != null">
                 AND (
+                id = #{pg.searchName} OR
                 user_name LIKE concat(#{pg.searchName},'%') OR
                 location LIKE concat(#{pg.searchName},'%') OR
                 qq_number LIKE concat(#{pg.searchName},'%') OR

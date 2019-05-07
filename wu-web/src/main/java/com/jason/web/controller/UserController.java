@@ -1,6 +1,7 @@
 package com.jason.web.controller;
 
 import com.jason.common.enums.HttpStatus;
+import com.jason.common.enums.PermissionEnum;
 import com.jason.common.po.User;
 import com.jason.common.util.JWTUtil;
 import com.jason.common.vo.JSONResult;
@@ -41,7 +42,12 @@ public class UserController {
 
 	@RequestMapping("token/{token}/")
 	public String tokenLogin(@PathVariable("token") String token, HttpServletRequest request){
-		return "redirect:/user/list/0";
+	    User loginUser = (User)request.getAttribute("user");
+	    if(loginUser.getPermission().getType() == PermissionEnum.SuperAdmin.getType()){
+            return "redirect:/user/list/0";
+        }else{
+            return "redirect:/user/list/1";
+        }
 	}
 
 	@RequestMapping("list/{status}")

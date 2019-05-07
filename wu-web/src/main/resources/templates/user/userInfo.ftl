@@ -78,14 +78,17 @@
                         </button>
                     </div>
                 </#if>
-                <div class="form-group pull-right">
-					<a href="/user/list/0">
-						<button class="btn btn-default" type="button">
-							<span class="glyphicon glyphicon-arrow-left"></span>
-							<span class="button-left">返回</span>
-						</button>
-					</a>
-				</div>
+                <#--超管才能返回账号列表-->
+                <#if ((user.permission.type)?? && (user.permission.type == 0))>
+                    <div class="form-group pull-right">
+                        <a href="/user/list/0">
+                            <button class="btn btn-default" type="button">
+                                <span class="glyphicon glyphicon-arrow-left"></span>
+                                <span class="button-left">返回</span>
+                            </button>
+                        </a>
+                    </div>
+                </#if>
 			</div>
 			<table class="table" id="userDetailTable">
 				<tr>

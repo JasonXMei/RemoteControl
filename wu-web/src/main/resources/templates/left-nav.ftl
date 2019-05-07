@@ -27,13 +27,15 @@
             <!-- .panel-collapse和.collapse标明折叠元素 .in表示要显示出来 -->
             <div id="collapseListGroup1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseListGroupHeading1">
                 <ul class="list-group">
-                    <li class="list-group-item">
-                        <a href="/user/list/0">
-		                    <button class="menu-item-left user-button-left">
-	                     		<span class="glyphicon glyphicon-list"></span> 账号列表
-		                    </button>
-                        </a>
-                    </li>
+                    <#if (user.permission)?? && (user.permission.type == 0)>
+                        <li class="list-group-item">
+                            <a href="/user/list/0">
+                                <button class="menu-item-left user-button-left">
+                                    <span class="glyphicon glyphicon-list"></span> 账号列表
+                                </button>
+                            </a>
+                        </li>
+                    </#if>
                     <li class="list-group-item">
                         <a href="/user/list/1">
 		                    <button class="menu-item-left user-button-left">

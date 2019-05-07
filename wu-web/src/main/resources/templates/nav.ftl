@@ -32,6 +32,12 @@
 										<span class="glyphicon glyphicon-cog"></span> 修改密码
 									</a>
 								</li>
+                                <li role="separator" class="divider"></li>
+								<li>
+									<a onclick="window.location.href = '/user/info/${user.id}/'">
+										<span class="glyphicon glyphicon-info-sign"></span> 个人信息设置
+									</a>
+								</li>
 							</ul>
 						<#else>
 							<span class="glyphicon glyphicon-user"></span> 欢迎您，游客  <span class="caret"></span>

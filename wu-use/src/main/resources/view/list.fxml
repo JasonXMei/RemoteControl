@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTreeTableColumn?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="618.0" prefWidth="1000.0" style="-fx-font-size: 18px;" stylesheets="@../css/list.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jason.use.controller.UserController">
+  <children>
+    <SplitPane dividerPositions="0.24124513618677043" focusTraversable="true" nodeOrientation="LEFT_TO_RIGHT" prefHeight="-1.0" prefWidth="-1.0" style="-fx-background-color: white;-fx-border-width: 2;">
+      <items>
+        <AnchorPane prefHeight="616.0" prefWidth="195.0" style="-fx-background-color: lightblue;" SplitPane.resizableWithParent="false">
+               <children>
+                  <VBox layoutY="14.0" prefHeight="595.0" prefWidth="223.0" spacing="10.0">
+                     <children>
+                        <ImageView fitHeight="150.0" fitWidth="223.0" pickOnBounds="true" preserveRatio="true" style="-fx-image: url('/img/logo.jpg');" />
+                        <JFXButton prefHeight="30.0" prefWidth="250.0" text="用户列表" />
+                        <JFXButton prefHeight="30.0" prefWidth="243.0" text="我的标签记录" />
+                        <JFXButton prefHeight="30.0" prefWidth="224.0" text="我的推广网址" />
+                        <JFXButton prefHeight="30.0" prefWidth="223.0" text="网页版后台" />
+                        <JFXButton prefHeight="30.0" prefWidth="228.0" text="退出系统" />
+                     </children>
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </VBox>
+               </children>
+        </AnchorPane>
+        <AnchorPane prefHeight="616.0" prefWidth="713.0" style="-fx-background-color: lightblue;">
+           <children>
+              <VBox layoutY="1.0" prefHeight="612.0" prefWidth="775.0">
+                 <children>
+                    <HBox alignment="TOP_RIGHT" prefHeight="59.0" prefWidth="776.0" spacing="10.0" style="-jfx-cell-horizontal-margin: 10;">
+                       <children>
+                          <JFXTextField promptText=" 编号/分享用户/小号名" style="-fx-background-color: white;" />
+                          <JFXButton text="搜索" />
+                       </children>
+                           <padding>
+                              <Insets top="10.0" />
+                           </padding>
+                    </HBox>
+                    <VBox prefHeight="552.0" prefWidth="775.0">
+                       <children>
+                           <JFXTreeTableView fx:id="userList" prefHeight="474.0" prefWidth="745.0" style="-fx-font-size: 16px;">
+                               <columns>
+                                   <JFXTreeTableColumn fx:id="id" editable="false" minWidth="62.0" prefWidth="62.0" resizable="false" sortable="false" text="编号" />
+                                   <JFXTreeTableColumn fx:id="userName" editable="false" minWidth="98.0" prefWidth="158.0" resizable="false" sortable="false" text="分享用户" />
+                                   <JFXTreeTableColumn fx:id="subUserName" editable="false" minWidth="39.0" prefWidth="160.0" resizable="false" sortable="false" text="小号名" />
+                                   <JFXTreeTableColumn fx:id="replaceOrderTimes" editable="false" minWidth="48.0" prefWidth="113.0" resizable="false" sortable="false" text="日-日上限" />
+                                   <JFXTreeTableColumn fx:id="connectionStatus" editable="false" minWidth="28.0" prefWidth="115.0" resizable="false" sortable="false" text="连接状态" />
+                                   <JFXTreeTableColumn fx:id="location" editable="false" minWidth="35.0" prefWidth="133.0" resizable="false" sortable="false" text="地理位置" />
+                               </columns>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                           </JFXTreeTableView>
+                       </children>
+                    </VBox>
+                 </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets left="10.0" right="20.0" />
+                     </padding>
+              </VBox>
+           </children>
+        </AnchorPane>
+      </items>
+    </SplitPane>
+  </children>
+</VBox>

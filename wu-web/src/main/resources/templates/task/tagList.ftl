@@ -35,7 +35,7 @@
             <a>
                 <button class="btn btn-default">
                     <span class="glyphicon glyphicon-user"></span>
-                    <span class="button-left">补单列表</span>
+                    <span class="button-left">标签列表</span>
                 </button>
             </a>
         </div>

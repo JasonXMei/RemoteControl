@@ -1,0 +1,18 @@
+.jfx-button {
+     -jfx-button-type: RAISED;
+     -fx-background-color: #039BE5;
+     -fx-text-fill: white;
+     -jfx-disable-visual-focus: true;
+}
+
+.jfx-layout-heading .label {
+    -fx-font-size: 20.0px;
+}
+
+.jfx-layout-actions .jfx-button{
+    -fx-font-size: 16.0px;
+}
+
+.jfx-combo-box{
+    -jfx-focus-color: #039BE5;
+}

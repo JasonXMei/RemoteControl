@@ -34,13 +34,13 @@
                 <a>
                     <button class="btn btn-default">
                         <span class="glyphicon glyphicon-user"></span>
-                        <span class="button-left">用户列表</span>
+                        <span class="button-left">账号列表</span>
                     </button>
                 </a>
             </div>
             <div class="form-group pull-right">
                 <input type="text" class="form-control" name="searchName" id="searchName"
-                       value="${(userPageList.searchName)!''}" placeholder="用户名/位置/QQ号/手机号"/>
+                       value="${(userPageList.searchName)!''}" placeholder="编号/用户名/位置/QQ号/手机号"/>
                 <select class="form-control" data-live-search="true" name="searchUserStatus" id="searchUserStatus">
                     <option value="-1">==请选择账号状态==</option>
                     <option value="0">正常</option>
@@ -60,6 +60,7 @@
         </form>
 		<table class="table table-striped" id="userListTable">
 			<tr class="active">
+				<td>编号</td>
 				<td>姓名</td>
 				<td>性别</td>
 				<td>年龄</td>
@@ -73,7 +74,7 @@
 			</tr>
 			<#list userPageList.records as userItem>
 				<tr>
-					<#--<td>${userItem.id}</td>-->
+					<td>${userItem.id}</td>
 					<td>${userItem.userName}</td>
 					<td>${userItem.sexStr}</td>
 					<td>${userItem.age}</td>
