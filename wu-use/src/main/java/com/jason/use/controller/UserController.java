@@ -97,7 +97,7 @@ public class UserController implements Initializable {
                 }
                 User user = (User) row.getItem();
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setContentText(user.getUserName() + ":" + user.getSubUserName());
+                alert.setContentText(user.getUserName().getValue() + ":" + user.getSubUserName().getValue());
                 alert.show();
                 /*AdminAddUserViewController.selectedUser = user;
                 AdminAddUserViewController.edit = true;

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="618.0" prefWidth="1000.0" style="-fx-font-size: 18px;" stylesheets="@../css/list.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jason.use.controller.WrapperController">
+  <children>
+      <BorderPane>
+         <left>
+        <AnchorPane prefHeight="616.0" prefWidth="195.0" style="-fx-background-color: lightblue;" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox layoutY="14.0" prefHeight="595.0" prefWidth="223.0" spacing="10.0">
+                     <children>
+                        <ImageView fitHeight="150.0" fitWidth="223.0" pickOnBounds="true" preserveRatio="true" style="-fx-image: url('/img/logo.jpg');" />
+                        <JFXButton fx:id="userListBtn" prefHeight="30.0" prefWidth="250.0" text="用户列表" />
+                        <JFXButton fx:id="myTagListBtn" prefHeight="30.0" prefWidth="243.0" text="我的标签记录" />
+                        <JFXButton fx:id="myLinkUrlBtn" prefHeight="30.0" prefWidth="224.0" text="我的推广网址" />
+                        <JFXButton fx:id="webBackendBtn" prefHeight="30.0" prefWidth="223.0" text="网页版后台" />
+                        <JFXButton fx:id="logoutBtn" prefHeight="30.0" prefWidth="228.0" text="退出系统" />
+                     </children>
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </VBox>
+               </children>
+        </AnchorPane>
+         </left>
+         <center>
+        <AnchorPane prefHeight="616.0" prefWidth="713.0" style="-fx-background-color: lightblue;" BorderPane.alignment="CENTER" />
+         </center>
+      </BorderPane>
+  </children>
+</VBox>

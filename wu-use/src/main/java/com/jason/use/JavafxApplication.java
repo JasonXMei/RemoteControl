@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class JavafxApplication extends Application {
@@ -14,6 +15,8 @@ public class JavafxApplication extends Application {
 	private String title = "智慧联盟使用端";
 	private double width = 1000;
 	private double height = 618;
+
+    private static BorderPane root;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception{
@@ -39,8 +42,8 @@ public class JavafxApplication extends Application {
 
 	public void gotoReaderUi(String id) {
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/list.fxml"));
-			Parent root = loader.load();
+			root = FXMLLoader.load(getClass().getResource("/view/wrapper.fxml"));
+			root.setCenter(FXMLLoader.load(getClass().getResource("/view/list.fxml")));
 			mainStage.setTitle(title);
             //UserController controller = loader.getController();
 			/*ReaderUi controller = loader.getController();
