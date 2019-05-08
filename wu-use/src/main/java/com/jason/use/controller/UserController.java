@@ -1,5 +1,6 @@
 package com.jason.use.controller;
 
+import com.jason.use.JavafxApplication;
 import com.jason.use.model.User;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
@@ -8,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
@@ -98,8 +100,7 @@ public class UserController implements Initializable {
     public void mouseClickedOnRow() {
         userList.setOnMousePressed((MouseEvent event) -> {
             if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-                showConfirmedMessage("","","");
-                /*Node node = ((Node) event.getTarget()).getParent();
+                Node node = ((Node) event.getTarget()).getParent();
                 JFXTreeTableRow row;
                 if (node instanceof JFXTreeTableRow) {
                     row = (JFXTreeTableRow) node;
@@ -108,9 +109,8 @@ public class UserController implements Initializable {
                     row = (JFXTreeTableRow) node.getParent();
                 }
                 User user = (User) row.getItem();
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setContentText(user.getUserName().getValue() + ":" + user.getSubUserName().getValue());
-                alert.show();*/
+                JavafxApplication.showConfirmed("操作提示", user.getUserName().getValue() + ":" + user.getSubUserName().getValue(),
+                        stackPane, "testMethod", getClass());
                 /*AdminAddUserViewController.selectedUser = user;
                 AdminAddUserViewController.edit = true;
                 try {
@@ -122,42 +122,7 @@ public class UserController implements Initializable {
         });
     }
 
-    public void showConfirmedMessage(String headerString, String messageString, String buttonString) {
-        Text header = new Text("Note: This action can't be undone");
-        header.setFont(new Font("System", 18));
-        header.setFill(Paint.valueOf("#495057"));
-
-        JFXButton cancelButton = new JFXButton("Cancel");
-        JFXButton resetButton = new JFXButton("Reset");
-
-        cancelButton.setStyle("-fx-background-color: #adb5bd");
-        cancelButton.setTextFill(Paint.valueOf("#FFFFFF"));
-        cancelButton.setRipplerFill(Paint.valueOf("#FFFFFF"));
-        cancelButton.setButtonType(JFXButton.ButtonType.RAISED);
-
-        resetButton.setStyle("-fx-background-color: #4dadf7");
-        resetButton.setTextFill(Paint.valueOf("#FFFFFF"));
-        resetButton.setRipplerFill(Paint.valueOf("#FFFFFF"));
-        resetButton.setButtonType(JFXButton.ButtonType.RAISED);
-
-        MESSAGE_FLOW.getChildren().add(new Text("Are you sure you want to reset the password of user: "));
-        DIALOG_LAYOUT.setHeading(header);
-        DIALOG_LAYOUT.setBody(MESSAGE_FLOW);
-        DIALOG_LAYOUT.setActions(cancelButton, resetButton);
-        //DIALOG_LAYOUT.setActions(resetButton);
-
-        alertView = new JFXDialog(stackPane, DIALOG_LAYOUT, JFXDialog.DialogTransition.CENTER);
-        alertView.setOverlayClose(false);
-        stackPane.setVisible(true);
-        cancelButton.setOnAction(e -> {
-            alertView.close();
-            stackPane.setVisible(false);
-        });
-
-        resetButton.setOnAction(e -> {
-            System.out.println("The password has been reset");
-        });
-
-        alertView.show();
+    public static void testMethod() {
+        System.out.println("test");
     }
 }

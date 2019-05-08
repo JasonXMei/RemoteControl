@@ -72,35 +72,11 @@ public class LoginController implements Initializable {
      * 检查并登录
      */
     private void doCheckUser(String userName, String password) {
-        showAlert("操作提示", "登陆成功", "确定", "alertAction");
+        JavafxApplication.showAlert("操作提示", "登陆成功", "alertAction", getClass());
     }
 
-   private void showAlert(String heading, String body, String btnName, String methodName){
-       alert = new JFXAlert<>(primaryStage);
-       JFXDialogLayout layout = new JFXDialogLayout();
-       layout.setHeading(new Label(heading));
-       layout.setBody(new Label(body));
-       JFXButton closeButton = new JFXButton(btnName);
-       closeButton.getStyleClass().add("closeBtn");
-       closeButton.setOnAction(event -> {
-           try {
-               getClass().getMethod(methodName).invoke(this);
-           } catch (Exception e) {
-               e.printStackTrace();
-           }
-       });
-       layout.setActions(closeButton);
-       alert.setContent(layout);
-
-       alert.setOverlayClose(true);
-       alert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
-       alert.initModality(Modality.APPLICATION_MODAL);
-       alert.showAndWait();
-   }
-
-   public void alertAction(){
-       alert.hideWithAnimation();
-       myApp.gotoReaderUi(tf_user.getText());
+   public static void alertAction(){
+       JavafxApplication.switchView("/view/list.fxml");
    }
 }
 
