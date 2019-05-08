@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public enum ConnectStatusEnum {
 	
-	Connected(0, "已连接"),DisConnect(1, "未连接");
+	ToBeConnect(0, "可以连接"),Connected(1, "被连接"),DisConnected(2, "未上线");
 	
 	@EnumValue
 	private int status;

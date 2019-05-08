@@ -1,20 +1,20 @@
 package com.jason.use.controller;
 
 import com.jason.use.model.User;
-import com.jfoenix.controls.JFXTreeTableColumn;
-import com.jfoenix.controls.JFXTreeTableRow;
-import com.jfoenix.controls.JFXTreeTableView;
-import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -37,8 +37,19 @@ public class UserController implements Initializable {
     @FXML
     private JFXTreeTableColumn<User, String> connectionStatus;
 
+    private final JFXDialogLayout DIALOG_LAYOUT = new JFXDialogLayout();
+
+    private final TextFlow MESSAGE_FLOW = new TextFlow();
+
+    private JFXDialog alertView;
+
+    @FXML
+    private StackPane stackPane;
+
     @Override
     public void initialize(URL location1, ResourceBundle resources) {
+        stackPane.setVisible(false);
+
         setupCellValueFactory(id, p -> p.getId().asObject());
         setupCellValueFactory(userName, User::getUserName);
         setupCellValueFactory(subUserName, User::getSubUserName);
@@ -47,16 +58,16 @@ public class UserController implements Initializable {
         setupCellValueFactory(connectionStatus, User::getConnectionStatus);
 
         ObservableList<User> users = FXCollections.observableArrayList();
-        users.add(new User(1,"jason", "j1", "1-10","cd", "未连接"));
-        users.add(new User(2,"chris", "c1", "3-3","cd", "未连接"));
-        users.add(new User(3,"lee", "l1", "1-2","hk", "已连接"));
-        users.add(new User(4,"sara", "s1", "2-4","cd", "未连接"));
-        users.add(new User(5,"jason", "j1", "1-5","cd", "未连接"));
-        users.add(new User(6,"chris", "c1", "4-4","cd", "未连接"));
-        users.add(new User(7,"lee", "l1", "5-6","hk", "已连接"));
-        users.add(new User(8,"sara", "s1", "2-5","cd", "未连接"));
-        users.add(new User(9,"jason", "j1", "1-4","cd", "未连接"));
-        users.add(new User(10,"chris", "c1", "6-6","cd", "未连接"));
+        users.add(new User(1,"jason", "j1", "1-10","四川 成都 移动", "可以连接"));
+        users.add(new User(2,"chris", "c1", "3-3","cd", "可以连接"));
+        users.add(new User(3,"lee", "l1", "1-2","hk", "被连接"));
+        users.add(new User(4,"sara", "s1", "2-4","cd", "可以连接"));
+        users.add(new User(5,"jason", "j1", "1-5","cd", "可以连接"));
+        users.add(new User(6,"chris", "c1", "4-4","cd", "可以连接"));
+        users.add(new User(7,"lee", "l1", "5-6","hk", "被连接"));
+        users.add(new User(8,"sara", "s1", "2-5","cd", "可以连接"));
+        users.add(new User(9,"jason", "j1", "1-4","cd", "可以连接"));
+        users.add(new User(10,"chris", "c1", "6-6","cd", "未上线"));
 
         mouseClickedOnRow();
 
@@ -87,7 +98,8 @@ public class UserController implements Initializable {
     public void mouseClickedOnRow() {
         userList.setOnMousePressed((MouseEvent event) -> {
             if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-                Node node = ((Node) event.getTarget()).getParent();
+                showConfirmedMessage("","","");
+                /*Node node = ((Node) event.getTarget()).getParent();
                 JFXTreeTableRow row;
                 if (node instanceof JFXTreeTableRow) {
                     row = (JFXTreeTableRow) node;
@@ -98,7 +110,7 @@ public class UserController implements Initializable {
                 User user = (User) row.getItem();
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setContentText(user.getUserName().getValue() + ":" + user.getSubUserName().getValue());
-                alert.show();
+                alert.show();*/
                 /*AdminAddUserViewController.selectedUser = user;
                 AdminAddUserViewController.edit = true;
                 try {
@@ -108,5 +120,44 @@ public class UserController implements Initializable {
                 }*/
             }
         });
+    }
+
+    public void showConfirmedMessage(String headerString, String messageString, String buttonString) {
+        Text header = new Text("Note: This action can't be undone");
+        header.setFont(new Font("System", 18));
+        header.setFill(Paint.valueOf("#495057"));
+
+        JFXButton cancelButton = new JFXButton("Cancel");
+        JFXButton resetButton = new JFXButton("Reset");
+
+        cancelButton.setStyle("-fx-background-color: #adb5bd");
+        cancelButton.setTextFill(Paint.valueOf("#FFFFFF"));
+        cancelButton.setRipplerFill(Paint.valueOf("#FFFFFF"));
+        cancelButton.setButtonType(JFXButton.ButtonType.RAISED);
+
+        resetButton.setStyle("-fx-background-color: #4dadf7");
+        resetButton.setTextFill(Paint.valueOf("#FFFFFF"));
+        resetButton.setRipplerFill(Paint.valueOf("#FFFFFF"));
+        resetButton.setButtonType(JFXButton.ButtonType.RAISED);
+
+        MESSAGE_FLOW.getChildren().add(new Text("Are you sure you want to reset the password of user: "));
+        DIALOG_LAYOUT.setHeading(header);
+        DIALOG_LAYOUT.setBody(MESSAGE_FLOW);
+        DIALOG_LAYOUT.setActions(cancelButton, resetButton);
+        //DIALOG_LAYOUT.setActions(resetButton);
+
+        alertView = new JFXDialog(stackPane, DIALOG_LAYOUT, JFXDialog.DialogTransition.CENTER);
+        alertView.setOverlayClose(false);
+        stackPane.setVisible(true);
+        cancelButton.setOnAction(e -> {
+            alertView.close();
+            stackPane.setVisible(false);
+        });
+
+        resetButton.setOnAction(e -> {
+            System.out.println("The password has been reset");
+        });
+
+        alertView.show();
     }
 }
