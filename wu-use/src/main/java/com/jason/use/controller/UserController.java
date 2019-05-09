@@ -13,9 +13,6 @@ import javafx.scene.Node;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Paint;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
 import java.net.URL;
@@ -110,9 +107,9 @@ public class UserController implements Initializable {
                 }
                 User user = (User) row.getItem();
                 JavafxApplication.showConfirmed("操作提示", user.getUserName().getValue() + ":" + user.getSubUserName().getValue(),
-                        stackPane, "testMethod", getClass());
+                        stackPane, "taskView", getClass());
                 /*AdminAddUserViewController.selectedUser = user;
-                AdminAddUserViewController.edit = true;
+               AdminAddUserViewController.edit = true;
                 try {
                     MainApp.switchView("/Views/Admin/AdminAddUserView.fxml");
                 } catch (IOException ex) {
@@ -122,7 +119,7 @@ public class UserController implements Initializable {
         });
     }
 
-    public static void testMethod() {
-        System.out.println("test");
+    public static void taskView() {
+        JavafxApplication.switchView("/view/task.fxml");
     }
 }

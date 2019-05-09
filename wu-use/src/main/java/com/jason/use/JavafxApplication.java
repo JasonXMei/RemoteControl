@@ -10,14 +10,12 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -30,7 +28,7 @@ public class JavafxApplication extends Application {
 	private static double width = 1000;
 	private static double height = 618;
 
-    private static BorderPane root;
+    private static BorderPane borderPane;
 
     private static JFXDialogLayout dialogLayout = new JFXDialogLayout();
 
@@ -39,7 +37,7 @@ public class JavafxApplication extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception{
-        root = FXMLLoader.load(getClass().getResource("/view/wrapper.fxml"));
+        borderPane = FXMLLoader.load(getClass().getResource("/view/wrapper.fxml"));
 		mainStage = primaryStage;
 		mainStage.setResizable(false);
 
@@ -142,13 +140,15 @@ public class JavafxApplication extends Application {
 
     public static void switchView(String view){
         try {
-            root.setCenter(FXMLLoader.load(JavafxApplication.class.getResource(view)));
+            borderPane.setCenter(FXMLLoader.load(JavafxApplication.class.getResource(view)));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Scene scene = new Scene(root, width, height);
-        mainStage.setScene(scene);
-        mainStage.show();
+        if (view.contains("list")){
+            Scene scene = new Scene(borderPane, width, height);
+            mainStage.setScene(scene);
+            mainStage.show();
+        }
     }
 
 	public void closeWindow() {

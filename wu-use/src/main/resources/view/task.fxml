@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="618.0" prefWidth="750.0" style="-fx-background-color: LightBLue;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox prefHeight="619.0" prefWidth="750.0">
+         <children>
+            <VBox prefHeight="609.0" prefWidth="134.0" spacing="10.0">
+               <children>
+                  <JFXButton prefHeight="30.0" prefWidth="139.0" text="高速连接" />
+                  <JFXButton prefHeight="30.0" prefWidth="142.0" text="断开连接" />
+               </children>
+            </VBox>
+            <TabPane prefHeight="609.0" prefWidth="614.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab text="提交补单记录">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="570.0" prefWidth="539.0">
+                           <children>
+                              <VBox layoutX="-1.0" prefHeight="569.0" prefWidth="604.0" spacing="10.0" style="-fx-background-color: white;">
+                                 <children>
+                                    <HBox prefHeight="25.0" prefWidth="604.0">
+                                       <children>
+                                          <Label prefHeight="32.0" prefWidth="75.0" text="订单编号:" />
+                                          <TextField prefHeight="20.0" prefWidth="202.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="11.0" prefWidth="604.0">
+                                       <children>
+                                          <Label prefHeight="37.0" prefWidth="75.0" text="订单金额:" />
+                                          <TextField />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="9.0" prefWidth="604.0">
+                                       <children>
+                                          <Label prefHeight="30.0" prefWidth="75.0" text="订单返现:" />
+                                          <TextField prefHeight="30.0" prefWidth="202.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="23.0" prefWidth="604.0">
+                                       <children>
+                                          <Label prefHeight="31.0" prefWidth="74.0" text="使用小号:" />
+                                          <ComboBox prefWidth="150.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="17.0" prefWidth="604.0">
+                                       <children>
+                                          <Label prefHeight="34.0" prefWidth="75.0" text="补单店铺:" />
+                                          <ComboBox prefWidth="150.0" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets left="10.0" top="10.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab text="提交标签记录">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <VBox prefHeight="570.0" prefWidth="604.0" style="-fx-background-color: white;" />
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+              </tabs>
+               <padding>
+                  <Insets bottom="15.0" left="5.0" right="5.0" />
+               </padding>
+            </TabPane>
+         </children>
+         <padding>
+            <Insets top="10.0" />
+         </padding>
+      </HBox>
+   </children>
+</VBox>
