@@ -57,5 +57,6 @@
                 AND sut.create_time &lt;= #{pg.searchEndDate}
             </if>
         </where>
+        ORDER BY sut.id DESC
     </select>
 </mapper>

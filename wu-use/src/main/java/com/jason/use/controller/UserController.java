@@ -1,21 +1,29 @@
 package com.jason.use.controller;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.jason.use.JavafxApplication;
+import com.jason.use.config.APIConfig;
+import com.jason.use.enums.HttpStatus;
 import com.jason.use.model.User;
+import com.jason.use.util.HttpUtil;
+import com.jason.use.util.StringUtil;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
-import javafx.scene.text.TextFlow;
 
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.function.Function;
 
@@ -35,19 +43,43 @@ public class UserController implements Initializable {
     private JFXTreeTableColumn<User, String> location;
     @FXML
     private JFXTreeTableColumn<User, String> connectionStatus;
+    @FXML
+    private Label pageRecord;
+    @FXML
+    private JFXTextField searchName;
+    @FXML
+    private JFXTextField searchPage;
 
-    private final JFXDialogLayout DIALOG_LAYOUT = new JFXDialogLayout();
-
-    private final TextFlow MESSAGE_FLOW = new TextFlow();
-
-    private JFXDialog alertView;
 
     @FXML
     private StackPane stackPane;
 
+    private int current = 1;
+    private int pages;
+
     @Override
     public void initialize(URL location1, ResourceBundle resources) {
         stackPane.setVisible(false);
+
+        String data = HttpUtil.httpPost(new HashMap<>(), APIConfig.subUserListUrl, LoginController.jwt);
+        showUserList(data);
+    }
+
+    private void showUserList(String data){
+        JSONObject jsonObject = JSONObject.parseObject(data);
+        int status = jsonObject.getInteger("status");
+
+        if (status != HttpStatus.OK.status){
+            JavafxApplication.showAlert("温馨提示",jsonObject.getString("description"), null, null, "确定");
+            return;
+        }
+
+        JSONObject recordObj = jsonObject.getJSONObject("obj");
+        int total = recordObj.getInteger("total");
+        pages = recordObj.getInteger("pages");
+        current = recordObj.getInteger("current");
+        String text = "第" + current + "/" + pages + "页，共" + total + "条记录";
+        pageRecord.setText(text);
 
         setupCellValueFactory(id, p -> p.getId().asObject());
         setupCellValueFactory(userName, User::getUserName);
@@ -56,17 +88,15 @@ public class UserController implements Initializable {
         setupCellValueFactory(location, User::getLocation);
         setupCellValueFactory(connectionStatus, User::getConnectionStatus);
 
+        JSONArray jsonArray = recordObj.getJSONArray("records");
         ObservableList<User> users = FXCollections.observableArrayList();
-        users.add(new User(1,"jason", "j1", "1-10","四川 成都 移动", "可以连接"));
-        users.add(new User(2,"chris", "c1", "3-3","cd", "可以连接"));
-        users.add(new User(3,"lee", "l1", "1-2","hk", "被连接"));
-        users.add(new User(4,"sara", "s1", "2-4","cd", "可以连接"));
-        users.add(new User(5,"jason", "j1", "1-5","cd", "可以连接"));
-        users.add(new User(6,"chris", "c1", "4-4","cd", "可以连接"));
-        users.add(new User(7,"lee", "l1", "5-6","hk", "被连接"));
-        users.add(new User(8,"sara", "s1", "2-5","cd", "可以连接"));
-        users.add(new User(9,"jason", "j1", "1-4","cd", "可以连接"));
-        users.add(new User(10,"chris", "c1", "6-6","cd", "未上线"));
+        for (int i=0;i<jsonArray.size();i++){
+            JSONObject subUserJSON = jsonArray.getJSONObject(i);
+            users.add(
+                    new User(subUserJSON.getInteger("userId"),subUserJSON.getString("userName"),
+                            subUserJSON.getString("subUserName"), subUserJSON.getString("orderTimes"),
+                            subUserJSON.getString("location"), subUserJSON.getString("connectStatusStr")));
+        }
 
         mouseClickedOnRow();
 
@@ -105,21 +135,95 @@ public class UserController implements Initializable {
                     // clicking on text part
                     row = (JFXTreeTableRow) node.getParent();
                 }
+
                 User user = (User) row.getItem();
-                JavafxApplication.showConfirmed("操作提示", user.getUserName().getValue() + ":" + user.getSubUserName().getValue(),
-                        stackPane, "taskView", getClass());
-                /*AdminAddUserViewController.selectedUser = user;
-               AdminAddUserViewController.edit = true;
-                try {
-                    MainApp.switchView("/Views/Admin/AdminAddUserView.fxml");
-                } catch (IOException ex) {
-                    Logger.getLogger(OverviewUserController.class.getName()).log(Level.SEVERE, null, ex);
-                }*/
+                String replaceOrderTimes = user.getReplaceOrderTimes().getValue();
+                String[] timesArr = replaceOrderTimes.split("-");
+                if (timesArr[0].equals(timesArr[1])) {
+                    JavafxApplication.showAlert("操作提示", "小号：{" + user.getSubUserName().getValue() + "},当日补单次数已满!" , null, null, "确定");
+                    return;
+                }
+
+                String connectionStatus = user.getConnectionStatus().getValue();
+                if(("可以连接").equals(connectionStatus)){
+                    //TaskController.userId = user.getId().getValue();
+                    JavafxApplication.showConfirmed("操作提示", user.getUserName().getValue() + ":" + user.getSubUserName().getValue(),
+                            stackPane, "taskView", getClass());
+                }else{
+                    JavafxApplication.showAlert("操作提示", "小号：{" + user.getSubUserName().getValue() + "}," + connectionStatus, null, null, "确定");
+                }
             }
         });
     }
 
     public static void taskView() {
         JavafxApplication.switchView("/view/task.fxml");
+    }
+
+    public void searchUserList(ActionEvent actionEvent) {
+        String text = searchName.getText();
+        HashMap<String, String> paramMap = new HashMap<>();
+        paramMap.put("searchName", text);
+        String data = HttpUtil.httpPost(paramMap, APIConfig.subUserListUrl, LoginController.jwt);
+        showUserList(data);
+    }
+
+    public void searchPage(ActionEvent actionEvent) {
+        String text = searchPage.getText().trim();
+
+        if (text.length() == 0){
+            JavafxApplication.showAlert("温馨提示", "请先输入页码!", null, null, "确定");
+            return;
+        }
+
+        if (!StringUtil.isNumeric(text)){
+            JavafxApplication.showAlert("温馨提示", "页码只能为整数哦!", null, null, "确定");
+            return;
+        }
+
+        int searchCurrent = Integer.parseInt(text);
+        if(searchCurrent < 0 || searchCurrent > pages){
+            JavafxApplication.showAlert("温馨提示", "页码范围为：1~" + pages, null, null, "确定");
+            return;
+        }
+
+        HashMap<String, String> paramMap = new HashMap<>();
+        paramMap.put("searchCurrent", text);
+        paramMap.put("searchName", searchName.getText());
+        String data = HttpUtil.httpPost(paramMap, APIConfig.subUserListUrl, LoginController.jwt);
+        showUserList(data);
+    }
+
+    public void refreshUserList(ActionEvent actionEvent) {
+        searchName.setText("");
+        searchPage.setText("");
+        String data = HttpUtil.httpPost(new HashMap<>(), APIConfig.subUserListUrl, LoginController.jwt);
+        showUserList(data);
+    }
+
+    public void previousPage(ActionEvent actionEvent) {
+        if(current == 1){
+            JavafxApplication.showAlert("温馨提示", "页码已达首页，翻不动啦！", null, null, "确定");
+            return;
+        }
+
+        HashMap<String, String> paramMap = new HashMap<>();
+        paramMap.put("searchCurrent", String.valueOf(current - 1));
+        paramMap.put("searchName", searchName.getText());
+        String data = HttpUtil.httpPost(paramMap, APIConfig.subUserListUrl, LoginController.jwt);
+        showUserList(data);
+    }
+
+    public void nextPage(ActionEvent actionEvent) {
+        if(current == pages){
+            JavafxApplication.showAlert("温馨提示", "页码已达尾页，翻不动啦！", null, null, "确定");
+            return;
+        }
+
+        HashMap<String, String> paramMap = new HashMap<>();
+        paramMap.put("searchCurrent", String.valueOf(current + 1));
+        paramMap.put("searchName", searchName.getText());
+        String data = HttpUtil.httpPost(paramMap, APIConfig.subUserListUrl, LoginController.jwt);
+        showUserList(data);
     }
 }

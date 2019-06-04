@@ -1,14 +1,10 @@
-package com.jason.common.po;
-
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
+package com.jason.common.vo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.jason.common.enums.ConnectStatusEnum;
-import com.jason.common.enums.TerminalEnum;
-import com.jason.common.enums.UserTypeEnum;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 /**
  * <p>
@@ -21,7 +17,7 @@ import com.jason.common.enums.UserTypeEnum;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class SubUser {
+public class SubUserVO {
 
 	/**
      * 主键
@@ -42,20 +38,19 @@ public class SubUser {
     /**
      * 终端类型
      */
-    private TerminalEnum terminal;
+    private String terminalStr;
 
     /**
      * 小号类型
      */
-    private UserTypeEnum userType;
+    private String userTypeStr;
 
     /**
      * 连接状态
      */
-    private ConnectStatusEnum connectStatus;
+    private String connectStatusStr;
 
-    /*private String userName;
-    private Integer allowOrderTimes;
-    private Integer orderTimes;
-    private String location;*/
+    private String userName;
+    private String orderTimes;
+    private String location;
 }

@@ -2,10 +2,7 @@ package com.jason.web.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.jason.common.po.User;
-import com.jason.common.vo.JSONResult;
-import com.jason.common.vo.UserDetailsVO;
-import com.jason.common.vo.UserPage;
-import com.jason.common.vo.UserVO;
+import com.jason.common.vo.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +23,7 @@ public interface UserService extends IService<User> {
 
     UserPage<UserVO> handleList(UserPage<User> userPage);
 
-    boolean verifyJWT(String jwt, HttpServletRequest request);
+    boolean verifyJWT(String jwt, HttpServletRequest request, boolean flag);
 
     void handleUser(Integer userId, Integer status);
 

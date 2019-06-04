@@ -38,12 +38,12 @@
                                     </HBox>
                                     <HBox prefHeight="25.0" prefWidth="594.0">
                                        <children>
-                                           <JFXTextField focusColor="#4dadf7" labelFloat="true" prefHeight="23.0" prefWidth="320.0" promptText="订单金额" />
+                                           <JFXTextField fx:id="orderAmount" focusColor="#4dadf7" labelFloat="true" prefHeight="23.0" prefWidth="320.0" promptText="订单金额" />
                                        </children>
                                     </HBox>
                                     <HBox prefHeight="25.0" prefWidth="604.0">
                                        <children>
-                                           <JFXTextField focusColor="#4dadf7" labelFloat="true" prefHeight="23.0" prefWidth="320.0" promptText="订单返现" />
+                                           <JFXTextField fx:id="orderCommission" focusColor="#4dadf7" labelFloat="true" prefHeight="23.0" prefWidth="320.0" promptText="订单返现" />
                                        </children>
                                     </HBox>
                                     <HBox prefHeight="25.0" prefWidth="604.0">
@@ -60,7 +60,7 @@
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="594.0">
                                        <children>
-                                          <JFXButton alignment="CENTER" prefHeight="30.0" prefWidth="320.0" text="补单成功,提交信息" />
+                                          <JFXButton onAction="#submitOrder" alignment="CENTER" prefHeight="30.0" prefWidth="320.0" text="补单成功,提交信息" />
                                        </children>
                                     </HBox>
                                  </children>
@@ -80,24 +80,25 @@
                                  <children>
                                     <HBox prefHeight="25.0" prefWidth="604.0">
                                        <children>
-                                          <JFXComboBox fx:id="subUserListForTag" prefHeight="23.0" prefWidth="320.0" focusColor="#4dadf7" labelFloat="true" promptText="使用小号"/>
+                                          <JFXComboBox fx:id="subUserListForTag" focusColor="#4dadf7" labelFloat="true" prefHeight="23.0" prefWidth="320.0" promptText="使用小号" />
                                        </children>
                                     </HBox>
                                     <HBox prefHeight="25.0" prefWidth="604.0">
                                        <children>
-                                           <JFXComboBox fx:id="shopListForTag" prefHeight="23.0" prefWidth="320.0" focusColor="#4dadf7" labelFloat="true" promptText="标记店铺"/>
+                                           <JFXComboBox fx:id="shopListForTag" focusColor="#4dadf7" labelFloat="true" prefHeight="23.0" prefWidth="320.0" promptText="标记店铺" />
                                        </children>
                                     </HBox>
                                     <HBox prefHeight="25.0" prefWidth="604.0">
                                        <children>
-                                           <JFXComboBox fx:id="tagTypeList" prefHeight="23.0" prefWidth="320.0" focusColor="#4dadf7" labelFloat="true" promptText="标签方式"/>
+                                           <JFXComboBox fx:id="tagTypeList" focusColor="#4dadf7" labelFloat="true" prefHeight="23.0" prefWidth="320.0" promptText="标签方式" />
                                        </children>
                                     </HBox>
                                     <HBox prefHeight="25.0" prefWidth="604.0">
                                        <children>
-                                          <JFXTextField prefHeight="23.0" prefWidth="320.0" focusColor="#4dadf7" labelFloat="true" promptText="备注"/>
+                                          <JFXTextField fx:id="tagDescription" focusColor="#4dadf7" labelFloat="true" prefHeight="23.0" prefWidth="320.0" promptText="备注" />
                                        </children>
                                     </HBox>
+                                    <JFXButton alignment="CENTER" prefHeight="30.0" onAction="#submitTag" prefWidth="320.0" text="提交标签" />
                                  </children>
                                  <padding>
                                     <Insets left="10.0" top="20.0" />

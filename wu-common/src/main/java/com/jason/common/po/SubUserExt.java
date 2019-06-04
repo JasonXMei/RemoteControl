@@ -1,29 +1,20 @@
 package com.jason.common.po;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.jason.common.enums.ConnectStatusEnum;
 import com.jason.common.enums.TerminalEnum;
 import com.jason.common.enums.UserTypeEnum;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
-/**
- * <p>
- * 
- * </p>
- *
- * @author JasonMei
- * @since 2019-04-14
- */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class SubUser {
+public class SubUserExt {
 
-	/**
+    /**
      * 主键
      */
     @TableId(value = "id", type = IdType.AUTO)
@@ -54,8 +45,8 @@ public class SubUser {
      */
     private ConnectStatusEnum connectStatus;
 
-    /*private String userName;
+    private String userName;
     private Integer allowOrderTimes;
     private Integer orderTimes;
-    private String location;*/
+    private String location;
 }

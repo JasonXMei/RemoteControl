@@ -1,6 +1,5 @@
 package com.jason.use;
 
-import com.jason.use.controller.LoginController;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.JFXAlert;
 import com.jfoenix.controls.JFXButton;
@@ -35,6 +34,8 @@ public class JavafxApplication extends Application {
     private static JFXDialog jfxDialog;
     private static JFXAlert<Void> jfxAlert;
 
+    private static boolean loadFlag = false;
+
 	@Override
 	public void start(Stage primaryStage) throws Exception{
         borderPane = FXMLLoader.load(getClass().getResource("/view/wrapper.fxml"));
@@ -45,8 +46,7 @@ public class JavafxApplication extends Application {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/login.fxml"));
 		Parent root = loader.load();
 		mainStage.setTitle(title);
-		LoginController controller = loader.getController();
-		controller.setApp(this, mainStage);
+
 		Scene scene = new Scene(root, width, height);
 		//scene.getStylesheets().add(getClass().getResource("/css/login.css").toExternalForm());
 		mainStage.setScene(scene);
@@ -57,7 +57,7 @@ public class JavafxApplication extends Application {
         });
 	}
 
-    public static void showAlert(String headMsg, String bodyMsg, String methodName, Class<?> cls){
+    public static void showAlert(String headMsg, String bodyMsg, String methodName, Class<?> cls, String btnName){
         jfxAlert = new JFXAlert<>(mainStage);
 
         Text header = new Text(headMsg);
@@ -68,7 +68,7 @@ public class JavafxApplication extends Application {
         dialogLayout.setHeading(header);
         dialogLayout.setBody(body);
 
-        JFXButton closeButton = new JFXButton("确定");
+        JFXButton closeButton = new JFXButton(btnName);
 
         closeButton.setStyle("-fx-background-color: #039BE5;-fx-font-size: 18px");
         closeButton.setTextFill(Paint.valueOf("#FFFFFF"));
@@ -77,10 +77,12 @@ public class JavafxApplication extends Application {
 
         closeButton.setOnAction(event -> {
             jfxAlert.hideWithAnimation();
-            try {
-                cls.getMethod(methodName).invoke(null);
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (methodName != null){
+                try {
+                    cls.getMethod(methodName).invoke(null);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
         dialogLayout.setActions(closeButton);
@@ -144,10 +146,13 @@ public class JavafxApplication extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (view.contains("list")){
+
+        //检查borderPane是否已经加载
+        if (!loadFlag){
             Scene scene = new Scene(borderPane, width, height);
             mainStage.setScene(scene);
             mainStage.show();
+            loadFlag = true;
         }
     }
 

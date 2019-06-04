@@ -18,4 +18,13 @@ public enum TagTypeEnum {
 		this.tagType = type;
 		this.description = description;
 	}
+
+    public static TagTypeEnum getType(String description){
+        for(TagTypeEnum e : TagTypeEnum.values()){
+            if(e.getDescription().equals(description)){
+                return e;
+            }
+        }
+        return null;
+    }
 }

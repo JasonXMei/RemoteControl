@@ -22,7 +22,7 @@ public class ErrorController {
 	@GetMapping("/errorPage")
 	public String errorPage(HttpServletRequest request, @RequestParam(value = "status", required = false) Integer status){
 		String jwt = JWTUtil.checkAndHandleSessionToken(HttpUtil.getSessionAttribute (request,false,"loginUserToken", String.class));
-		userService.verifyJWT(jwt, request);
+		userService.verifyJWT(jwt, request, true);
 		if(status != null){
 		    String errorMessage = HttpStatus.getHttpStatusByStatus(status).getMessage();
             request.setAttribute("message", errorMessage);

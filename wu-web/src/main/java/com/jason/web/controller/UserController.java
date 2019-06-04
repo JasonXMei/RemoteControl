@@ -4,10 +4,7 @@ import com.jason.common.enums.HttpStatus;
 import com.jason.common.enums.PermissionEnum;
 import com.jason.common.po.User;
 import com.jason.common.util.JWTUtil;
-import com.jason.common.vo.JSONResult;
-import com.jason.common.vo.UserDetailsVO;
-import com.jason.common.vo.UserPage;
-import com.jason.common.vo.UserVO;
+import com.jason.common.vo.*;
 import com.jason.web.service.UserService;
 import com.jason.web.util.HttpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,7 +81,7 @@ public class UserController {
                            @RequestParam(value="referrerUserInviteCode", required = false) String referrerUserInviteCode,
                            @ModelAttribute("message") String message,HttpServletRequest request
                            ){
-        userService.verifyJWT(JWTUtil.checkAndHandleSessionToken(HttpUtil.getSessionAttribute (request,false, "loginUserToken", String.class)), request);
+        userService.verifyJWT(JWTUtil.checkAndHandleSessionToken(HttpUtil.getSessionAttribute (request,false, "loginUserToken", String.class)), request, true);
 		UserDetailsVO userDetailsVO = new UserDetailsVO();
 		if(userId > 0){
 			userDetailsVO = userService.handleInfo(userId);
@@ -102,13 +99,23 @@ public class UserController {
 		return "user/userInfo";
 	}
 
+    /**
+     * 注册用户或用户详情界面
+     * @param userId 0：注册，非0：详情
+     */
+    @RequestMapping("info/{userId}/client")
+    @ResponseBody
+    public UserDetailsVO userInfoClient(@PathVariable("userId") Integer userId){
+        return userService.handleInfo(userId);
+    }
+
     @RequestMapping(value = "saveOrUpdate/", method = RequestMethod.POST)
     public String register(UserVO userVO,
                            @RequestParam("subUserList") String subUserList,
                            @RequestParam("shopList") String userShopList,
                            @RequestParam("file") MultipartFile file, HttpServletRequest request,
                            RedirectAttributes redirectAttributes){
-        boolean flag = userService.verifyJWT(JWTUtil.checkAndHandleSessionToken(HttpUtil.getSessionAttribute (request,false, "loginUserToken", String.class)), request);
+        boolean flag = userService.verifyJWT(JWTUtil.checkAndHandleSessionToken(HttpUtil.getSessionAttribute (request,false, "loginUserToken", String.class)), request, true);
         User loginUser = null;
         if(flag){
             loginUser = (User) request.getAttribute("user");

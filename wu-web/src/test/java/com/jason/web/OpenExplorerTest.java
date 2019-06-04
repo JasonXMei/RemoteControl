@@ -1,6 +1,10 @@
 package com.jason.web;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.junit.Test;
+
+import java.text.ParseException;
+import java.util.Date;
 
 public class OpenExplorerTest {
 
@@ -8,7 +12,7 @@ public class OpenExplorerTest {
     public void openSystemDefaultExplore(){
         try {
             // 创建一个URI实例
-            java.net.URI uri = java.net.URI.create("http://localhost:8082/user/token/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NTY1ODE3MjYsInVzZXJJZCI6MX0.utjqWUR4VeBRqJ7xhyYRDKs4PC12hg5YhR3qwp3uCho/");
+            java.net.URI uri = java.net.URI.create("http://localhost:8082/user/token/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NTgyMjgyMjUsInVzZXJJZCI6MX0.VPgW3gRHjnbmGl9pPKpWneAyMQZK-BUXzv5GgEUzFL0/");
             // 获取当前系统桌面扩展
             java.awt.Desktop dp = java.awt.Desktop.getDesktop();
             // 判断系统桌面是否支持要执行的功能
@@ -19,5 +23,11 @@ public class OpenExplorerTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testTimstamp() throws ParseException {
+        String currentTime = DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(new Date());
+        System.out.println(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.parse(currentTime).getTime());
     }
 }

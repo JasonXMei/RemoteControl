@@ -29,7 +29,7 @@
                             <Font name="System Bold" size="15.0" />
                         </font>
                     </Label>
-                    <JFXTextField fx:id="tf_user" focusColor="DEEPSKYBLUE" prefHeight="30.0" prefWidth="274.0" promptText="请输入用户名..." style="-fx-background-color: white;" unFocusColor="DIMGRAY" />
+                    <JFXTextField fx:id="userName" focusColor="DEEPSKYBLUE" prefHeight="30.0" prefWidth="274.0" promptText="请输入用户名..." style="-fx-background-color: white;" unFocusColor="DIMGRAY" />
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" top="10.0" />
@@ -43,7 +43,7 @@
                             <Font name="System Bold" size="15.0" />
                         </font>
                     </Label>
-                    <JFXPasswordField fx:id="tf_passWord" focusColor="DEEPSKYBLUE" prefHeight="30.0" prefWidth="276.0" promptText="请输入密码..." style="-fx-background-color: white;" unFocusColor="DIMGRAY" />
+                    <JFXPasswordField fx:id="password" focusColor="DEEPSKYBLUE" prefHeight="30.0" prefWidth="276.0" promptText="请输入密码..." style="-fx-background-color: white;" unFocusColor="DIMGRAY" />
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" top="10.0" />
@@ -55,7 +55,7 @@
                   <Insets right="8.0" />
                </padding>
             </JFXCheckBox>
-              <JFXButton fx:id="btn_start" buttonType="RAISED" mnemonicParsing="false" onAction="#onStart" prefHeight="48.0" prefWidth="342.0" stylesheets="@../css/main.css" text="登录" textAlignment="CENTER">
+              <JFXButton fx:id="btn_start" buttonType="RAISED" mnemonicParsing="false" onAction="#loginAction" prefHeight="48.0" prefWidth="342.0" stylesheets="@../css/main.css" text="登录" textAlignment="CENTER">
                    <font>
                       <Font size="24.0" />
                    </font>

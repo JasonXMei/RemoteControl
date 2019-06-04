@@ -218,15 +218,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public boolean verifyJWT(String jwt, HttpServletRequest request) {
+    public boolean verifyJWT(String jwt, HttpServletRequest request, boolean flag) {
         if(!StringUtils.isEmpty(jwt)){
             int userId = JWTUtil.decodeToken(jwt);
             User user = baseMapper.selectById(userId);
             if(user != null){
                 try {
                     JWTUtil.verifyToken(jwt, user.getPassword());
-                    HttpUtil.createSession(request,true,paramsConfig.defaultSessionTimeout,"loginUserToken", "Bearer " + jwt);
-                    request.setAttribute("user", user);
+                    if (flag) {
+                        HttpUtil.createSession(request,true,paramsConfig.defaultSessionTimeout,"loginUserToken", "Bearer " + jwt);
+                        request.setAttribute("user", user);
+                    }
                     return  true;
                 } catch (Exception e) {
                     LoggerUtil.printErrorLog(log, e);
@@ -275,7 +277,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         //更新jwt
         String jwt = JWTUtil.createToken(password, loginUser.getId());
-        verifyJWT(jwt, request);
+        verifyJWT(jwt, request,true);
         return new JSONResult<>(null, HttpStatus.OK.status, String.format(HttpStatus.OK.message, "修改密码"));
     }
 

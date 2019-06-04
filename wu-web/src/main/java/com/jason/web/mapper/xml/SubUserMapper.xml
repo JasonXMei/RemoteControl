@@ -2,18 +2,50 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jason.web.mapper.SubUserMapper">
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="SubUser">
+    <resultMap id="BaseResultMap" type="SubUserExt">
         <id column="id" property="id" />
         <result column="user_id" property="userId" />
         <result column="sub_user_name" property="subUserName" />
         <result column="terminal" property="terminal" />
         <result column="user_type" property="userType" />
         <result column="connect_status" property="connectStatus" />
+        <result column="user_name" property="userName" />
+        <result column="allow_order_times" property="allowOrderTimes" />
+        <result column="order_times" property="orderTimes" />
+        <result column="location" property="location" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, user_id, sub_user_name, terminal, user_type, connect_status
+        su.id, su.user_id, su.sub_user_name, su.terminal, su.user_type, su.connect_status
     </sql>
 
+    <select id="findSubUserList" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> , u.user_name, u.allow_order_times, u.location,
+        (select count(sut.id) from sub_user_task sut
+        JOIN task_replace_order tro on sut.id = tro.task_id WHERE sut.sub_user_id = su.id AND (sut.create_time BETWEEN #{pg.searchStartDate} AND #{pg.searchEndDate})
+        )as order_times
+        from sub_user su
+        JOIN user u on su.user_id = u.id
+        <where>
+            <if test="pg.searchName != null">
+                AND (
+                u.id = #{pg.searchName} OR
+                su.sub_user_name LIKE concat(#{pg.searchName},'%') OR
+                u.user_name LIKE concat(#{pg.searchName},'%')
+                )
+            </if>
+        </where>
+        ORDER BY su.connect_status,order_times,su.user_id
+    </select>
+
+    <select id="findSubUser" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> , u.user_name, u.allow_order_times, u.location,
+        (SELECT count(sut.id) from sub_user_task sut
+        JOIN task_replace_order tro on sut.id = tro.task_id WHERE sut.sub_user_id = su.id AND (sut.create_time BETWEEN #{currentDateTimeStamp} AND #{currentDateTimeStamp})
+        )as order_times
+        FROM sub_user su
+        JOIN user u on su.user_id = u.id
+        WHERE su.id = #{subUserId}
+    </select>
 </mapper>

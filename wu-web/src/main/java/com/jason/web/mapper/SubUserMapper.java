@@ -2,6 +2,11 @@ package com.jason.web.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jason.common.po.SubUser;
+import com.jason.common.po.SubUserExt;
+import com.jason.common.vo.TaskPage;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +18,7 @@ import com.jason.common.po.SubUser;
  */
 public interface SubUserMapper extends BaseMapper<SubUser> {
 
+    List<SubUserExt> findSubUserList(@Param("pg") TaskPage<SubUser> page);
+
+    SubUserExt findSubUser(@Param("subUserId") Integer subUserId, @Param("currentDateTimeStamp") long currentDateTimeStamp);
 }

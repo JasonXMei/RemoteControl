@@ -27,13 +27,17 @@ public class WebInterceptorHandler extends HandlerInterceptorAdapter{
 			HttpServletResponse response, Object handler) throws Exception {
 		String requestURL = request.getRequestURL().toString();
 		String jwt = null;
+		boolean flag = true;
 		if (requestURL.contains("token")){
 			jwt = JWTUtil.checkAndHandleURLToken(requestURL);
+		}else if(requestURL.contains("client")){
+		    jwt = JWTUtil.checkAndHandleSessionToken(request.getHeader("Authorization"));
+		    flag = false;
 		}else{
             jwt = JWTUtil.checkAndHandleSessionToken(HttpUtil.getSessionAttribute (request,false, "loginUserToken", String.class));
-		}
+        }
 
-		if(userService.verifyJWT(jwt, request)){
+		if(userService.verifyJWT(jwt, request, flag)){
 			return true;
 		}
 

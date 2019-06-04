@@ -1,18 +1,14 @@
 package com.jason.common.util;
 
-import com.jason.common.po.TaskReplaceOrder;
-import com.jason.common.po.TaskTag;
-import com.jason.common.po.User;
-import com.jason.common.vo.TaskPage;
-import com.jason.common.vo.TaskReplaceOrderVO;
-import com.jason.common.vo.TaskTagVO;
-import com.jason.common.vo.UserVO;
+import com.jason.common.po.*;
+import com.jason.common.vo.*;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.dozer.Mapper;
 import org.slf4j.Logger;
 import org.springframework.util.StringUtils;
 
 import java.text.ParseException;
+import java.util.Date;
 
 public class BeanUtil {
 
@@ -67,5 +63,35 @@ public class BeanUtil {
         ttv.setTagTypeStr(tt.getTagType().getDescription());
         ttv.setCreateTimeStr(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(tt.getCreateTime()));
         return ttv;
+    }
+
+    public static SubUserVO convertSubUserPO2VO(Mapper dozerMapper, SubUserExt su) {
+        SubUserVO userVO = dozerMapper.map(su, SubUserVO.class);
+        userVO.setConnectStatusStr(su.getConnectStatus().getDescription());
+        userVO.setOrderTimes(su.getOrderTimes() + "-" + su.getAllowOrderTimes());
+        userVO.setTerminalStr(su.getTerminal().getDescription());
+        userVO.setUserTypeStr(su.getUserType().getDescription());
+        return userVO;
+    }
+
+    public static long getCurrentTimeStamp(Logger log){
+        String currentTime = DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(new Date());
+        long currentDateTimeStamp = 0;
+        try {
+            currentDateTimeStamp = DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.parse(currentTime).getTime();
+        } catch (ParseException e) {
+            LoggerUtil.printErrorLog(log, e);
+        }
+        return currentDateTimeStamp;
+    }
+
+    public static SubUserTask convertTaskVO2PO(TaskVO taskVO, Logger log){
+        SubUserTask subUserTask = new SubUserTask();
+        long currentDateTimeStamp = getCurrentTimeStamp(log);
+        subUserTask.setCreateTime(currentDateTimeStamp);
+        subUserTask.setDescription(taskVO.getDescription());
+        subUserTask.setShopId(taskVO.getShopId());
+        subUserTask.setSubUserId(taskVO.getUserId());
+        return  subUserTask;
     }
 }
