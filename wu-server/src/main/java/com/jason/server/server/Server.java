@@ -8,7 +8,7 @@ import java.net.Socket;
 
 public class Server {
 	public static void main(String[] args) throws IOException {
-		ServerSocket server = new ServerSocket(80);
+		ServerSocket server = new ServerSocket(8080);
 		System.out.println("服务器已经正常启动");
 		Socket socket = server.accept();// 等待接收请求,阻塞方法
 		System.out.println("有客户端连接");
