@@ -100,13 +100,13 @@ public class UserController {
 	}
 
     /**
-     * 注册用户或用户详情界面
-     * @param userId 0：注册，非0：详情
+     *  登陆用户店铺列表,刷单用户小号列表
      */
-    @RequestMapping("info/{userId}/client")
+    @RequestMapping("info/{loginUserId}/{taskUserId}/client")
     @ResponseBody
-    public UserDetailsVO userInfoClient(@PathVariable("userId") Integer userId){
-        return userService.handleInfo(userId);
+    public UserDetailsVO userInfoClient(@PathVariable("loginUserId") Integer loginUserId,
+                                        @PathVariable("taskUserId") Integer taskUserId){
+        return userService.handleInfoClient(loginUserId, taskUserId);
     }
 
     @RequestMapping(value = "saveOrUpdate/", method = RequestMethod.POST)

@@ -46,9 +46,11 @@ public class TaskController implements Initializable {
     public static Map<String,Integer> subUserNameMap = new HashMap<>();
     public static Map<String,Integer> shopMap = new HashMap<>();
 
+    public static String taskUserId = "";
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        String data = HttpUtil.httpPost(new HashMap<>(), String.format(APIConfig.userInfoUrl, LoginController.userId), LoginController.jwt);
+        String data = HttpUtil.httpPost(new HashMap<>(), String.format(APIConfig.userInfoUrl, LoginController.userId, taskUserId), LoginController.jwt);
         JSONObject jsonObject = JSONObject.parseObject(data);
         /*int status = jsonObject.getInteger("status");
 
@@ -117,9 +119,14 @@ public class TaskController implements Initializable {
             return;
         }
 
+        String desc = tagDescription.getText();
+        if(desc == null || desc.trim().length() == 0){
+            desc = " ";
+        }
+
         HashMap<String, String> paramsMap =
                 HttpUtil.generateParamMap("userId," + subUserId, "shopId," + shopId,
-                "description," + tagDescription.getText(), "tagTypeStr," + tagName);
+                "description," + desc, "tagTypeStr," + tagName);
         String response = HttpUtil.httpPost(paramsMap, APIConfig.submitTagUrl, LoginController.jwt);
         JSONObject resJSON = JSONObject.parseObject(response);
         JavafxApplication.showAlert("温馨提示", resJSON.getString("description"), null, null, "确定");

@@ -13,7 +13,7 @@
 	<description>wisdom-union project parent pom to manage dependencies</description>
 
 	<properties>
-		<netty.version>4.1.21.Final</netty.version>
+		<netty.version>4.1.24.Final</netty.version>
 		<logback.version>1.0.13</logback.version>
 		<fastjson.version>1.2.31</fastjson.version>
 

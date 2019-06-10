@@ -66,4 +66,31 @@
             </if>
         </where>
     </select>
+
+    <select id="findReplaceOrderListById" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> ,
+        sut.description as description,
+        su.sub_user_name as subUserName,
+        us.shop_name as shopName,
+        user.user_name as userName,
+        sut.create_time as createTime
+        FROM task_replace_order as tro
+        JOIN sub_user_task as sut ON tro.task_id = sut.id
+        JOIN sub_user as su ON sut.sub_user_id = su.id
+        JOIN user_shop as us ON us.id = sut.shop_id
+        JOIN user as user ON user.id = su.user_id
+        <where>
+            sut.sub_user_id = #{pg.searchUserId}
+            <if test="pg.searchStatus != null and pg.searchStatus != -1">
+                AND tro.payment_status = #{pg.searchStatus}
+            </if>
+            <if test="pg.searchName != null">
+                AND (
+                us.shop_name LIKE concat(#{pg.searchName},'%') OR
+                tro.order_id LIKE concat(#{pg.searchName},'%')
+                )
+            </if>
+        </where>
+        order by tro.id desc
+    </select>
 </mapper>

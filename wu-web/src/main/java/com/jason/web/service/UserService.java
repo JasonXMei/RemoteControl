@@ -30,4 +30,6 @@ public interface UserService extends IService<User> {
     UserDetailsVO handleInfo(Integer userId);
 
     JSONResult<String> modifyUserPass(HttpServletRequest request);
+
+    UserDetailsVO handleInfoClient(Integer loginUserId, Integer taskUserId);
 }

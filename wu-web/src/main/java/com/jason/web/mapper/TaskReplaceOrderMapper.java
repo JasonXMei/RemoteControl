@@ -16,4 +16,8 @@ import org.apache.ibatis.annotations.Param;
 public interface TaskReplaceOrderMapper extends BaseMapper<TaskReplaceOrder> {
 
     TaskPage<TaskReplaceOrder> findReplaceOrderList(@Param("pg")TaskPage<TaskReplaceOrder> pages);
+
+    TaskPage<TaskReplaceOrder> findReplaceOrderListById(@Param("pg")TaskPage<TaskReplaceOrder> pages);
+
+
 }

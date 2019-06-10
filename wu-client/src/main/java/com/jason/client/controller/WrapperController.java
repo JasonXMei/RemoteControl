@@ -1,9 +1,9 @@
-package com.jason.use.controller;
+package com.jason.client.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.jason.use.JavafxApplication;
-import com.jason.use.config.APIConfig;
-import com.jason.use.util.HttpUtil;
+import com.jason.client.JavafxApplication;
+import com.jason.client.config.APIConfig;
+import com.jason.client.util.HttpUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 
@@ -64,14 +64,18 @@ public class WrapperController implements Initializable {
             String backEndUrl = String.format(APIConfig.backEndLink, LoginController.jwt);
             java.net.URI uri = java.net.URI.create(backEndUrl);
             // 获取当前系统桌面扩展
-            java.awt.Desktop dp = java.awt.Desktop.getDesktop();
+            Desktop dp = Desktop.getDesktop();
             // 判断系统桌面是否支持要执行的功能
-            if (dp.isSupported(java.awt.Desktop.Action.BROWSE)) {
+            if (dp.isSupported(Desktop.Action.BROWSE)) {
                 // 获取系统默认浏览器打开链接
                 dp.browse(uri);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void replaceOrderList(ActionEvent actionEvent) {
+        JavafxApplication.switchView("/view/replaceOrderList.fxml");
     }
 }
