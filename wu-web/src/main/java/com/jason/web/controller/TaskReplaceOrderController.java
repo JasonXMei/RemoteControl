@@ -43,7 +43,7 @@ public class TaskReplaceOrderController {
      * 更改订单状态
      * @param status 状态(0：未支付，1：已支付，2：已返款)
      */
-    @PostMapping("handle/{orderId}/{status}/")
+    @PostMapping("/handle/{orderId}/{status}/")
     @ResponseBody
     public JSONResult<String> handleUser (@PathVariable("orderId") Integer orderId,
                                   @PathVariable("status") Integer status){

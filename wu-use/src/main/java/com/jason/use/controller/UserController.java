@@ -146,7 +146,7 @@ public class UserController implements Initializable {
 
                 String connectionStatus = user.getConnectionStatus().getValue();
                 if(("可以连接").equals(connectionStatus)){
-                    //TaskController.userId = user.getId().getValue();
+                    TaskController.taskUserId = String.valueOf(user.getId().getValue());
                     JavafxApplication.showConfirmed("操作提示", user.getUserName().getValue() + ":" + user.getSubUserName().getValue(),
                             stackPane, "taskView", getClass());
                 }else{

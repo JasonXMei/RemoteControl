@@ -61,6 +61,23 @@ public class TaskReplaceOrderServiceImpl extends ServiceImpl<TaskReplaceOrderMap
     }
 
     @Override
+    public TaskPage<TaskReplaceOrderVO> handleListClient(TaskPage<TaskReplaceOrder> pages) {
+        pages = BeanUtil.updateTaskPagesParams(pages, log);
+        pages = baseMapper.findReplaceOrderListById(pages);
+
+        TaskPage<TaskReplaceOrderVO> pagesVO = new TaskPage<>();
+        List<TaskReplaceOrderVO> list = new ArrayList<>();
+        for (TaskReplaceOrder tro : pages.getRecords()) {
+            list.add(BeanUtil.convertReplaceOrderPO2VO(dozerMapper, tro));
+        }
+
+        pagesVO.setRecords(list);
+        BeanUtil.convertTaskPages(pagesVO, pages.getTotal(), pages.getSize(), pages.getCurrent(), pages.getSearchName(),
+                pages.getSearchStatus(), pages.getSearchStartDateStr(),pages.getSearchEndDateStr());
+        return pagesVO;
+    }
+
+    @Override
     public JSONResult<String> handleOrder(Integer orderId, Integer status) {
         TaskReplaceOrder tro = new TaskReplaceOrder();
         tro.setId(orderId);

@@ -16,7 +16,7 @@
                         <JFXButton fx:id="userListBtn" onAction="#userList" prefHeight="30.0" prefWidth="250.0" text="用户列表"/>
                         <JFXButton fx:id="myTagListBtn" onAction="#tagList" prefHeight="30.0" prefWidth="243.0" text="我的标签记录"/>
                         <JFXButton fx:id="myLinkUrlBtn" onAction="#openLinkWindow" prefHeight="30.0" prefWidth="224.0" text="我的推广网址"/>
-                        <JFXButton fx:id="webBackendBtn" prefHeight="30.0" prefWidth="223.0" text="网页版后台"/>
+                        <JFXButton fx:id="webBackendBtn" onAction="#openWebBackend" prefHeight="30.0" prefWidth="223.0" text="网页版后台"/>
                         <JFXButton fx:id="logoutBtn" prefHeight="30.0" prefWidth="228.0" text="退出系统"/>
                     </children>
                     <padding>

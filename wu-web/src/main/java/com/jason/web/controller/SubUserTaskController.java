@@ -1,13 +1,21 @@
 package com.jason.web.controller;
 
+import com.jason.common.enums.HttpStatus;
+import com.jason.common.po.TaskReplaceOrder;
 import com.jason.common.vo.JSONResult;
+import com.jason.common.vo.TaskPage;
+import com.jason.common.vo.TaskReplaceOrderVO;
 import com.jason.common.vo.TaskVO;
 import com.jason.web.service.TaskReplaceOrderService;
 import com.jason.web.service.TaskTagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -36,5 +44,24 @@ public class SubUserTaskController {
     @ResponseBody
     public JSONResult<String> saveTag(TaskVO taskVO){
         return taskTagService.saveTag(taskVO);
+    }
+
+    @RequestMapping("orderList")
+    @ResponseBody
+    public JSONResult<TaskPage<TaskReplaceOrderVO>> taskList(TaskPage<TaskReplaceOrder> pages, HttpServletRequest request){
+        TaskPage<TaskReplaceOrderVO> list = taskReplaceOrderService.handleListClient(pages);
+        JSONResult<TaskPage<TaskReplaceOrderVO>> jsonResult = new JSONResult<>(list, HttpStatus.OK.status, null);
+        return jsonResult;
+    }
+
+    /**
+     * 更改订单状态
+     * @param status 状态(0：未支付，1：已支付，2：已返款)
+     */
+    @PostMapping("handle/{orderId}/{status}/")
+    @ResponseBody
+    public JSONResult<String> handleUser (@PathVariable("orderId") Integer orderId,
+                                          @PathVariable("status") Integer status){
+        return taskReplaceOrderService.handleOrder(orderId, status);
     }
 }

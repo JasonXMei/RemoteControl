@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTreeTableColumn?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="618.0" prefWidth="750.0" style="-fx-font-size: 18px;" stylesheets="@../css/list.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jason.client.controller.TagController">
+  <children>
+  <AnchorPane prefHeight="616.0" prefWidth="713.0" style="-fx-background-color: lightblue;">
+     <children>
+        <VBox layoutY="1.0" prefHeight="612.0" prefWidth="775.0">
+           <children>
+              <HBox prefHeight="59.0" prefWidth="776.0" spacing="10.0" style="-jfx-cell-horizontal-margin: 10;">
+                 <padding>
+                    <Insets top="10.0" />
+                 </padding>
+              </HBox>
+              <VBox prefHeight="552.0" prefWidth="775.0">
+                 <children>
+                     <JFXTreeTableView fx:id="tagList" prefHeight="474.0" prefWidth="745.0" style="-fx-font-size: 16px;">
+                         <columns>
+                             <JFXTreeTableColumn fx:id="tagType" editable="false" minWidth="98.0" prefWidth="158.0" resizable="false" sortable="false" text="标签类型" />
+                             <JFXTreeTableColumn fx:id="subUserName" editable="false" minWidth="39.0" prefWidth="160.0" resizable="false" sortable="false" text="使用小号" />
+                             <JFXTreeTableColumn fx:id="shopName" editable="false" minWidth="48.0" prefWidth="139.0" resizable="false" sortable="false" text="使用店铺" />
+                             <JFXTreeTableColumn fx:id="tagDescription" editable="false" minWidth="28.0" prefWidth="279.0" resizable="false" sortable="false" text="标签描述" />
+                         </columns>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                     </JFXTreeTableView>
+                        <HBox prefHeight="42.0" prefWidth="206.0">
+                           <VBox.margin>
+                              <Insets bottom="15.0" top="15.0" />
+                           </VBox.margin>
+                           <children>
+                              <Label fx:id="pageRecord" prefHeight="42.0" prefWidth="215.0" text="第1/10页，共98条记录" textAlignment="CENTER" />
+                              <Label prefHeight="42.0" prefWidth="57.0" text="转到：" />
+                              <JFXTextField fx:id="searchPage" prefHeight="42.0" prefWidth="49.0" style="-fx-background-color: white; -fx-border-color: white;" />
+                              <Label alignment="CENTER" prefHeight="42.0" prefWidth="60.0" text="页" />
+                              <JFXButton onAction="#searchPage" prefHeight="52.0" prefWidth="83.0" text="Go!" />
+                              <JFXButton onAction="#previousPage" prefHeight="42.0" prefWidth="83.0" text="上一页">
+                                 <HBox.margin>
+                                    <Insets left="10.0" right="10.0" />
+                                 </HBox.margin>
+                              </JFXButton>
+                              <JFXButton onAction="#nextPage" prefHeight="45.0" prefWidth="83.0" text="下一页" />
+                           </children>
+                        </HBox>
+                 </children>
+              </VBox>
+           </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="10.0" right="20.0" />
+               </padding>
+        </VBox>
+     </children>
+  </AnchorPane>
+  </children>
+</VBox>

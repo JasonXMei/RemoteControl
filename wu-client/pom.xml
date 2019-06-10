@@ -4,9 +4,9 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<parent>
-		<groupId>com.jason</groupId>
 		<artifactId>wisdom-union</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+        <groupId>com.jason</groupId>
+        <version>1.0.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>wu-client</artifactId>
@@ -15,9 +15,21 @@
 	<description>wisdom-union project's client-side</description>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.jfoenix</groupId>
+            <artifactId>jfoenix</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+        </dependency>
 	</dependencies>
 </project>

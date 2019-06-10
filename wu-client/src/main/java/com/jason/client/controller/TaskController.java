@@ -1,12 +1,12 @@
-package com.jason.use.controller;
+package com.jason.client.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.jason.use.JavafxApplication;
-import com.jason.use.config.APIConfig;
-import com.jason.use.enums.TagTypeEnum;
-import com.jason.use.util.HttpUtil;
-import com.jason.use.util.StringUtil;
+import com.jason.client.JavafxApplication;
+import com.jason.client.config.APIConfig;
+import com.jason.client.enums.TagTypeEnum;
+import com.jason.client.util.HttpUtil;
+import com.jason.client.util.StringUtil;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
@@ -59,7 +59,7 @@ public class TaskController implements Initializable {
             return;
         }*/
 
-        JSONArray jsonArray = jsonObject.getJSONArray("subUserList");
+        JSONArray jsonArray = jsonObject.getJSONArray("subUserListComboBox");
         List<String> subUserList = new ArrayList<>();
         if (jsonArray != null){
             for(int i=0;i<jsonArray.size();i++){

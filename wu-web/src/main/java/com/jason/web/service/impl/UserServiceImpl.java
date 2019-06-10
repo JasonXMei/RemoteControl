@@ -248,10 +248,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public UserDetailsVO handleInfo(Integer userId) {
-        User userPO = baseMapper.selectById(userId);
+        return getUserDetailsVO(userId, userId);
+    }
+
+    @Override
+    public UserDetailsVO handleInfoClient(Integer loginUserId, Integer taskUserId) {
+        return getUserDetailsVO(loginUserId, taskUserId);
+    }
+
+    private UserDetailsVO getUserDetailsVO(Integer loginUserId, Integer taskUserId){
+        User userPO = baseMapper.selectById(loginUserId);
         UserVO userVO = BeanUtil.convertUserPO2VO(dozerMapper, userPO);
         List<UserShop> userShopList = userShopService.list(new QueryWrapper<UserShop>().eq("user_id", userVO.getId()));
-        List<SubUser> subUserList = subUserService.list(new QueryWrapper<SubUser>().eq("user_id", userVO.getId()));
+
+        List<SubUser> subUserList = subUserService.list(new QueryWrapper<SubUser>().eq("user_id", taskUserId));
 
         UserDetailsVO userDetailsVO = new UserDetailsVO();
         userDetailsVO.setShopList(userShopList);

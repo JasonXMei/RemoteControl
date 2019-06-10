@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<BorderPane prefHeight="618.0" prefWidth="1000.0" style="-fx-font-size: 18px;" stylesheets="@../css/list.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jason.client.controller.WrapperController">
+    <left>
+        <AnchorPane prefHeight="616.0" prefWidth="195.0" style="-fx-background-color: lightblue;"
+                    BorderPane.alignment="CENTER">
+            <children>
+                <VBox layoutY="14.0" prefHeight="595.0" prefWidth="223.0" spacing="10.0">
+                    <children>
+                        <ImageView fitHeight="150.0" fitWidth="223.0" pickOnBounds="true" preserveRatio="true"  style="-fx-image: url('/img/logo.jpg');"/>
+                        <JFXButton fx:id="userListBtn" onAction="#replaceOrderList" prefHeight="30.0" prefWidth="250.0" text="补单记录列表"/>
+                        <!--<JFXButton fx:id="myLinkUrlBtn" onAction="#openLinkWindow" prefHeight="30.0" prefWidth="224.0" text="刷新"/>-->
+                        <JFXButton fx:id="myTagListBtn" onAction="#tagList" prefHeight="30.0" prefWidth="243.0" text="停止挂机"/>
+                    </children>
+                    <padding>
+                        <Insets left="10.0" right="10.0"/>
+                    </padding>
+                </VBox>
+            </children>
+        </AnchorPane>
+    </left>
+    <center>
+        <AnchorPane prefHeight="616.0" prefWidth="713.0" style="-fx-background-color: lightblue;"
+                    BorderPane.alignment="CENTER"/>
+    </center>
+</BorderPane>
