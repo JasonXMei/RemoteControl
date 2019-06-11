@@ -1,20 +1,17 @@
-package com.jason.web.util;
+package com.jason.client.util;
 
 import com.google.protobuf.ByteString;
-import com.jason.web.handler.SocketHandler;
-import com.jason.web.protocol.WUProto;
+import com.jason.use.protocol.WUProto;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.Attribute;
 import io.netty.util.AttributeKey;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class NettyUtil {
 
     private static final AttributeKey<String> ATTR_KEY_READER_TIME = AttributeKey.valueOf("readerTime");
-    private final static Logger LOGGER = LoggerFactory.getLogger(NettyUtil.class);
+    //private final static Logger LOGGER = LoggerFactory.getLogger(NettyUtil.class);
 
     public static void updateReaderTime(Channel channel, Long time) {
         channel.attr(ATTR_KEY_READER_TIME).set(time.toString());
@@ -45,6 +42,12 @@ public class NettyUtil {
             case Constants.PONG:
             case Constants.LOGIN:
             default:*/
+            case Constants.LOGIN_USE:
+                protocol = WUProto.WUProtocol.newBuilder()
+                        .setMsgType(msgType)
+                        .setSendUserId(sendUserId)
+                        .build();
+                break;
             case Constants.MSG_ERROR:
                 protocol = WUProto.WUProtocol.newBuilder()
                         .setMsgType(msgType)
@@ -71,10 +74,10 @@ public class NettyUtil {
 
         nioSocketChannel.writeAndFlush(protocol).addListeners((ChannelFutureListener) future -> {
             if (!future.isSuccess()) {
-                LOGGER.error("IO error,close Channel");
+                //LOGGER.error("IO error,close Channel");
                 future.channel().close();
             }else{
-                LOGGER.info("发送 Google Protocol Msg成功!");
+                //LOGGER.info("发送 Google Protocol Msg成功!");
             }
         });
     }
@@ -82,7 +85,7 @@ public class NettyUtil {
     /**
      * 发送 Google Protocol 编解码字符串
      */
-    public static void sendGoogleProtocolMsg(int msgType, int sendUserId, int receiveUserId, byte[] screenImg, byte[] userEvent, String message) {
+    /*public static void sendGoogleProtocolMsg(int msgType, int sendUserId, int receiveUserId, byte[] screenImg, byte[] userEvent, String message) {
         WUProto.WUProtocol protocol = null;
         NioSocketChannel nioSocketChannel = null;
         switch (msgType){
@@ -121,5 +124,5 @@ public class NettyUtil {
                 LOGGER.info("发送 Google Protocol Msg成功!");
             }
         });
-    }
+    }*/
 }

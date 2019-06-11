@@ -48,7 +48,7 @@ public class CIMServerHandle extends SimpleChannelInboundHandler<WUProto.WUProto
         NioSocketChannel nioSocketChannel = (NioSocketChannel) ctx.channel();
         int userId = SocketHandler.removeClient(nioSocketChannel);
         if(userId != 0){
-            log.info("子用户[{}]下线", userId);
+            log.info("客户端[{}]下线", userId);
             SubUser subUser = new SubUser();
             subUser.setId(userId);
             subUser.setConnectStatus(ConnectStatusEnum.DisConnected);
@@ -56,7 +56,7 @@ public class CIMServerHandle extends SimpleChannelInboundHandler<WUProto.WUProto
         }else{
             userId = SocketHandler.removeUse(nioSocketChannel);
             if(userId != 0){
-                log.info("用户[{}]下线", userId);
+                log.info("使用端[{}]下线", userId);
                 User user = new User();
                 user.setId(userId);
                 user.setConnectStatus(ConnectStatusEnum.DisConnected);
@@ -69,25 +69,49 @@ public class CIMServerHandle extends SimpleChannelInboundHandler<WUProto.WUProto
     protected void channelRead0(ChannelHandlerContext ctx, WUProto.WUProtocol msg) throws Exception {
         log.info("收到msg={}", msg.toString());
 
-        if (msg.getMsgType() == Constants.LOGIN) {
-            //保存客户端与 Channel 之间的关系
-            SocketHandler.putUse(msg.getSendUserId(), (NioSocketChannel) ctx.channel());
-            //SocketHandler.saveSession(msg.getRequestId(), msg.getReqMsg());
-            log.info("客户端[{}]上线成功", msg.toString());
+        if (msg.getMsgType() == Constants.LOGIN_USE) {
+            int sendUserId = msg.getSendUserId();
+            User user = userMapper.selectById(sendUserId);
+            if(user != null && user.getConnectStatus().getStatus() == ConnectStatusEnum.DisConnected.getStatus()){
+                SocketHandler.putUse(sendUserId, (NioSocketChannel) ctx.channel());
+                log.info("使用端[{}]上线", msg.toString());
+                user.setConnectStatus(ConnectStatusEnum.ToBeConnect);
+                userMapper.updateById(user);
+            }else{
+                NettyUtil.sendGoogleProtocolMsg(Constants.MSG_ERROR, 0, sendUserId, null, null, "该用户已登陆！", (NioSocketChannel) ctx.channel());
+            }
+        }
 
-            NettyUtil.sendGoogleProtocolMsg(Constants.MSG_CONTROL, msg.getReceiveUserId(), msg.getSendUserId(), null, null);
+        if (msg.getMsgType() == Constants.LOGIN_CLIENT) {
+            int sendUserId = msg.getSendUserId();
+            SubUser subUser = subUserMapper.selectById(sendUserId);
+            if(subUser != null && subUser.getConnectStatus().getStatus() == ConnectStatusEnum.DisConnected.getStatus()){
+                SocketHandler.putClient(sendUserId, (NioSocketChannel) ctx.channel());
+                log.info("客户端[{}]上线", msg.toString());
+                subUser.setConnectStatus(ConnectStatusEnum.DisConnected);
+                subUserMapper.updateById(subUser);
+            }else{
+                NettyUtil.sendGoogleProtocolMsg(Constants.MSG_ERROR, 0, sendUserId, null, null, "该用户已登陆！", (NioSocketChannel) ctx.channel());
+            }
         }
 
         //心跳更新时间
-        if (msg.getMsgType() == Constants.PING){
+        /*if (msg.getMsgType() == Constants.PING){
             //NettyUtil.updateReaderTime(ctx.channel(),System.currentTimeMillis());
             //向客户端响应 pong 消息
             NettyUtil.sendGoogleProtocolMsg(Constants.PONG, 0, 1, null, null);
-        }
+        }*/
 
         if (msg.getMsgType() == Constants.MSG_IMG){
             //NettyUtil.sendGoogleProtocolMsg(Constants.PONG, 0, 1, null, null, ctx);
             //controlWindow.repainImage(msg.getScreenImg().toByteArray());
+            NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, msg.getSendUserId(), msg.getReceiveUserId(), msg.getScreenImg().toByteArray(), null, null);
+        }
+
+        if (msg.getMsgType() == Constants.MSG_EVENT){
+            //NettyUtil.sendGoogleProtocolMsg(Constants.PONG, 0, 1, null, null, ctx);
+            //controlWindow.repainImage(msg.getScreenImg().toByteArray());
+            NettyUtil.sendGoogleProtocolMsg(Constants.MSG_EVENT, msg.getSendUserId(), msg.getReceiveUserId(), null, msg.getUserEvent().toByteArray(), null);
         }
     }
 

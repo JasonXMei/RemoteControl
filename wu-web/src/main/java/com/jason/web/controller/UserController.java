@@ -109,6 +109,15 @@ public class UserController {
         return userService.handleInfoClient(loginUserId, taskUserId);
     }
 
+    /**
+     *  获取用户连接状态
+     */
+    @RequestMapping("status/{userId}/client")
+    @ResponseBody
+    public Integer connectStatusClient(@PathVariable("userId") Integer userId){
+        return userService.handleStatusClient(userId);
+    }
+
     @RequestMapping(value = "saveOrUpdate/", method = RequestMethod.POST)
     public String register(UserVO userVO,
                            @RequestParam("subUserList") String subUserList,

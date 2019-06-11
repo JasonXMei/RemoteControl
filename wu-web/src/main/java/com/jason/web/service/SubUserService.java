@@ -20,4 +20,6 @@ public interface SubUserService extends IService<SubUser> {
     JSONResult<TaskPage<SubUserVO>> handList(TaskPage<SubUser> page);
 
     JSONResult<UserDetailsVO> userDetail(Integer loginUserId, Integer taskUserId);
+
+    Integer handleStatus(Integer userId);
 }

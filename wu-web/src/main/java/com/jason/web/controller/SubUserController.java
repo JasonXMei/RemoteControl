@@ -41,4 +41,13 @@ public class SubUserController {
     ){
         return subUserService.userDetail(loginUserId, taskUserId);
     }
+
+    /**
+     *  获取用户连接状态
+     */
+    @RequestMapping("status/{userId}")
+    @ResponseBody
+    public Integer connectStatusClient(@PathVariable("userId") Integer userId){
+        return subUserService.handleStatus(userId);
+    }
 }

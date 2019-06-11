@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jason.client.JavafxApplication;
 import com.jason.client.config.APIConfig;
+import com.jason.client.enums.ConnectStatusEnum;
 import com.jason.client.enums.HttpStatus;
+import com.jason.client.netty.CIMClient;
 import com.jason.client.util.FileUtil;
 import com.jason.client.util.HttpUtil;
 import com.jason.client.util.JWTUtil;
@@ -63,13 +65,6 @@ public class LoginController implements Initializable {
      */
     @FXML
     public void loginAction() {
-        doCheckUser();
-    }
-
-    /**
-     * 检查并登录
-     */
-    private void doCheckUser() {
         String userName = this.userName.getText().trim();
         String password = this.password.getText().trim();
         if(userName.length() == 0 || password.length() == 0){
@@ -84,12 +79,28 @@ public class LoginController implements Initializable {
             userId = String.valueOf(JWTUtil.decodeToken(jwt));
 
             getSubUserList();
-
             if (rememberInfo.isSelected()) {
                 rememberFlag = true;
                 userNameStr = userName;
                 passwordStr = password;
             }
+
+            String userStatusUrl = String.format(APIConfig.getUserStatusUrl, userId);
+            responseStr = HttpUtil.httpGet(userStatusUrl, jwt);
+            if(Integer.valueOf(responseStr) == ConnectStatusEnum.DisConnected.status){
+                boolean connectRemote = CIMClient.start();
+                /*if(connectRemote){
+                    NettyUtil.sendGoogleProtocolMsg(Constants.LOGIN_USE, Integer.valueOf(userId), 0, null, null, null, (NioSocketChannel) CIMClient.channel);
+                }*/
+                if(connectRemote){
+                    JavafxApplication.showAlert("操作提示", jsonObject.getString("description"), "listView", getClass(), "确定");
+                }else{
+                    JavafxApplication.showAlert("操作提示", "连接服务器失败!", null, null, "确定");
+                }
+            }else{
+                JavafxApplication.showAlert("操作提示", "账号已在别处登录，请先退出再尝试登录!", null, null, "确定");
+            }
+
             JavafxApplication.showSelectConfirmed("操作提示", subUserListComboBox, stackPane, "listView", getClass());
         }else{
             JavafxApplication.showAlert("操作提示", jsonObject.getString("description"), null, null, "确定");

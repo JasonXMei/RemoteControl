@@ -3,13 +3,14 @@ package com.jason.use.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.jason.use.JavafxApplication;
 import com.jason.use.config.APIConfig;
+import com.jason.use.enums.ConnectStatusEnum;
 import com.jason.use.enums.HttpStatus;
-import com.jason.use.util.FileUtil;
-import com.jason.use.util.HttpUtil;
-import com.jason.use.util.JWTUtil;
+import com.jason.use.netty.CIMClient;
+import com.jason.use.util.*;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import io.netty.channel.socket.nio.NioSocketChannel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
@@ -47,13 +48,6 @@ public class LoginController implements Initializable {
      */
     @FXML
     public void loginAction() {
-        doCheckUser();
-    }
-
-    /**
-     * 检查并登录
-     */
-    private void doCheckUser() {
         String userName = this.userName.getText().trim();
         String password = this.password.getText().trim();
         if(userName.length() == 0 || password.length() == 0){
@@ -66,14 +60,27 @@ public class LoginController implements Initializable {
         if (jsonObject.getInteger("status").equals(HttpStatus.OK.status)){
             jwt = jsonObject.getString("obj");
             userId = String.valueOf(JWTUtil.decodeToken(jwt));
-
             if (rememberInfo.isSelected()) {
                 FileUtil.setUserAndPass(userName, password, true);
             }else{
                 FileUtil.setUserAndPass(userName, password, false);
             }
 
-            JavafxApplication.showAlert("操作提示", jsonObject.getString("description"), "listView", getClass(), "确定");
+            String userStatusUrl = String.format(APIConfig.getUserStatusUrl, userId);
+            responseStr = HttpUtil.httpGet(userStatusUrl, jwt);
+            if(Integer.valueOf(responseStr) == ConnectStatusEnum.DisConnected.status){
+                boolean connectRemote = CIMClient.start();
+                /*if(connectRemote){
+                    NettyUtil.sendGoogleProtocolMsg(Constants.LOGIN_USE, Integer.valueOf(userId), 0, null, null, null, (NioSocketChannel) CIMClient.channel);
+                }*/
+                if(connectRemote){
+                    JavafxApplication.showAlert("操作提示", jsonObject.getString("description"), "listView", getClass(), "确定");
+                }else{
+                    JavafxApplication.showAlert("操作提示", "连接服务器失败!", null, null, "确定");
+                }
+            }else{
+                JavafxApplication.showAlert("操作提示", "账号已在别处登录，请先退出再尝试登录!", null, null, "确定");
+            }
         }else{
             JavafxApplication.showAlert("操作提示", jsonObject.getString("description"), null, null, "确定");
         }

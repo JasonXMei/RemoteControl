@@ -256,6 +256,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return getUserDetailsVO(loginUserId, taskUserId);
     }
 
+    @Override
+    public Integer handleStatusClient(Integer userId) {
+        User userPO = baseMapper.selectById(userId);
+        if(userPO != null){
+            return userPO.getConnectStatus().getStatus();
+        }
+        return -1;
+    }
+
     private UserDetailsVO getUserDetailsVO(Integer loginUserId, Integer taskUserId){
         User userPO = baseMapper.selectById(loginUserId);
         UserVO userVO = BeanUtil.convertUserPO2VO(dozerMapper, userPO);

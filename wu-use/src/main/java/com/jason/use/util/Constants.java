@@ -1,4 +1,4 @@
-package com.jason.web.util;
+package com.jason.use.util;
 
 public class Constants {
 

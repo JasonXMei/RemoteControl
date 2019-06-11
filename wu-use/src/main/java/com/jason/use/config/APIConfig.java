@@ -20,4 +20,6 @@ public class APIConfig {
 
     public static String backEndLink = urlPrefix + "user/token/%s/";
 
+    public static String getUserStatusUrl = urlPrefix + "user/status/%s/client";
+
 }

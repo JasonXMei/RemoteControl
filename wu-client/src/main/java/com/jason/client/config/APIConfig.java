@@ -12,4 +12,6 @@ public class APIConfig {
 
     public static String userInfoUrl = urlPrefix + "user/info/%s/%s/client";
 
+    public static String getUserStatusUrl = urlPrefix + "client/subUser/status/%s";
+
 }

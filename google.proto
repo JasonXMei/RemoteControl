@@ -1,0 +1,14 @@
+syntax = "proto2";
+
+package protocol;
+
+option java_package = "com.jason.nettydemo.protocol";
+option java_outer_classname = "WUProto";
+
+message WUProtocol {
+  required int32 msgType = 1;
+  required int32 sendUserId = 2;
+  optional bytes screenImg = 3;
+  optional bytes userEvent = 4;
+  optional int32 receiveUserId = 5;
+}

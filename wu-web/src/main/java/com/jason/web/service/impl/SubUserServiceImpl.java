@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jason.common.enums.HttpStatus;
 import com.jason.common.po.SubUser;
 import com.jason.common.po.SubUserExt;
+import com.jason.common.po.User;
 import com.jason.common.po.UserShop;
 import com.jason.common.util.BeanUtil;
 import com.jason.common.vo.JSONResult;
@@ -69,5 +70,14 @@ public class SubUserServiceImpl extends ServiceImpl<SubUserMapper, SubUser> impl
         userDetailsVO.setSubUserList(taskUserList);
         userDetailsVO.setShopList(shopList);
         return new JSONResult<>(userDetailsVO, HttpStatus.OK.getStatus(), String.format(HttpStatus.OK.getMessage(), "查询小号列表，店铺列表"));
+    }
+
+    @Override
+    public Integer handleStatus(Integer userId) {
+        SubUser userPO = baseMapper.selectById(userId);
+        if(userPO != null){
+            return userPO.getConnectStatus().getStatus();
+        }
+        return -1;
     }
 }
