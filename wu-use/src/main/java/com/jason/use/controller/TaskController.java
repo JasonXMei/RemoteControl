@@ -50,11 +50,12 @@ public class TaskController implements Initializable {
     public static Map<String,Integer> subUserNameMap = new HashMap<>();
     public static Map<String,Integer> shopMap = new HashMap<>();
 
-    public static String taskUserId = "";
+    public static String userId = "";
+    public static String subUserId = "";
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        String data = HttpUtil.httpPost(new HashMap<>(), String.format(APIConfig.userInfoUrl, LoginController.userId, taskUserId), LoginController.jwt);
+        String data = HttpUtil.httpPost(new HashMap<>(), String.format(APIConfig.userInfoUrl, LoginController.userId, userId), LoginController.jwt);
         JSONObject jsonObject = JSONObject.parseObject(data);
         /*int status = jsonObject.getInteger("status");
 
@@ -175,7 +176,7 @@ public class TaskController implements Initializable {
     }
 
     public void connectClient(ActionEvent actionEvent) {
-        NettyUtil.sendGoogleProtocolMsg(Constants.MSG_CONTROL, Integer.valueOf(LoginController.userId), Integer.valueOf(taskUserId), null, null, null, (NioSocketChannel) CIMClient.channel);
+        NettyUtil.sendGoogleProtocolMsg(Constants.MSG_CONTROL, Integer.valueOf(LoginController.userId), Integer.valueOf(subUserId), null, null, null, (NioSocketChannel) CIMClient.channel);
     }
 }
 

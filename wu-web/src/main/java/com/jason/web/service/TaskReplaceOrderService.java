@@ -24,4 +24,6 @@ public interface TaskReplaceOrderService extends IService<TaskReplaceOrder> {
     JSONResult<String> saveReplaceOrder(TaskVO tro);
 
     TaskPage<TaskReplaceOrderVO> handleListClient(TaskPage<TaskReplaceOrder> pages);
+
+    Integer getOrderCount(Integer userId, Integer status);
 }

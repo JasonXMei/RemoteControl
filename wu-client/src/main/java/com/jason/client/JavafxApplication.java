@@ -1,5 +1,6 @@
 package com.jason.client;
 
+import com.jason.client.netty.CIMClient;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import javafx.application.Application;
@@ -50,9 +51,15 @@ public class JavafxApplication extends Application {
 		mainStage.show();
 
         mainStage.setOnCloseRequest((event) -> {
-            System.out.print("监听到窗口关闭");
+            closeClient();
         });
 	}
+
+    public static void closeClient(){
+        System.out.print("监听到窗口关闭");
+        mainStage.close();
+        CIMClient.close();
+    }
 
     public static void showAlert(String headMsg, String bodyMsg, String methodName, Class<?> cls, String btnName){
         jfxAlert = new JFXAlert<>(mainStage);
@@ -83,6 +90,52 @@ public class JavafxApplication extends Application {
             }
         });
         dialogLayout.setActions(closeButton);
+        jfxAlert.setContent(dialogLayout);
+
+        jfxAlert.setOverlayClose(true);
+        jfxAlert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+        jfxAlert.initModality(Modality.APPLICATION_MODAL);
+        jfxAlert.showAndWait();
+    }
+
+    public static void showAlertWithCancelBtn(String headMsg, String bodyMsg, String methodName, Class<?> cls, String btnName){
+        jfxAlert = new JFXAlert<>(mainStage);
+
+        Text header = new Text(headMsg);
+        header.setFont(new Font("System", 18));
+        header.setFill(Paint.valueOf("#495057"));
+
+        Text body = new Text(bodyMsg);
+        dialogLayout.setHeading(header);
+        dialogLayout.setBody(body);
+
+        JFXButton okButton = new JFXButton(btnName);
+        okButton.setStyle("-fx-background-color: #039BE5;-fx-font-size: 18px");
+        okButton.setTextFill(Paint.valueOf("#FFFFFF"));
+        okButton.setRipplerFill(Paint.valueOf("#FFFFFF"));
+        okButton.setButtonType(JFXButton.ButtonType.RAISED);
+
+        okButton.setOnAction(event -> {
+            jfxAlert.hideWithAnimation();
+            if (methodName != null){
+                try {
+                    cls.getMethod(methodName).invoke(null);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        JFXButton cancelButton = new JFXButton("取消");
+        cancelButton.setStyle("-fx-background-color: #f0ad4e;-fx-font-size: 18px");
+        cancelButton.setTextFill(Paint.valueOf("#FFFFFF"));
+        cancelButton.setRipplerFill(Paint.valueOf("#FFFFFF"));
+        cancelButton.setButtonType(JFXButton.ButtonType.RAISED);
+
+        cancelButton.setOnAction(event -> {
+            jfxAlert.hideWithAnimation();
+        });
+        dialogLayout.setActions(cancelButton, okButton);
         jfxAlert.setContent(dialogLayout);
 
         jfxAlert.setOverlayClose(true);

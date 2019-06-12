@@ -74,4 +74,8 @@ public class WrapperController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    public void closeClient(ActionEvent actionEvent) {
+        JavafxApplication.showAlertWithCancelBtn("操作提示", "确认退出使用端吗?", "closeClient", JavafxApplication.class, "确定");
+    }
 }

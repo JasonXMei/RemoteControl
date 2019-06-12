@@ -22,4 +22,6 @@ public class APIConfig {
 
     public static String getUserStatusUrl = urlPrefix + "user/status/%s/client";
 
+    public static String orderCountUrl = urlPrefix + "client/task/orderCount/%s/%s";
+
 }

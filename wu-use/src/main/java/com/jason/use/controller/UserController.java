@@ -44,6 +44,8 @@ public class UserController implements Initializable {
     @FXML
     private JFXTreeTableColumn<User, String> connectionStatus;
     @FXML
+    private JFXTreeTableColumn<User, Integer> subUserId;
+    @FXML
     private Label pageRecord;
     @FXML
     private JFXTextField searchName;
@@ -87,13 +89,14 @@ public class UserController implements Initializable {
         setupCellValueFactory(replaceOrderTimes, User::getReplaceOrderTimes);
         setupCellValueFactory(location, User::getLocation);
         setupCellValueFactory(connectionStatus, User::getConnectionStatus);
+        setupCellValueFactory(subUserId, p -> p.getSubUserId().asObject());
 
         JSONArray jsonArray = recordObj.getJSONArray("records");
         ObservableList<User> users = FXCollections.observableArrayList();
         for (int i=0;i<jsonArray.size();i++){
             JSONObject subUserJSON = jsonArray.getJSONObject(i);
             users.add(
-                    new User(subUserJSON.getInteger("userId"),subUserJSON.getString("userName"),
+                    new User(subUserJSON.getInteger("userId"), subUserJSON.getInteger("id"), subUserJSON.getString("userName"),
                             subUserJSON.getString("subUserName"), subUserJSON.getString("orderTimes"),
                             subUserJSON.getString("location"), subUserJSON.getString("connectStatusStr")));
         }
@@ -146,7 +149,8 @@ public class UserController implements Initializable {
 
                 String connectionStatus = user.getConnectionStatus().getValue();
                 if(("可以连接").equals(connectionStatus)){
-                    TaskController.taskUserId = String.valueOf(user.getId().getValue());
+                    TaskController.userId = String.valueOf(user.getId().getValue());
+                    TaskController.subUserId = String.valueOf(user.getSubUserId().getValue());
                     JavafxApplication.showConfirmed("操作提示", user.getUserName().getValue() + ":" + user.getSubUserName().getValue(),
                             stackPane, "taskView", getClass());
                 }else{

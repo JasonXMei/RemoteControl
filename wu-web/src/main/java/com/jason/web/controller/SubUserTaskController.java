@@ -54,6 +54,13 @@ public class SubUserTaskController {
         return jsonResult;
     }
 
+    @RequestMapping("orderCount/{status}/{userId}")
+    @ResponseBody
+    public Integer orderCount(@PathVariable("status")Integer status,
+                              @PathVariable("userId")Integer userId){
+        return taskReplaceOrderService.getOrderCount(userId, status);
+    }
+
     /**
      * 更改订单状态
      * @param status 状态(0：未支付，1：已支付，2：已返款)

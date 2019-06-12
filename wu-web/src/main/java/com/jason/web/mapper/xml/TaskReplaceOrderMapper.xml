@@ -93,4 +93,13 @@
         </where>
         order by tro.id desc
     </select>
+
+    <select id="findOrderCount" resultType="java.lang.Integer">
+        SELECT count(tro.id)
+        FROM task_replace_order as tro
+        JOIN sub_user_task as sut ON tro.task_id = sut.id
+        JOIN sub_user as su ON sut.sub_user_id = su.id
+        JOIN user as user ON user.id = su.user_id
+        where user.id = #{userId} and tro.payment_status = #{status}
+    </select>
 </mapper>

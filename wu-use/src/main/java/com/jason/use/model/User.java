@@ -7,14 +7,16 @@ import javafx.beans.property.StringProperty;
 
 public class User extends RecursiveTreeObject<User> {
     private SimpleIntegerProperty id;
+    private SimpleIntegerProperty subUserId;
     private StringProperty userName;
     private StringProperty subUserName;
     private StringProperty replaceOrderTimes;
     private StringProperty location;
     private StringProperty connectionStatus;
 
-    public User(int id, String userName, String subUserName, String replaceOrderTimes, String location, String connectionStatus) {
+    public User(int id, int subUserId, String userName, String subUserName, String replaceOrderTimes, String location, String connectionStatus) {
         this.id = new SimpleIntegerProperty(id);
+        this.subUserId = new SimpleIntegerProperty(subUserId);
         this.userName = new SimpleStringProperty(userName);
         this.subUserName = new SimpleStringProperty(subUserName);
         this.replaceOrderTimes = new SimpleStringProperty(replaceOrderTimes);
@@ -28,6 +30,14 @@ public class User extends RecursiveTreeObject<User> {
 
     public void setId(SimpleIntegerProperty id) {
         this.id = id;
+    }
+
+    public SimpleIntegerProperty getSubUserId() {
+        return subUserId;
+    }
+
+    public void setSubUserId(SimpleIntegerProperty subUserId) {
+        this.subUserId = subUserId;
     }
 
     public StringProperty getUserName() {

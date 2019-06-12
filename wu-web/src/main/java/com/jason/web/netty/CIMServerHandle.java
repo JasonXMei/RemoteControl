@@ -106,7 +106,7 @@ public class CIMServerHandle extends SimpleChannelInboundHandler<WUProto.WUProto
         if (msg.getMsgType() == Constants.MSG_CONTROL){
             //NettyUtil.sendGoogleProtocolMsg(Constants.PONG, 0, 1, null, null, ctx);
             //controlWindow.repainImage(msg.getScreenImg().toByteArray());
-            NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, msg.getSendUserId(), msg.getReceiveUserId(), null, null, null);
+            NettyUtil.sendGoogleProtocolMsg(Constants.MSG_CONTROL, msg.getSendUserId(), msg.getReceiveUserId(), null, null, null);
         }
 
         if (msg.getMsgType() == Constants.MSG_IMG){

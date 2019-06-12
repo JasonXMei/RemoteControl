@@ -19,5 +19,5 @@ public interface TaskReplaceOrderMapper extends BaseMapper<TaskReplaceOrder> {
 
     TaskPage<TaskReplaceOrder> findReplaceOrderListById(@Param("pg")TaskPage<TaskReplaceOrder> pages);
 
-
+    Integer findOrderCount(@Param("userId") Integer userId, @Param("status") Integer status);
 }

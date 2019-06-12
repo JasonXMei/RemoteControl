@@ -30,6 +30,7 @@
                              <JFXTreeTableColumn fx:id="replaceOrderTimes" editable="false" minWidth="48.0" prefWidth="113.0" resizable="false" sortable="false" text="日-日上限" />
                              <JFXTreeTableColumn fx:id="connectionStatus" editable="false" minWidth="28.0" prefWidth="115.0" resizable="false" sortable="false" text="连接状态" />
                              <JFXTreeTableColumn fx:id="location" editable="false" minWidth="35.0" prefWidth="135.0" resizable="false" sortable="false" text="地理位置" />
+                             <JFXTreeTableColumn fx:id="subUserId" visible="false" editable="false" minWidth="0" prefWidth="0" resizable="false" sortable="false" text="sub user id" />
                          </columns>
                            <VBox.margin>
                               <Insets />

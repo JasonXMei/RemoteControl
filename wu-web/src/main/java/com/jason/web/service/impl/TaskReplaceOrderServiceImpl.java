@@ -78,6 +78,11 @@ public class TaskReplaceOrderServiceImpl extends ServiceImpl<TaskReplaceOrderMap
     }
 
     @Override
+    public Integer getOrderCount(Integer userId, Integer status) {
+        return baseMapper.findOrderCount(userId, status);
+    }
+
+    @Override
     public JSONResult<String> handleOrder(Integer orderId, Integer status) {
         TaskReplaceOrder tro = new TaskReplaceOrder();
         tro.setId(orderId);
