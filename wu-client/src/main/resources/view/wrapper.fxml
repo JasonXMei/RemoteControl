@@ -12,9 +12,8 @@
                 <VBox layoutY="14.0" prefHeight="595.0" prefWidth="223.0" spacing="10.0">
                     <children>
                         <ImageView fitHeight="150.0" fitWidth="223.0" pickOnBounds="true" preserveRatio="true"  style="-fx-image: url('/img/logo.jpg');"/>
-                        <JFXButton fx:id="userListBtn" onAction="#replaceOrderList" prefHeight="30.0" prefWidth="250.0" text="补单记录列表"/>
-                        <!--<JFXButton fx:id="myLinkUrlBtn" onAction="#openLinkWindow" prefHeight="30.0" prefWidth="224.0" text="刷新"/>-->
-                        <JFXButton fx:id="myTagListBtn" onAction="#tagList" prefHeight="30.0" prefWidth="243.0" text="停止挂机"/>
+                        <JFXButton fx:id="orderListBtn" onAction="#replaceOrderList" prefHeight="30.0" prefWidth="250.0" text="补单记录列表"/>
+                        <JFXButton fx:id="stopClientBtn" onAction="#stopClient" prefHeight="30.0" prefWidth="243.0" text="停止挂机"/>
                     </children>
                     <padding>
                         <Insets left="10.0" right="10.0"/>

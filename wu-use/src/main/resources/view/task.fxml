@@ -16,7 +16,7 @@
          <children>
             <VBox prefHeight="609.0" prefWidth="134.0" spacing="10.0">
                <children>
-                  <JFXButton prefHeight="30.0" prefWidth="139.0" text="高速连接" />
+                  <JFXButton onAction="#connectClient" prefHeight="30.0" prefWidth="139.0" text="高速连接" />
                   <JFXButton prefHeight="30.0" prefWidth="142.0" text="断开连接" />
                </children>
                <HBox.margin>

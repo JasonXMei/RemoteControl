@@ -1,7 +1,7 @@
 package com.jason.client.util;
 
 import com.google.protobuf.ByteString;
-import com.jason.use.protocol.WUProto;
+import com.jason.client.protocol.WUProto;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -42,7 +42,7 @@ public class NettyUtil {
             case Constants.PONG:
             case Constants.LOGIN:
             default:*/
-            case Constants.LOGIN_USE:
+            case Constants.LOGIN_CLIENT:
                 protocol = WUProto.WUProtocol.newBuilder()
                         .setMsgType(msgType)
                         .setSendUserId(sendUserId)

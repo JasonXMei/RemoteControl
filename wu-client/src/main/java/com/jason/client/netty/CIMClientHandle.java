@@ -46,7 +46,7 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         //客户端和服务端建立连接时调用
-        //LOGGER.info("cim server connect success!");
+        //LOGGER.info("cim netty connect success!");
     }
 
     @Override
@@ -56,10 +56,10 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
     @Override
     protected void channelRead0(ChannelHandlerContext ctx,  WUProto.WUProtocol msg) throws Exception {
         //心跳更新时间
-        if (msg.getMsgType() == Constants.PONG){
+        /*if (msg.getMsgType() == Constants.PONG){
             //LOGGER.info("收到服务端心跳！！！");
             //NettyUtil.updateReaderTime(ctx.channel(), System.currentTimeMillis());
-        }
+        }*/
 
         if (msg.getMsgType() == Constants.MSG_CONTROL) {
             //回调消息
@@ -74,7 +74,7 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
                 BufferedImage image = robot.createScreenCapture(rec);;
                 byte imageBytes[] = ByteObjConverter.getImageBytes(image);
 
-                NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, 0, 1, imageBytes, null, null,(NioSocketChannel)ctx.channel());
+                NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, msg.getReceiveUserId(), msg.getSendUserId(), imageBytes, null, null,(NioSocketChannel)ctx.channel());
                 // NettyUtil.sendGoogleProtocolMsg(Constants.CommandType.MSG_IMG, 0, 1, imageBytes, null);
             } catch (AWTException e) {
                 e.printStackTrace();

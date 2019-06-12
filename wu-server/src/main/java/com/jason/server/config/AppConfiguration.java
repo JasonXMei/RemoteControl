@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AppConfiguration {
 
-    @Value("${cim.server.port}")
+    @Value("${cim.netty.port}")
     private int cimServerPort;
 
     @Value("${cim.heartbeat.time}")

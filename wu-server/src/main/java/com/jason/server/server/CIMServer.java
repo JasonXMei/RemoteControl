@@ -41,7 +41,7 @@ public class CIMServer {
 
 
     /**
-     * 启动 cim server
+     * 启动 cim netty
      *
      * @return
      * @throws InterruptedException
@@ -59,7 +59,7 @@ public class CIMServer {
 
         ChannelFuture future = bootstrap.bind().sync();
         if (future.isSuccess()) {
-            LOGGER.info("启动 cim server 成功");
+            LOGGER.info("启动 cim netty 成功");
         }
     }
 
@@ -71,7 +71,7 @@ public class CIMServer {
     public void destroy() {
         boss.shutdownGracefully().syncUninterruptibly();
         work.shutdownGracefully().syncUninterruptibly();
-        LOGGER.info("关闭 cim server 成功");
+        LOGGER.info("关闭 cim netty 成功");
     }
 
 

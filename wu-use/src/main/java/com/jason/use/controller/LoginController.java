@@ -70,10 +70,8 @@ public class LoginController implements Initializable {
             responseStr = HttpUtil.httpGet(userStatusUrl, jwt);
             if(Integer.valueOf(responseStr) == ConnectStatusEnum.DisConnected.status){
                 boolean connectRemote = CIMClient.start();
-                /*if(connectRemote){
-                    NettyUtil.sendGoogleProtocolMsg(Constants.LOGIN_USE, Integer.valueOf(userId), 0, null, null, null, (NioSocketChannel) CIMClient.channel);
-                }*/
                 if(connectRemote){
+                    NettyUtil.sendGoogleProtocolMsg(Constants.LOGIN_USE, Integer.valueOf(userId), 0, null, null, null, (NioSocketChannel) CIMClient.channel);
                     JavafxApplication.showAlert("操作提示", jsonObject.getString("description"), "listView", getClass(), "确定");
                 }else{
                     JavafxApplication.showAlert("操作提示", "连接服务器失败!", null, null, "确定");

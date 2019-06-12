@@ -7,14 +7,12 @@ import com.jason.client.config.APIConfig;
 import com.jason.client.enums.ConnectStatusEnum;
 import com.jason.client.enums.HttpStatus;
 import com.jason.client.netty.CIMClient;
-import com.jason.client.util.FileUtil;
-import com.jason.client.util.HttpUtil;
-import com.jason.client.util.JWTUtil;
-import com.jason.client.util.StringUtil;
+import com.jason.client.util.*;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import io.netty.channel.socket.nio.NioSocketChannel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -78,30 +76,14 @@ public class LoginController implements Initializable {
             jwt = jsonObject.getString("obj");
             userId = String.valueOf(JWTUtil.decodeToken(jwt));
 
-            getSubUserList();
             if (rememberInfo.isSelected()) {
                 rememberFlag = true;
                 userNameStr = userName;
                 passwordStr = password;
             }
 
-            String userStatusUrl = String.format(APIConfig.getUserStatusUrl, userId);
-            responseStr = HttpUtil.httpGet(userStatusUrl, jwt);
-            if(Integer.valueOf(responseStr) == ConnectStatusEnum.DisConnected.status){
-                boolean connectRemote = CIMClient.start();
-                /*if(connectRemote){
-                    NettyUtil.sendGoogleProtocolMsg(Constants.LOGIN_USE, Integer.valueOf(userId), 0, null, null, null, (NioSocketChannel) CIMClient.channel);
-                }*/
-                if(connectRemote){
-                    JavafxApplication.showAlert("操作提示", jsonObject.getString("description"), "listView", getClass(), "确定");
-                }else{
-                    JavafxApplication.showAlert("操作提示", "连接服务器失败!", null, null, "确定");
-                }
-            }else{
-                JavafxApplication.showAlert("操作提示", "账号已在别处登录，请先退出再尝试登录!", null, null, "确定");
-            }
-
-            JavafxApplication.showSelectConfirmed("操作提示", subUserListComboBox, stackPane, "listView", getClass());
+            getSubUserList();
+            JavafxApplication.showSelectConfirmed("操作提示", subUserListComboBox, stackPane, "chooseAndCheckSubUser", getClass());
         }else{
             JavafxApplication.showAlert("操作提示", jsonObject.getString("description"), null, null, "确定");
         }
@@ -128,7 +110,7 @@ public class LoginController implements Initializable {
         subUserListComboBox.setItems(subUserItem);
     }
 
-   public static void listView(){
+   public static void chooseAndCheckSubUser(){
        if(rememberFlag){
            FileUtil.setUserAndPass(userNameStr, passwordStr, true);
        }
@@ -139,6 +121,23 @@ public class LoginController implements Initializable {
            return;
        }
        userId = String.valueOf(subUserMap.get(selectSubUser));
+
+       String userStatusUrl = String.format(APIConfig.getUserStatusUrl, userId);
+       String responseStr = HttpUtil.httpGet(userStatusUrl, jwt);
+       if(Integer.valueOf(responseStr) == ConnectStatusEnum.DisConnected.status){
+           boolean connectRemote = CIMClient.start();
+           if(connectRemote){
+               NettyUtil.sendGoogleProtocolMsg(Constants.LOGIN_CLIENT, Integer.valueOf(userId), 0, null, null, null, (NioSocketChannel) CIMClient.channel);
+               JavafxApplication.showAlert("操作提示", "{登录}成功!", "listView", LoginController.class, "确定");
+           }else{
+               JavafxApplication.showAlert("操作提示", "连接服务器失败!", null, null, "确定");
+           }
+       }else{
+           JavafxApplication.showAlert("操作提示", "账号已在别处登录，请先退出再尝试登录!", null, null, "确定");
+       }
+   }
+
+   public static void listView(){
        JavafxApplication.switchView("/view/replaceOrderList.fxml");
    }
 }

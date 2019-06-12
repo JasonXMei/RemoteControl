@@ -8,8 +8,6 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.Attribute;
 import io.netty.util.AttributeKey;
 
-import java.util.logging.SocketHandler;
-
 public class NettyUtil {
 
     private static final AttributeKey<String> ATTR_KEY_READER_TIME = AttributeKey.valueOf("readerTime");
@@ -48,6 +46,13 @@ public class NettyUtil {
                 protocol = WUProto.WUProtocol.newBuilder()
                         .setMsgType(msgType)
                         .setSendUserId(sendUserId)
+                        .build();
+                break;
+            case Constants.MSG_CONTROL:
+                protocol = WUProto.WUProtocol.newBuilder()
+                        .setMsgType(msgType)
+                        .setSendUserId(sendUserId)
+                        .setReceiveUserId(receiveUserId)
                         .build();
                 break;
             case Constants.MSG_ERROR:

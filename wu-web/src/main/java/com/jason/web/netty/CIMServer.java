@@ -1,4 +1,4 @@
-package com.jason.web.server;
+package com.jason.web.netty;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -7,8 +7,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -24,8 +23,11 @@ public class CIMServer {
 
     private int nettyPort = 8989;
 
+    @Autowired
+    private CIMServerInitializer cimServerInitializer;
+
     /**
-     * 启动 cim server
+     * 启动 cim netty
      */
     @PostConstruct
     public void start() throws InterruptedException {
@@ -35,11 +37,11 @@ public class CIMServer {
                 .localAddress(new InetSocketAddress(nettyPort))
                 //保持长连接
                 .childOption(ChannelOption.SO_KEEPALIVE, true)
-                .childHandler(new CIMServerInitializer());
+                .childHandler(cimServerInitializer);
 
         ChannelFuture future = bootstrap.bind().sync();
         if (future.isSuccess()) {
-            log.info("启动 cim server 成功");
+            log.info("启动 cim netty 成功");
         }
     }
 
@@ -50,7 +52,7 @@ public class CIMServer {
     public void destroy() {
         boss.shutdownGracefully().syncUninterruptibly();
         work.shutdownGracefully().syncUninterruptibly();
-        log.info("关闭 cim server 成功");
+        log.info("关闭 cim netty 成功");
     }
 
 }

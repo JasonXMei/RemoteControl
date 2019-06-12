@@ -46,7 +46,7 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         //客户端和服务端建立连接时调用
-        //LOGGER.info("cim server connect success!");
+        //LOGGER.info("cim netty connect success!");
     }
 
     @Override

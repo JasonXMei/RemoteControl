@@ -5,10 +5,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.jason.use.JavafxApplication;
 import com.jason.use.config.APIConfig;
 import com.jason.use.enums.TagTypeEnum;
+import com.jason.use.netty.CIMClient;
+import com.jason.use.util.Constants;
 import com.jason.use.util.HttpUtil;
+import com.jason.use.util.NettyUtil;
 import com.jason.use.util.StringUtil;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import io.netty.channel.socket.nio.NioSocketChannel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -168,6 +172,10 @@ public class TaskController implements Initializable {
         String response = HttpUtil.httpPost(paramsMap, APIConfig.submitOrderUrl, LoginController.jwt);
         JSONObject resJSON = JSONObject.parseObject(response);
         JavafxApplication.showAlert("温馨提示", resJSON.getString("description"), null, null, "确定");
+    }
+
+    public void connectClient(ActionEvent actionEvent) {
+        NettyUtil.sendGoogleProtocolMsg(Constants.MSG_CONTROL, Integer.valueOf(LoginController.userId), Integer.valueOf(taskUserId), null, null, null, (NioSocketChannel) CIMClient.channel);
     }
 }
 

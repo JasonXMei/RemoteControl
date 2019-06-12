@@ -13,7 +13,7 @@ public class Constants {
     /**
      * 服务端手动 push 次数
      */
-    public static final String COUNTER_SERVER_PUSH_COUNT = "counter.server.push.count" ;
+    public static final String COUNTER_SERVER_PUSH_COUNT = "counter.netty.push.count" ;
 
 
     /**

@@ -1,4 +1,4 @@
-package com.jason.web.server;
+package com.jason.web.netty;
 
 import com.jason.web.protocol.WUProto;
 import io.netty.channel.Channel;
@@ -8,10 +8,14 @@ import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CIMServerInitializer extends ChannelInitializer<Channel> {
 
-    private final CIMServerHandle cimServerHandle = new CIMServerHandle() ;
+    @Autowired
+    CIMServerHandle cimServerHandle;
 
     @Override
     protected void initChannel(Channel ch) throws Exception {

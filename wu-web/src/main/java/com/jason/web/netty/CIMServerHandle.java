@@ -1,4 +1,4 @@
-package com.jason.web.server;
+package com.jason.web.netty;
 
 import com.jason.common.enums.ConnectStatusEnum;
 import com.jason.common.po.SubUser;
@@ -16,6 +16,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 
 @ChannelHandler.Sharable
@@ -88,7 +89,7 @@ public class CIMServerHandle extends SimpleChannelInboundHandler<WUProto.WUProto
             if(subUser != null && subUser.getConnectStatus().getStatus() == ConnectStatusEnum.DisConnected.getStatus()){
                 SocketHandler.putClient(sendUserId, (NioSocketChannel) ctx.channel());
                 log.info("客户端[{}]上线", msg.toString());
-                subUser.setConnectStatus(ConnectStatusEnum.DisConnected);
+                subUser.setConnectStatus(ConnectStatusEnum.ToBeConnect);
                 subUserMapper.updateById(subUser);
             }else{
                 NettyUtil.sendGoogleProtocolMsg(Constants.MSG_ERROR, 0, sendUserId, null, null, "该用户已登陆！", (NioSocketChannel) ctx.channel());
@@ -101,6 +102,12 @@ public class CIMServerHandle extends SimpleChannelInboundHandler<WUProto.WUProto
             //向客户端响应 pong 消息
             NettyUtil.sendGoogleProtocolMsg(Constants.PONG, 0, 1, null, null);
         }*/
+
+        if (msg.getMsgType() == Constants.MSG_CONTROL){
+            //NettyUtil.sendGoogleProtocolMsg(Constants.PONG, 0, 1, null, null, ctx);
+            //controlWindow.repainImage(msg.getScreenImg().toByteArray());
+            NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, msg.getSendUserId(), msg.getReceiveUserId(), null, null, null);
+        }
 
         if (msg.getMsgType() == Constants.MSG_IMG){
             //NettyUtil.sendGoogleProtocolMsg(Constants.PONG, 0, 1, null, null, ctx);
