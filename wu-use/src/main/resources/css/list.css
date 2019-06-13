@@ -9,7 +9,7 @@
     -jfx-button-type: RAISED;
     -fx-background-color: #039BE5;
     -fx-text-fill: white;
-    -jfx-disable-visual-focus: true;
+    /*-jfx-disable-visual-focus: true;*/
 }
 
 .jfx-layout-heading .label {

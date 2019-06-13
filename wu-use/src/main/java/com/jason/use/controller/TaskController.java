@@ -6,10 +6,7 @@ import com.jason.use.JavafxApplication;
 import com.jason.use.config.APIConfig;
 import com.jason.use.enums.TagTypeEnum;
 import com.jason.use.netty.CIMClient;
-import com.jason.use.util.Constants;
-import com.jason.use.util.HttpUtil;
-import com.jason.use.util.NettyUtil;
-import com.jason.use.util.StringUtil;
+import com.jason.use.util.*;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -176,6 +173,7 @@ public class TaskController implements Initializable {
     }
 
     public void connectClient(ActionEvent actionEvent) {
+        ControlWindow controlWindow = new ControlWindow();
         NettyUtil.sendGoogleProtocolMsg(Constants.MSG_CONTROL, Integer.valueOf(LoginController.userId), Integer.valueOf(subUserId), null, null, null, (NioSocketChannel) CIMClient.channel);
     }
 }

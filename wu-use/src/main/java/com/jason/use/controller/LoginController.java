@@ -10,11 +10,15 @@ import com.jason.use.netty.CIMClient;
 import com.jason.use.util.*;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXTextField;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.ResourceBundle;
