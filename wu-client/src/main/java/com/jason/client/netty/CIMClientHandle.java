@@ -28,6 +28,8 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
 
     private ScheduledExecutorService scheduledExecutorService ;
 
+    Robot robot;
+
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
 
@@ -60,27 +62,12 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
             //LOGGER.info("收到服务端心跳！！！");
             //NettyUtil.updateReaderTime(ctx.channel(), System.currentTimeMillis());
         }*/
+        if(robot == null){
+            robot = new Robot();
+        }
         System.out.println("收到服务端消息:" +  msg.toString());
         if (msg.getMsgType() == Constants.MSG_CONTROL) {
-            //回调消息
-            //callBackMsg(msg.getResMsg());
-            //LOGGER.info("收到服务端消息[{}]", msg.toString());
-            try {
-                Robot robot = new Robot();
-
-                // 截取整个屏幕
-                Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-                Rectangle rec = new Rectangle(dimension);
-                BufferedImage image = robot.createScreenCapture(rec);;
-                byte imageBytes[] = ByteObjConverter.getImageBytes(image);
-
-                NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, msg.getReceiveUserId(), msg.getSendUserId(), imageBytes, null, null,(NioSocketChannel)ctx.channel());
-                // NettyUtil.sendGoogleProtocolMsg(Constants.CommandType.MSG_IMG, 0, 1, imageBytes, null);
-            } catch (AWTException e) {
-                e.printStackTrace();
-            } catch (ImageFormatException e) {
-                e.printStackTrace();
-            }
+            NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, msg.getReceiveUserId(), msg.getSendUserId(), getImgBytes(), null, null,(NioSocketChannel)ctx.channel());
         }
 
         if (msg.getMsgType() == Constants.MSG_EVENT) {
@@ -92,12 +79,23 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
 
                 InputEvent event = (InputEvent)ByteObjConverter.byteToObject(msg.getUserEvent().toByteArray());
                 handleEvents(robot, event);// 处理事件
+                NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, msg.getReceiveUserId(), msg.getSendUserId(), getImgBytes(), null, null,(NioSocketChannel)ctx.channel());
             } catch (AWTException e) {
                 e.printStackTrace();
             } catch (ImageFormatException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private byte[] getImgBytes(){
+        // 截取整个屏幕
+        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+        Rectangle rec = new Rectangle(dimension);
+        BufferedImage image = robot.createScreenCapture(rec);;
+        byte imageBytes[] = ByteObjConverter.getImageBytes(image);
+
+        return imageBytes;
     }
 
     /**
