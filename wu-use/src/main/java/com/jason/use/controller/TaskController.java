@@ -173,7 +173,6 @@ public class TaskController implements Initializable {
     }
 
     public void connectClient(ActionEvent actionEvent) {
-        ControlWindow controlWindow = new ControlWindow();
         NettyUtil.sendGoogleProtocolMsg(Constants.MSG_CONTROL, Integer.valueOf(LoginController.userId), Integer.valueOf(subUserId), null, null, null, (NioSocketChannel) CIMClient.channel);
     }
 }

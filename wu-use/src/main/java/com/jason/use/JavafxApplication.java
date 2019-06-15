@@ -1,6 +1,7 @@
 package com.jason.use;
 
 import com.jason.use.netty.CIMClient;
+import com.jason.use.netty.CIMClientHandle;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.JFXAlert;
 import com.jfoenix.controls.JFXButton;
@@ -65,6 +66,7 @@ public class JavafxApplication extends Application {
         System.out.print("监听到窗口关闭");
         mainStage.close();
         CIMClient.close();
+        CIMClientHandle.javaFXWindow.dispose();
     }
 
     public static void showAlert(String headMsg, String bodyMsg, String methodName, Class<?> cls, String btnName){

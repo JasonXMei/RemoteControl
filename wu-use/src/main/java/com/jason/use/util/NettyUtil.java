@@ -75,7 +75,7 @@ public class NettyUtil {
                         .setMsgType(msgType)
                         .setSendUserId(sendUserId)
                         .setReceiveUserId(receiveUserId)
-                        .setScreenImg(ByteString.copyFrom(userEvent))
+                        .setUserEvent(ByteString.copyFrom(userEvent))
                         .build();
         }
 

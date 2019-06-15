@@ -60,7 +60,7 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
             //LOGGER.info("收到服务端心跳！！！");
             //NettyUtil.updateReaderTime(ctx.channel(), System.currentTimeMillis());
         }*/
-
+        System.out.println("收到服务端消息:" +  msg.toString());
         if (msg.getMsgType() == Constants.MSG_CONTROL) {
             //回调消息
             //callBackMsg(msg.getResMsg());

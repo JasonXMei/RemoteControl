@@ -3,7 +3,7 @@ package com.jason.use.netty;
 import com.jason.use.protocol.WUProto;
 import com.jason.use.util.ByteObjConverter;
 import com.jason.use.util.Constants;
-import com.jason.use.util.NettyUtil;
+import com.jason.use.util.JavaFXWindow;
 import com.sun.image.codec.jpeg.ImageFormatException;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -17,7 +17,6 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import java.awt.image.BufferedImage;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -27,6 +26,8 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
     private ThreadPoolExecutor threadPoolExecutor ;
 
     private ScheduledExecutorService scheduledExecutorService ;
+
+    public static JavaFXWindow javaFXWindow;
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
@@ -82,6 +83,16 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
                 e.printStackTrace();
             }
         }*/
+        if (msg.getMsgType() == Constants.MSG_IMG){
+            if(javaFXWindow == null){
+                javaFXWindow = new JavaFXWindow();
+            }
+            //NettyUtil.sendGoogleProtocolMsg(Constants.CommandType.PONG, 0, 1, null, null, ctx);
+            if(!javaFXWindow.isVisible()){
+                javaFXWindow.setVisible(true);
+            }
+            javaFXWindow.repainImage(msg.getScreenImg().toByteArray());
+        }
 
         if (msg.getMsgType() == Constants.MSG_EVENT) {
             //回调消息
