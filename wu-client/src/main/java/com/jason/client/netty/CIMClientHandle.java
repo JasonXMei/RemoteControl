@@ -1,39 +1,31 @@
 package com.jason.client.netty;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jason.client.protocol.WUProto;
 import com.jason.client.util.ByteObjConverter;
 import com.jason.client.util.Constants;
 import com.jason.client.util.NettyUtil;
-import com.sun.image.codec.jpeg.ImageFormatException;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.timeout.IdleState;
-import io.netty.handler.timeout.IdleStateEvent;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ThreadPoolExecutor;
 
 @ChannelHandler.Sharable
 public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProtocol> {
 
-    private ThreadPoolExecutor threadPoolExecutor ;
-
-    private ScheduledExecutorService scheduledExecutorService ;
-
     Robot robot;
+
+    public static volatile int controlUserId = 0;
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-
-        if (evt instanceof IdleStateEvent){
+        /*if (evt instanceof IdleStateEvent){
             IdleStateEvent idleStateEvent = (IdleStateEvent) evt ;
 
             //LOGGER.info("定时检测服务端是否存活");
@@ -42,7 +34,7 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
                 //NettyUtil.sendGoogleProtocolMsg(Constants.CommandType.PING, 1, 0, null, null, nioSocketChannel);
             }
         }
-        super.userEventTriggered(ctx, evt);
+        super.userEventTriggered(ctx, evt);*/
     }
 
     @Override
@@ -57,34 +49,47 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx,  WUProto.WUProtocol msg) throws Exception {
-        //心跳更新时间
-        /*if (msg.getMsgType() == Constants.PONG){
-            //LOGGER.info("收到服务端心跳！！！");
-            //NettyUtil.updateReaderTime(ctx.channel(), System.currentTimeMillis());
-        }*/
         if(robot == null){
             robot = new Robot();
         }
         System.out.println("收到服务端消息:" +  msg.toString());
         if (msg.getMsgType() == Constants.MSG_CONTROL) {
-            NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, msg.getReceiveUserId(), msg.getSendUserId(), getImgBytes(), null, null,(NioSocketChannel)ctx.channel());
+            controlUserId = msg.getSendUserId();
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while (controlUserId != 0){
+                        // 截取整个屏幕
+                        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+                        Rectangle rec = new Rectangle(dimension);
+                        BufferedImage image = robot.createScreenCapture(rec);;
+                        byte imageBytes[] = ByteObjConverter.getImageBytes(image);
+                        NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, msg.getReceiveUserId(), msg.getSendUserId(), imageBytes, null, null,(NioSocketChannel)ctx.channel());
+                        try {
+                            Thread.sleep(50);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
+        }
+
+        if (msg.getMsgType() == Constants.MSG_DIS_CONTROL) {
+            controlUserId = 0;
         }
 
         if (msg.getMsgType() == Constants.MSG_EVENT) {
             //回调消息
             //callBackMsg(msg.getResMsg());
             //LOGGER.info("收到服务端消息[{}]", msg.toString());
-            try {
-                Robot robot = new Robot();
-
-                InputEvent event = (InputEvent)ByteObjConverter.byteToObject(msg.getUserEvent().toByteArray());
-                handleEvents(robot, event);// 处理事件
-                NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, msg.getReceiveUserId(), msg.getSendUserId(), getImgBytes(), null, null,(NioSocketChannel)ctx.channel());
-            } catch (AWTException e) {
-                e.printStackTrace();
-            } catch (ImageFormatException e) {
-                e.printStackTrace();
-            }
+            //InputEvent event = (InputEvent)ByteObjConverter.byteToObject(msg.getUserEvent().toByteArray());
+            JSONObject jsonObject = (JSONObject) ByteObjConverter.byteToObject(msg.getUserEvent().toByteArray());
+            handleEvents(robot, jsonObject);// 处理事件
+            /*if(flag){
+                Thread.sleep(500);
+            }*/
+            //NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, msg.getReceiveUserId(), msg.getSendUserId(), getImgBytes(), null, null,(NioSocketChannel)ctx.channel());
         }
     }
 
@@ -101,46 +106,40 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
     /**
      * 事件处理，用来判断事件类型，并用robot类执行
      */
-    public static void handleEvents(Robot action, InputEvent event) {
-        MouseEvent mevent = null; // 鼠标事件
-        MouseWheelEvent mwevent = null;// 鼠标滚动事件
-        KeyEvent kevent = null; // 键盘事件
+    public static void  handleEvents(Robot action, JSONObject event) {
         int mousebuttonmask = -100; // 鼠标按键
 
-        switch (event.getID()) {
+        switch (event.getInteger("eventId")) {
             case MouseEvent.MOUSE_MOVED: // 鼠标移动
-                mevent = (MouseEvent) event;
-                action.mouseMove(mevent.getX(), mevent.getY());
+            case MouseEvent.MOUSE_DRAGGED: // 鼠标拖拽
+                //mevent = (MouvoidseEvent) event;
+                action.mouseMove(event.getInteger("moveX"), event.getInteger("moveY"));
                 break;
             case MouseEvent.MOUSE_PRESSED: // 鼠标键按下
-                mevent = (MouseEvent) event;
-                action.mouseMove(mevent.getX(), mevent.getY());
-                mousebuttonmask = getMouseClick(mevent.getButton());
+                //mevent = (MouseEvent) event;
+                action.mouseMove(event.getInteger("moveX"), event.getInteger("moveY"));
+                mousebuttonmask = getMouseClick(event.getInteger("btn"));
                 if (mousebuttonmask != -100)
                     action.mousePress(mousebuttonmask);
                 break;
             case MouseEvent.MOUSE_RELEASED: // 鼠标键松开
-                mevent = (MouseEvent) event;
-                action.mouseMove(mevent.getX(), mevent.getY());
-                mousebuttonmask = getMouseClick(mevent.getButton());// 取得鼠标按键
+                //mevent = (MouseEvent) event;
+                action.mouseMove(event.getInteger("moveX"), event.getInteger("moveY"));
+                mousebuttonmask = getMouseClick(event.getInteger("btn"));// 取得鼠标按键
                 if (mousebuttonmask != -100)
                     action.mouseRelease(mousebuttonmask);
                 break;
             case MouseEvent.MOUSE_WHEEL: // 鼠标滚动
-                mwevent = (MouseWheelEvent) event;
-                action.mouseWheel(mwevent.getWheelRotation());
-                break;
-            case MouseEvent.MOUSE_DRAGGED: // 鼠标拖拽
-                mevent = (MouseEvent) event;
-                action.mouseMove(mevent.getX(), mevent.getY());
+                //mwevent = (MouseWheelEvent) event;
+                action.mouseWheel(event.getInteger("wheelRotation"));
                 break;
             case KeyEvent.KEY_PRESSED: // 按键
-                kevent = (KeyEvent) event;
-                action.keyPress(kevent.getKeyCode());
+                //kevent = (KeyEvent) event;
+                action.keyPress(event.getInteger("keyCode"));
                 break;
             case KeyEvent.KEY_RELEASED: // 松键
-                kevent = (KeyEvent) event;
-                action.keyRelease(kevent.getKeyCode());
+                //kevent = (KeyEvent) event;
+                action.keyRelease(event.getInteger("keyCode"));
                 break;
             default:
                 break;
@@ -155,26 +154,11 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
         return -100;
     }
 
-    /**
-     * 回调消息
-     * @param msg
-     */
-    private void callBackMsg(String msg) {
-        /*threadPoolExecutor = SpringBeanFactory.getBean("callBackThreadPool",ThreadPoolExecutor.class) ;
-        threadPoolExecutor.execute(() -> {
-            caller = SpringBeanFactory.getBean(MsgHandleCaller.class) ;
-            caller.getMsgHandleListener().handle(msg);
-        });*/
-
-    }
-
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         //异常时断开连接
         cause.printStackTrace() ;
         ctx.close() ;
     }
-
-
 
 }

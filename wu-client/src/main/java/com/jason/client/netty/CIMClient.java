@@ -1,5 +1,6 @@
 package com.jason.client.netty;
 
+import com.jason.client.config.APIConfig;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
@@ -18,7 +19,6 @@ public class CIMClient {
      */
     private static int maxRetryCount = 5;
     private static int errorCount;
-    private static String ip = "127.0.0.1";
     private static int port = 8989;
 
     /**
@@ -32,7 +32,7 @@ public class CIMClient {
 
         ChannelFuture future = null;
         try {
-            future = bootstrap.connect(ip, port).sync();
+            future = bootstrap.connect(APIConfig.ipAddr, port).sync();
 
             if (future.isSuccess()) {
                 System.out.println("启动 cim client 成功");

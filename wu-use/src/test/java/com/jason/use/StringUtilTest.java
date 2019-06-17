@@ -13,4 +13,5 @@ public class StringUtilTest {
         System.out.println(StringUtil.isNumeric("-1"));
         System.out.println(StringUtil.isNumeric("1.1"));
     }
+
 }

@@ -68,7 +68,7 @@ public class CIMServerHandle extends SimpleChannelInboundHandler<WUProto.WUProto
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, WUProto.WUProtocol msg) throws Exception {
-        log.info("收到msg={}", msg.toString());
+        log.info("收到msg={}", msg.getSendUserId() + ":" + msg.getReceiveUserId());
 
         if (msg.getMsgType() == Constants.LOGIN_USE) {
             int sendUserId = msg.getSendUserId();
@@ -104,9 +104,29 @@ public class CIMServerHandle extends SimpleChannelInboundHandler<WUProto.WUProto
         }*/
 
         if (msg.getMsgType() == Constants.MSG_CONTROL){
-            //NettyUtil.sendGoogleProtocolMsg(Constants.PONG, 0, 1, null, null, ctx);
-            //controlWindow.repainImage(msg.getScreenImg().toByteArray());
-            NettyUtil.sendGoogleProtocolMsg(Constants.MSG_CONTROL, msg.getSendUserId(), msg.getReceiveUserId(), null, null, null);
+            int receiveUserId = msg.getReceiveUserId();
+            SubUser subUser = subUserMapper.selectById(receiveUserId);
+            if(subUser != null && subUser.getConnectStatus().getStatus() == ConnectStatusEnum.ToBeConnect.getStatus()){
+                subUser.setConnectStatus(ConnectStatusEnum.Connected);
+                subUserMapper.updateById(subUser);
+                NettyUtil.sendGoogleProtocolMsg(Constants.MSG_CONTROL, msg.getSendUserId(), msg.getReceiveUserId(), null, null, null);
+            }else{
+                NettyUtil.sendGoogleProtocolMsg(Constants.MSG_ERROR, 0, msg.getReceiveUserId(), null, null, "该小号已被连接！", (NioSocketChannel) ctx.channel());
+            }
+        }
+
+        if (msg.getMsgType() == Constants.MSG_DIS_CONTROL){
+            int receiveUserId = msg.getReceiveUserId();
+            SubUser subUser = subUserMapper.selectById(receiveUserId);
+            if(subUser != null){
+                if(SocketHandler.getClient(receiveUserId) != null){
+                    subUser.setConnectStatus(ConnectStatusEnum.ToBeConnect);
+                    NettyUtil.sendGoogleProtocolMsg(Constants.MSG_DIS_CONTROL, msg.getSendUserId(), msg.getReceiveUserId(), null, null, null);
+                }else{
+                    subUser.setConnectStatus(ConnectStatusEnum.DisConnected);
+                }
+                subUserMapper.updateById(subUser);
+            }
         }
 
         if (msg.getMsgType() == Constants.MSG_IMG){
@@ -128,9 +148,7 @@ public class CIMServerHandle extends SimpleChannelInboundHandler<WUProto.WUProto
         /*if (CIMException.isResetByPeer(cause.getMessage())) {
             return;
         }*/
-
         log.error(cause.getMessage(), cause);
-
     }
 
 }

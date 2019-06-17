@@ -39,7 +39,7 @@
             <HBox spacing="20.0">
                <children>
             
-                    <Label prefHeight="34.0" prefWidth="44.0" text="密   码" textFill="DIMGRAY">
+                    <Label prefHeight="34.0" prefWidth="45.0" text="密码" textFill="DIMGRAY">
                         <font>
                             <Font name="System Bold" size="15.0" />
                         </font>
@@ -51,11 +51,11 @@
                </VBox.margin>
             </HBox>
       
-              <JFXCheckBox fx:id="rememberInfo" alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="20.0" prefWidth="340.0" selected="true" text="记住密码" textFill="WHITE">
+              <!--<JFXCheckBox fx:id="rememberInfo" alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="20.0" prefWidth="340.0" selected="true" text="记住密码" textFill="WHITE">
                <padding>
                   <Insets right="8.0" />
                </padding>
-            </JFXCheckBox>
+            </JFXCheckBox>-->
               <JFXButton fx:id="btn_start" buttonType="RAISED" mnemonicParsing="false" onAction="#loginAction" prefHeight="48.0" prefWidth="342.0" stylesheets="@../css/main.css" text="登录" textAlignment="CENTER">
                    <font>
                       <Font size="24.0" />

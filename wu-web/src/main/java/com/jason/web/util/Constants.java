@@ -22,4 +22,5 @@ public class Constants {
     public static final int MSG_EVENT = 5 ;
     public static final int MSG_CONTROL = 6 ;
     public static final int MSG_ERROR = 7 ;
+    public static final int MSG_DIS_CONTROL = 8 ;
 }

@@ -55,6 +55,13 @@ public class NettyUtil {
                         .setReceiveUserId(receiveUserId)
                         .build();
                 break;
+            case Constants.MSG_DIS_CONTROL:
+                protocol = WUProto.WUProtocol.newBuilder()
+                        .setMsgType(msgType)
+                        .setSendUserId(sendUserId)
+                        .setReceiveUserId(receiveUserId)
+                        .build();
+                break;
             case Constants.MSG_ERROR:
                 protocol = WUProto.WUProtocol.newBuilder()
                         .setMsgType(msgType)
@@ -81,55 +88,12 @@ public class NettyUtil {
 
         nioSocketChannel.writeAndFlush(protocol).addListeners((ChannelFutureListener) future -> {
             if (!future.isSuccess()) {
-                //LOGGER.error("IO error,close Channel");
+                System.out.println("IO error,close Channel");
                 future.channel().close();
             }else{
-                //LOGGER.info("发送 Google Protocol Msg成功!");
+                System.out.println("发送 Google Protocol Msg成功!");
             }
         });
     }
 
-    /**
-     * 发送 Google Protocol 编解码字符串
-     */
-    /*public static void sendGoogleProtocolMsg(int msgType, int sendUserId, int receiveUserId, byte[] screenImg, byte[] userEvent, String message) {
-        WUProto.WUProtocol protocol = null;
-        NioSocketChannel nioSocketChannel = null;
-        switch (msgType){
-            case Constants.MSG_CONTROL:
-                protocol = WUProto.WUProtocol.newBuilder()
-                        .setMsgType(msgType)
-                        .setSendUserId(sendUserId)
-                        .setReceiveUserId(receiveUserId)
-                        .build();
-                nioSocketChannel = SocketHandler.getClient(receiveUserId);
-                break;
-            case Constants.MSG_IMG:
-                protocol = WUProto.WUProtocol.newBuilder()
-                        .setMsgType(msgType)
-                        .setSendUserId(sendUserId)
-                        .setReceiveUserId(receiveUserId)
-                        .setScreenImg(ByteString.copyFrom(screenImg))
-                        .build();
-                nioSocketChannel = SocketHandler.getUse(receiveUserId);
-                break;
-            case Constants.MSG_EVENT:
-                protocol = WUProto.WUProtocol.newBuilder()
-                        .setMsgType(msgType)
-                        .setSendUserId(sendUserId)
-                        .setReceiveUserId(receiveUserId)
-                        .setUserEvent(ByteString.copyFrom(userEvent))
-                        .build();
-                nioSocketChannel = SocketHandler.getClient(receiveUserId);
-        }
-
-        nioSocketChannel.writeAndFlush(protocol).addListeners((ChannelFutureListener) future -> {
-            if (!future.isSuccess()) {
-                LOGGER.error("IO error,close Channel");
-                future.channel().close();
-            }else{
-                LOGGER.info("发送 Google Protocol Msg成功!");
-            }
-        });
-    }*/
 }

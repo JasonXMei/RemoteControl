@@ -2,7 +2,9 @@ package com.jason.client.config;
 
 public class APIConfig {
 
-    private static String urlPrefix = "http://localhost:8082/";
+    public static String ipAddr = "192.168.1.27";
+
+    private static String urlPrefix = "http://" + ipAddr + ":8082/";
 
     public static String loginUrl = urlPrefix + "user/login?userName=%s&password=%s";
 

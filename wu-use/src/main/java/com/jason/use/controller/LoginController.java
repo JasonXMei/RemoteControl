@@ -10,15 +10,10 @@ import com.jason.use.netty.CIMClient;
 import com.jason.use.util.*;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXPasswordField;
-import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXTextField;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.layout.StackPane;
-import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -40,13 +35,13 @@ public class LoginController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        rememberInfo.setSelected(true);
+       /* rememberInfo.setSelected(true);
 
         String[] userInfo = FileUtil.getUserAndPass();
         if (userInfo.length == 2) {
             userName.setText(userInfo[0]);
             password.setText(userInfo[1]);
-        }
+        }*/
     }
 
     /**
@@ -66,11 +61,11 @@ public class LoginController implements Initializable {
         if (jsonObject.getInteger("status").equals(HttpStatus.OK.status)){
             jwt = jsonObject.getString("obj");
             userId = String.valueOf(JWTUtil.decodeToken(jwt));
-            if (rememberInfo.isSelected()) {
+            /*if (rememberInfo.isSelected()) {
                 FileUtil.setUserAndPass(userName, password, true);
             }else{
                 FileUtil.setUserAndPass(userName, password, false);
-            }
+            }*/
 
             boolean checkOrderCount = checkOrderCount();
 

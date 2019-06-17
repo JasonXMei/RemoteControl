@@ -1,6 +1,7 @@
 package com.jason.client;
 
 import com.jason.client.netty.CIMClient;
+import com.jason.client.netty.ImageThread;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import javafx.application.Application;
@@ -36,6 +37,10 @@ public class JavafxApplication extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception{
+        Thread thread = new Thread(new ImageThread());
+        thread.setDaemon(true);
+        thread.start();
+
         borderPane = FXMLLoader.load(getClass().getResource("/view/wrapper.fxml"));
 		mainStage = primaryStage;
 		mainStage.setResizable(false);
@@ -46,7 +51,7 @@ public class JavafxApplication extends Application {
 		mainStage.setTitle(title);
 
 		Scene scene = new Scene(root, width, height);
-		//scene.getStylesheets().add(getClass().getResource("/css/login.css").toExternalForm());
+		//scene.getStyles1heets().add(getClass().getResource("/css/login.css").toExternalForm());
 		mainStage.setScene(scene);
 		mainStage.show();
 

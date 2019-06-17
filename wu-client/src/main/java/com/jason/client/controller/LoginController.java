@@ -8,7 +8,6 @@ import com.jason.client.enums.ConnectStatusEnum;
 import com.jason.client.enums.HttpStatus;
 import com.jason.client.netty.CIMClient;
 import com.jason.client.util.*;
-import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
@@ -24,8 +23,8 @@ import java.util.*;
 
 public class LoginController implements Initializable {
 
-    @FXML
-    private JFXCheckBox rememberInfo;
+    //@FXML
+    //private JFXCheckBox rememberInfo;
 
     @FXML
     private JFXTextField userName;
@@ -49,13 +48,13 @@ public class LoginController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         stackPane.setVisible(false);
-        rememberInfo.setSelected(true);
+        //rememberInfo.setSelected(true);
 
-        String[] userInfo = FileUtil.getUserAndPass();
+        /*String[] userInfo = FileUtil.getUserAndPass();
         if (userInfo.length == 2) {
             userName.setText(userInfo[0]);
             password.setText(userInfo[1]);
-        }
+        }*/
     }
 
     /**
@@ -76,11 +75,11 @@ public class LoginController implements Initializable {
             jwt = jsonObject.getString("obj");
             userId = String.valueOf(JWTUtil.decodeToken(jwt));
 
-            if (rememberInfo.isSelected()) {
+            /*if (rememberInfo.isSelected()) {
                 rememberFlag = true;
                 userNameStr = userName;
                 passwordStr = password;
-            }
+            }*/
 
             getSubUserList();
             JavafxApplication.showSelectConfirmed("操作提示", subUserListComboBox, stackPane, "chooseAndCheckSubUser", getClass());
@@ -111,9 +110,9 @@ public class LoginController implements Initializable {
     }
 
    public static void chooseAndCheckSubUser(){
-       if(rememberFlag){
+       /*if(rememberFlag){
            FileUtil.setUserAndPass(userNameStr, passwordStr, true);
-       }
+       }*/
 
        String selectSubUser = subUserListComboBox.getValue();
        if (StringUtil.isEmpty(selectSubUser)){

@@ -5,7 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<AnchorPane id="AnchorPane" fx:id="anchorPane" maxHeight="618.0" maxWidth="1000.0" minHeight="618.0" minWidth="1000.0" prefHeight="618.0" prefWidth="1000.0" style="-fx-background-color: LightBLue;" stylesheets="@../css/login.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jason.client.controller.LoginController">
+<AnchorPane id="AnchorPane" fx:id="anchorPane" maxHeight="618.0" maxWidth="1000.0" minHeight="618.0" minWidth="1000.0" prefHeight="618.0" prefWidth="1000.0" style="-fx-background-color: LightBLue;" stylesheets="/css/login.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jason.client.controller.LoginController">
     <children>
       <VBox layoutX="320.0" layoutY="140.0" prefHeight="338.0" prefWidth="361.0" spacing="15.0">
          <children>
@@ -18,7 +18,7 @@
             <HBox spacing="20.0">
                <children>
             
-                    <Label alignment="CENTER" prefHeight="31.0" prefWidth="45.0" text="用户名" textAlignment="CENTER" textFill="DIMGRAY">
+                    <Label alignment="CENTER" prefHeight="31.0" prefWidth="50.0" text="用户名" textAlignment="CENTER" textFill="DIMGRAY">
                         <font>
                             <Font name="System Bold" size="15.0" />
                         </font>
@@ -32,7 +32,7 @@
             <HBox spacing="20.0">
                <children>
             
-                    <Label prefHeight="34.0" prefWidth="44.0" text="密   码" textFill="DIMGRAY">
+                    <Label prefHeight="31.0" prefWidth="50.0" text="密码" textAlignment="CENTER" textFill="DIMGRAY">
                         <font>
                             <Font name="System Bold" size="15.0" />
                         </font>
@@ -44,11 +44,11 @@
                </VBox.margin>
             </HBox>
       
-              <JFXCheckBox fx:id="rememberInfo" alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="20.0" prefWidth="340.0" selected="true" text="记住密码" textFill="WHITE">
+              <!--<JFXCheckBox fx:id="rememberInfo" alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="20.0" prefWidth="340.0" selected="true" text="记住密码" textFill="WHITE">
                <padding>
                   <Insets right="8.0" />
                </padding>
-            </JFXCheckBox>
+            </JFXCheckBox>-->
               <JFXButton fx:id="btn_start" buttonType="RAISED" mnemonicParsing="false" onAction="#loginAction" prefHeight="48.0" prefWidth="342.0" stylesheets="@../css/main.css" text="登录" textAlignment="CENTER">
                    <font>
                       <Font size="24.0" />

@@ -66,7 +66,9 @@ public class JavafxApplication extends Application {
         System.out.print("监听到窗口关闭");
         mainStage.close();
         CIMClient.close();
-        CIMClientHandle.javaFXWindow.dispose();
+        if(CIMClientHandle.javaFXWindow != null){
+            CIMClientHandle.javaFXWindow.dispose();
+        }
     }
 
     public static void showAlert(String headMsg, String bodyMsg, String methodName, Class<?> cls, String btnName){

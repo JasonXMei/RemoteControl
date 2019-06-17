@@ -1,16 +1,12 @@
 package com.jason.use.netty;
 
+import com.jason.use.JavafxApplication;
 import com.jason.use.protocol.WUProto;
-import com.jason.use.util.ByteObjConverter;
 import com.jason.use.util.Constants;
 import com.jason.use.util.JavaFXWindow;
-import com.sun.image.codec.jpeg.ImageFormatException;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.timeout.IdleState;
-import io.netty.handler.timeout.IdleStateEvent;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
@@ -32,7 +28,7 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
 
-        if (evt instanceof IdleStateEvent){
+        /*if (evt instanceof IdleStateEvent){
             IdleStateEvent idleStateEvent = (IdleStateEvent) evt ;
 
             //LOGGER.info("定时检测服务端是否存活");
@@ -41,7 +37,7 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
                 //NettyUtil.sendGoogleProtocolMsg(Constants.CommandType.PING, 1, 0, null, null, nioSocketChannel);
             }
         }
-        super.userEventTriggered(ctx, evt);
+        super.userEventTriggered(ctx, evt);*/
     }
 
     @Override
@@ -56,34 +52,8 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx,  WUProto.WUProtocol msg) throws Exception {
-        System.out.println("收到服务端消息:" +  msg.toString());
-        //心跳更新时间
-        /*if (msg.getMsgType() == Constants.PONG){
-            //LOGGER.info("收到服务端心跳！！！");
-            //NettyUtil.updateReaderTime(ctx.channel(), System.currentTimeMillis());
-        }*/
-
-        /*if (msg.getMsgType() == Constants.MSG_CONTROL) {
-            //回调消息
-            //callBackMsg(msg.getResMsg());
-            try {
-                Robot robot = new Robot();
-
-                // 截取整个屏幕
-                Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-                Rectangle rec = new Rectangle(dimension);
-                BufferedImage image = robot.createScreenCapture(rec);;
-                byte imageBytes[] = ByteObjConverter.getImageBytes(image);
-
-                NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, 0, 1, imageBytes, null, null,(NioSocketChannel)ctx.channel());
-                // NettyUtil.sendGoogleProtocolMsg(Constants.CommandType.MSG_IMG, 0, 1, imageBytes, null);
-            } catch (AWTException e) {
-                e.printStackTrace();
-            } catch (ImageFormatException e) {
-                e.printStackTrace();
-            }
-        }*/
-        if (msg.getMsgType() == Constants.MSG_IMG){
+        System.out.println("收到服务端消息:" +  msg.getReceiveUserId() + "," + msg.getSendUserId() + "," + msg.getMsgType());
+        if (msg.getMsgType() == Constants.MSG_IMG && JavaFXWindow.isConnected){
             if(javaFXWindow == null){
                 javaFXWindow = new JavaFXWindow();
             }
@@ -94,20 +64,8 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
             javaFXWindow.repainImage(msg.getScreenImg().toByteArray());
         }
 
-        if (msg.getMsgType() == Constants.MSG_EVENT) {
-            //回调消息
-            //callBackMsg(msg.getResMsg());
-            //LOGGER.info("收到服务端消息[{}]", msg.toString());
-            try {
-                Robot robot = new Robot();
-
-                InputEvent event = (InputEvent)ByteObjConverter.byteToObject(msg.getUserEvent().toByteArray());
-                handleEvents(robot, event);// 处理事件
-            } catch (AWTException e) {
-                e.printStackTrace();
-            } catch (ImageFormatException e) {
-                e.printStackTrace();
-            }
+        if (msg.getMsgType() == Constants.MSG_ERROR) {
+            JavafxApplication.showAlert("温馨提示", msg.getMessage(), null, null, "确定");
         }
     }
 
