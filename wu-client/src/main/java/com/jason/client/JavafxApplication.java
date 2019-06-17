@@ -37,10 +37,6 @@ public class JavafxApplication extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception{
-        Thread thread = new Thread(new ImageThread());
-        thread.setDaemon(true);
-        thread.start();
-
         borderPane = FXMLLoader.load(getClass().getResource("/view/wrapper.fxml"));
 		mainStage = primaryStage;
 		mainStage.setResizable(false);
@@ -267,6 +263,9 @@ public class JavafxApplication extends Application {
 	public void showWindow(){ mainStage.show();}
 
 	public static void main(String[] args) {
+        Thread thread = new Thread(new ImageThread());
+        thread.setDaemon(true);
+        thread.start();
 		launch(args);
 	}
 }

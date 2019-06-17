@@ -13,19 +13,21 @@ public class ImageThread implements Runnable{
 
     @Override
     public void run() {
-        while (CIMClientHandle.controlUserId != 0){
+        try {
+            Robot robot = new Robot();
             // 截取整个屏幕
             Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
             Rectangle rec = new Rectangle(dimension);
-            try {
-                Robot robot = new Robot();
-                BufferedImage image = robot.createScreenCapture(rec);;
-                byte imageBytes[] = ByteObjConverter.getImageBytes(image);
-                NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, Integer.valueOf(LoginController.userId), CIMClientHandle.controlUserId, imageBytes, null, null,(NioSocketChannel)CIMClient.channel);
+            while (true){
+                if(CIMClientHandle.controlUserId != 0){
+                    BufferedImage image = robot.createScreenCapture(rec);;
+                    byte imageBytes[] = ByteObjConverter.getImageBytes(image);
+                    NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, Integer.valueOf(LoginController.userId), CIMClientHandle.controlUserId, imageBytes, null, null,(NioSocketChannel)CIMClient.channel);
+                }
                 Thread.sleep(50);
-            } catch (Exception e) {
-                e.printStackTrace();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

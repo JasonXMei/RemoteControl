@@ -55,7 +55,8 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
         System.out.println("收到服务端消息:" +  msg.toString());
         if (msg.getMsgType() == Constants.MSG_CONTROL) {
             controlUserId = msg.getSendUserId();
-            Thread thread = new Thread(new Runnable() {
+            NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, msg.getReceiveUserId(), msg.getSendUserId(), getImgBytes(), null, null,(NioSocketChannel)ctx.channel());
+            /*Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     while (controlUserId != 0){
@@ -72,7 +73,7 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
                         }
                     }
                 }
-            });
+            });*/
         }
 
         if (msg.getMsgType() == Constants.MSG_DIS_CONTROL) {

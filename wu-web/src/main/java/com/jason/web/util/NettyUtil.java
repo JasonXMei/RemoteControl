@@ -104,6 +104,18 @@ public class NettyUtil {
                             .build();
                 }
                 break;
+            case Constants.MSG_DIS_CONTROL:
+                nioSocketChannel = SocketHandler.getClient(receiveUserId);
+                if(nioSocketChannel == null){
+                    return;
+                }else{
+                    protocol = WUProto.WUProtocol.newBuilder()
+                            .setMsgType(msgType)
+                            .setSendUserId(sendUserId)
+                            .setReceiveUserId(receiveUserId)
+                            .build();
+                }
+                break;
             case Constants.MSG_IMG:
                 nioSocketChannel = SocketHandler.getUse(receiveUserId);
                 if(nioSocketChannel == null){

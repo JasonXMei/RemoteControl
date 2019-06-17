@@ -44,14 +44,15 @@ public class JavaFXWindow extends JFrame{
         this.repaint();
     }
 
+    public void showError(String msg){
+        label.setText(msg);
+        initWindow(false);
+    }
+
     private int screenWidth = (int) toolkit.getScreenSize().getWidth();
     private int screenHeight = (int) toolkit.getScreenSize().getHeight();
     public void initWindow(boolean flag){
         if(flag){
-            Location_x = (screenWidth - DEFAULE_WIDTH) / 2;
-            Location_y = (screenHeight - DEFAULE_HEIGH) / 2;
-            setSize(DEFAULE_WIDTH,DEFAULE_HEIGH);// 设置窗体默认大小,使其适应屏幕大小
-        }else{
             if(screenWidth > MAX_WIDTH){
                 Location_x = (screenWidth - MAX_WIDTH) / 2;
             }else{
@@ -62,9 +63,11 @@ public class JavaFXWindow extends JFrame{
             }else{
                 Location_y = 0;
             }
+            setSize(DEFAULE_WIDTH,DEFAULE_HEIGH);// 设置窗体默认大小,使其适应屏幕大小
+            setLocation(Location_x, Location_y);//设置窗体在屏幕中的位置
+        }else{
             setSize(MAX_WIDTH, MAX_HEIGH);
         }
-        setLocation(Location_x, Location_y);//设置窗体在屏幕中的位置
     }
 
     public JavaFXWindow(){

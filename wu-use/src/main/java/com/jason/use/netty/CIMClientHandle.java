@@ -4,11 +4,19 @@ import com.jason.use.JavafxApplication;
 import com.jason.use.protocol.WUProto;
 import com.jason.use.util.Constants;
 import com.jason.use.util.JavaFXWindow;
+import com.jfoenix.animation.alert.JFXAlertAnimation;
+import com.jfoenix.controls.JFXAlert;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialogLayout;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import javafx.scene.paint.*;
+import javafx.scene.text.*;
+import javafx.stage.Modality;
 
 import java.awt.*;
+import java.awt.Paint;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -24,6 +32,8 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
     private ScheduledExecutorService scheduledExecutorService ;
 
     public static JavaFXWindow javaFXWindow;
+
+    public static String errorMsg = null;
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
@@ -65,8 +75,48 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
         }
 
         if (msg.getMsgType() == Constants.MSG_ERROR) {
-            JavafxApplication.showAlert("温馨提示", msg.getMessage(), null, null, "确定");
+            /*if(javaFXWindow == null){
+                javaFXWindow = new JavaFXWindow();
+            }
+            if(!javaFXWindow.isVisible()){
+                javaFXWindow.setVisible(true);
+            }
+            //JavafxApplication.showAlert("温馨提示", msg.getMessage(), null, null, "确定");
+            javaFXWindow.showError(msg.getMessage());*/
+            //showAlert("温馨提示", msg.getMessage(),"确定");
+            errorMsg = msg.getMessage();
         }
+    }
+
+    public static void showAlert(String headMsg, String bodyMsg, String btnName){
+        JFXAlert jfxAlert = new JFXAlert<>();
+        JFXDialogLayout dialogLayout = new JFXDialogLayout();
+
+        Text header = new Text(headMsg);
+        header.setFont(new javafx.scene.text.Font("System", 18));
+        header.setFill(javafx.scene.paint.Paint.valueOf("#495057"));
+
+        Text body = new Text(bodyMsg);
+
+        dialogLayout.setHeading(header);
+        dialogLayout.setBody(body);
+        JFXButton closeButton = new JFXButton(btnName);
+
+        closeButton.setStyle("-fx-background-color: #039BE5;-fx-font-size: 18px");
+        closeButton.setTextFill(javafx.scene.paint.Paint.valueOf("#FFFFFF"));
+        closeButton.setRipplerFill(javafx.scene.paint.Paint.valueOf("#FFFFFF"));
+        closeButton.setButtonType(JFXButton.ButtonType.RAISED);
+
+        closeButton.setOnAction(event -> {
+            jfxAlert.hideWithAnimation();
+        });
+        dialogLayout.setActions(closeButton);
+        jfxAlert.setContent(dialogLayout);
+
+        jfxAlert.setOverlayClose(true);
+        jfxAlert.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+        jfxAlert.initModality(Modality.APPLICATION_MODAL);
+        jfxAlert.showAndWait();
     }
 
     /**
