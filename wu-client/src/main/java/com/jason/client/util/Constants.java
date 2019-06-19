@@ -23,4 +23,5 @@ public class Constants {
     public static final int MSG_CONTROL = 6 ;
     public static final int MSG_DIS_CONTROL = 8 ;
     public static final int MSG_ERROR = 7 ;
+    public static final int UPDATE_JWT = 9 ;
 }

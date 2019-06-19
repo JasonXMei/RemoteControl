@@ -1,6 +1,6 @@
 package com.jason.use.netty;
 
-import com.jason.use.JavafxApplication;
+import com.jason.use.controller.LoginController;
 import com.jason.use.protocol.WUProto;
 import com.jason.use.util.Constants;
 import com.jason.use.util.JavaFXWindow;
@@ -11,12 +11,10 @@ import com.jfoenix.controls.JFXDialogLayout;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import javafx.scene.paint.*;
-import javafx.scene.text.*;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 
 import java.awt.*;
-import java.awt.Paint;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -67,24 +65,21 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
             if(javaFXWindow == null){
                 javaFXWindow = new JavaFXWindow();
             }
-            //NettyUtil.sendGoogleProtocolMsg(Constants.CommandType.PONG, 0, 1, null, null, ctx);
             if(!javaFXWindow.isVisible()){
                 javaFXWindow.setVisible(true);
             }
             javaFXWindow.repainImage(msg.getScreenImg().toByteArray());
+            return;
         }
 
         if (msg.getMsgType() == Constants.MSG_ERROR) {
-            /*if(javaFXWindow == null){
-                javaFXWindow = new JavaFXWindow();
-            }
-            if(!javaFXWindow.isVisible()){
-                javaFXWindow.setVisible(true);
-            }
-            //JavafxApplication.showAlert("温馨提示", msg.getMessage(), null, null, "确定");
-            javaFXWindow.showError(msg.getMessage());*/
-            //showAlert("温馨提示", msg.getMessage(),"确定");
             errorMsg = msg.getMessage();
+            return;
+        }
+
+        if (msg.getMsgType() == Constants.UPDATE_JWT) {
+            LoginController.jwt = msg.getMessage();
+            return;
         }
     }
 

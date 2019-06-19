@@ -78,9 +78,8 @@ public class CIMServerHandle extends SimpleChannelInboundHandler<WUProto.WUProto
                 log.info("使用端[{}]上线", msg.toString());
                 user.setConnectStatus(ConnectStatusEnum.ToBeConnect);
                 userMapper.updateById(user);
-            }else{
-                NettyUtil.sendGoogleProtocolMsg(Constants.MSG_ERROR, 0, sendUserId, null, null, "该用户已登陆！");
             }
+            return;
         }
 
         if (msg.getMsgType() == Constants.LOGIN_CLIENT) {
@@ -91,9 +90,8 @@ public class CIMServerHandle extends SimpleChannelInboundHandler<WUProto.WUProto
                 log.info("客户端[{}]上线", msg.toString());
                 subUser.setConnectStatus(ConnectStatusEnum.ToBeConnect);
                 subUserMapper.updateById(subUser);
-            }else{
-                NettyUtil.sendGoogleProtocolMsg(Constants.MSG_ERROR, 0, sendUserId, null, null, "该用户已登陆！", (NioSocketChannel) ctx.channel());
             }
+            return;
         }
 
         //心跳更新时间
@@ -106,18 +104,24 @@ public class CIMServerHandle extends SimpleChannelInboundHandler<WUProto.WUProto
         if (msg.getMsgType() == Constants.MSG_CONTROL){
             int receiveUserId = msg.getReceiveUserId();
             SubUser subUser = subUserMapper.selectById(receiveUserId);
+            if(subUser.getConnectStatus().getStatus() == ConnectStatusEnum.DisConnected.getStatus()){
+                NettyUtil.sendGoogleProtocolMsg(Constants.MSG_ERROR, 0, msg.getSendUserId(), null, null, "客户端已下线！", (NioSocketChannel) ctx.channel());
+                return;
+            }
+
             if(subUser.getConnectStatus().getStatus() == ConnectStatusEnum.ToBeConnect.getStatus()){
                 if(SocketHandler.getClient(receiveUserId) != null){
                     subUser.setConnectStatus(ConnectStatusEnum.Connected);
                     NettyUtil.sendGoogleProtocolMsg(Constants.MSG_CONTROL, msg.getSendUserId(), msg.getReceiveUserId(), null, null, null);
                 }else{
+                    subUser.setConnectStatus(ConnectStatusEnum.DisConnected);
                     NettyUtil.sendGoogleProtocolMsg(Constants.MSG_ERROR, 0, msg.getSendUserId(), null, null, "客户端已下线！", (NioSocketChannel) ctx.channel());
                 }
+                subUserMapper.updateById(subUser);
             }else{
-                subUser.setConnectStatus(ConnectStatusEnum.Connected);
                 NettyUtil.sendGoogleProtocolMsg(Constants.MSG_ERROR, 0, msg.getSendUserId(), null, null, "客户端已被连接,请稍候重试！", (NioSocketChannel) ctx.channel());
             }
-            subUserMapper.updateById(subUser);
+            return;
         }
 
         if (msg.getMsgType() == Constants.MSG_DIS_CONTROL){
@@ -132,16 +136,21 @@ public class CIMServerHandle extends SimpleChannelInboundHandler<WUProto.WUProto
                 }
                 subUserMapper.updateById(subUser);
             }
+            return;
         }
 
         if (msg.getMsgType() == Constants.MSG_IMG){
-            NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, msg.getSendUserId(), msg.getReceiveUserId(), msg.getScreenImg().toByteArray(), null, null);
+            if(SocketHandler.getUse(msg.getReceiveUserId()) != null){
+                NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, msg.getSendUserId(), msg.getReceiveUserId(), msg.getScreenImg().toByteArray(), null, null);
+            }
+            return;
         }
 
         if (msg.getMsgType() == Constants.MSG_EVENT){
-            //NettyUtil.sendGoogleProtocolMsg(Constants.PONG, 0, 1, null, null, ctx);
-            //controlWindow.repainImage(msg.getScreenImg().toByteArray());
-            NettyUtil.sendGoogleProtocolMsg(Constants.MSG_EVENT, msg.getSendUserId(), msg.getReceiveUserId(), null, msg.getUserEvent().toByteArray(), null);
+            if(SocketHandler.getClient(msg.getReceiveUserId()) != null){
+                NettyUtil.sendGoogleProtocolMsg(Constants.MSG_EVENT, msg.getSendUserId(), msg.getReceiveUserId(), null, msg.getUserEvent().toByteArray(), null);
+            }
+            return;
         }
     }
 

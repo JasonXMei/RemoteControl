@@ -46,6 +46,7 @@ public class NettyUtil {
             case Constants.LOGIN:
             default:*/
             case Constants.MSG_ERROR:
+            case Constants.UPDATE_JWT:
                 protocol = WUProto.WUProtocol.newBuilder()
                         .setMsgType(msgType)
                         .setSendUserId(sendUserId)
@@ -88,65 +89,37 @@ public class NettyUtil {
         switch (msgType){
             case Constants.MSG_CONTROL:
                 nioSocketChannel = SocketHandler.getClient(receiveUserId);
-                if(nioSocketChannel == null){
-                    nioSocketChannel = SocketHandler.getUse(sendUserId);
-                    protocol = WUProto.WUProtocol.newBuilder()
-                            .setMsgType(Constants.MSG_ERROR)
-                            .setSendUserId(0)
-                            .setReceiveUserId(sendUserId)
-                            .setMessage("客户端已下线!")
-                            .build();
-                }else{
-                    protocol = WUProto.WUProtocol.newBuilder()
-                            .setMsgType(msgType)
-                            .setSendUserId(sendUserId)
-                            .setReceiveUserId(receiveUserId)
-                            .build();
-                }
+                protocol = WUProto.WUProtocol.newBuilder()
+                        .setMsgType(msgType)
+                        .setSendUserId(sendUserId)
+                        .setReceiveUserId(receiveUserId)
+                        .build();
                 break;
             case Constants.MSG_DIS_CONTROL:
                 nioSocketChannel = SocketHandler.getClient(receiveUserId);
-                if(nioSocketChannel == null){
-                    return;
-                }else{
-                    protocol = WUProto.WUProtocol.newBuilder()
-                            .setMsgType(msgType)
-                            .setSendUserId(sendUserId)
-                            .setReceiveUserId(receiveUserId)
-                            .build();
-                }
+                protocol = WUProto.WUProtocol.newBuilder()
+                        .setMsgType(msgType)
+                        .setSendUserId(sendUserId)
+                        .setReceiveUserId(receiveUserId)
+                        .build();
                 break;
             case Constants.MSG_IMG:
                 nioSocketChannel = SocketHandler.getUse(receiveUserId);
-                if(nioSocketChannel == null){
-                   return;
-                }else{
-                    protocol = WUProto.WUProtocol.newBuilder()
-                            .setMsgType(msgType)
-                            .setSendUserId(sendUserId)
-                            .setReceiveUserId(receiveUserId)
-                            .setScreenImg(ByteString.copyFrom(screenImg))
-                            .build();
-                }
+                protocol = WUProto.WUProtocol.newBuilder()
+                        .setMsgType(msgType)
+                        .setSendUserId(sendUserId)
+                        .setReceiveUserId(receiveUserId)
+                        .setScreenImg(ByteString.copyFrom(screenImg))
+                        .build();
                 break;
             case Constants.MSG_EVENT:
                 nioSocketChannel = SocketHandler.getClient(receiveUserId);
-                if(nioSocketChannel == null){
-                    nioSocketChannel = SocketHandler.getUse(sendUserId);
-                    protocol = WUProto.WUProtocol.newBuilder()
-                            .setMsgType(Constants.MSG_ERROR)
-                            .setSendUserId(0)
-                            .setReceiveUserId(sendUserId)
-                            .setMessage("客户端已下线!")
-                            .build();
-                }else{
-                    protocol = WUProto.WUProtocol.newBuilder()
-                            .setMsgType(msgType)
-                            .setSendUserId(sendUserId)
-                            .setReceiveUserId(receiveUserId)
-                            .setUserEvent(ByteString.copyFrom(userEvent))
-                            .build();
-                }
+                protocol = WUProto.WUProtocol.newBuilder()
+                        .setMsgType(msgType)
+                        .setSendUserId(sendUserId)
+                        .setReceiveUserId(receiveUserId)
+                        .setUserEvent(ByteString.copyFrom(userEvent))
+                        .build();
         }
 
         nioSocketChannel.writeAndFlush(protocol).addListeners((ChannelFutureListener) future -> {

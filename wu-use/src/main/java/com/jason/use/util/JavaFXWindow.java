@@ -24,50 +24,49 @@ public class JavaFXWindow extends JFrame{
     Toolkit toolkit = Toolkit.getDefaultToolkit();
     private int DEFAULE_WIDTH = 1000;
     private int DEFAULE_HEIGH = 618;
-    private int MAX_WIDTH = 1000;
-    private int MAX_HEIGH = 618;
+    //private int MAX_WIDTH = 1000;
+    //private int MAX_HEIGH = 618;
 
     // 设置窗体位置,使其在屏幕居中
     private int Location_x = 0;
     private int Location_y = 0;
 
     public static volatile boolean isConnected = false;
+    private int screenWidth = (int) toolkit.getScreenSize().getWidth();
+    private int screenHeight = (int) toolkit.getScreenSize().getHeight();
+    public static volatile  int count = 0;
 
     //重写背景图片方法
     public void repainImage(byte [] imageBytes){
         label.setText("");
         ImageIcon imageIcon = new ImageIcon(imageBytes);
-        MAX_WIDTH = imageIcon.getIconWidth();
-        MAX_HEIGH = imageIcon.getIconHeight();
-        label.setIcon(imageIcon);
-        initWindow(false);
-        this.repaint();
-    }
-
-    public void showError(String msg){
-        label.setText(msg);
-        initWindow(false);
-    }
-
-    private int screenWidth = (int) toolkit.getScreenSize().getWidth();
-    private int screenHeight = (int) toolkit.getScreenSize().getHeight();
-    public void initWindow(boolean flag){
-        if(flag){
-            if(screenWidth > MAX_WIDTH){
-                Location_x = (screenWidth - MAX_WIDTH) / 2;
-            }else{
-                Location_x = 0;
-            }
-            if(screenHeight > MAX_HEIGH){
-                Location_y = (screenHeight - MAX_HEIGH) / 2;
-            }else{
-                Location_y = 0;
-            }
-            setSize(DEFAULE_WIDTH,DEFAULE_HEIGH);// 设置窗体默认大小,使其适应屏幕大小
-            setLocation(Location_x, Location_y);//设置窗体在屏幕中的位置
-        }else{
-            setSize(MAX_WIDTH, MAX_HEIGH);
+        if(count == 0){
+            initWindow(imageIcon.getIconWidth(), imageIcon.getIconHeight());
         }
+        label.setIcon(imageIcon);
+        this.repaint();
+        count++;
+    }
+
+    public void initWindow(int imgWidth, int imgHeigh){
+        if(imgWidth > screenWidth){
+            DEFAULE_WIDTH = screenWidth;
+            Location_x = 0;
+        }else{
+            DEFAULE_WIDTH = imgWidth;
+            Location_x = (screenWidth - DEFAULE_WIDTH) / 2;
+        }
+
+        if(imgHeigh > screenHeight){
+            DEFAULE_HEIGH = screenHeight;
+            Location_y = 0;
+        }else{
+            DEFAULE_HEIGH = imgHeigh;
+            Location_y = (screenHeight - DEFAULE_HEIGH) / 2;
+        }
+
+        setSize(DEFAULE_WIDTH, DEFAULE_HEIGH);// 设置窗体默认大小,使其适应屏幕大小
+        setLocation(Location_x, Location_y);//设置窗体在屏幕中的位置
     }
 
     public JavaFXWindow(){
@@ -91,7 +90,7 @@ public class JavaFXWindow extends JFrame{
         JScrollPane scroll = new JScrollPane(p);//给p面板添加滚动条
         this.add(scroll);
 
-        initWindow(true);
+        //initWindow();
 
         this.addKeyListener(new KeyAdapter() {//窗体增加键盘监听事件
             /*@Override
@@ -137,7 +136,7 @@ public class JavaFXWindow extends JFrame{
             }
 
             public void mouseClicked(MouseEvent e) {
-                sendMouseEvent(e);
+                //sendMouseEvent(e);
             }
 
             public void mouseEntered(MouseEvent e) {
@@ -192,14 +191,14 @@ public class JavaFXWindow extends JFrame{
         }
     }
 
-    public static void main(String[] args) throws AWTException {
+    public static void main(String[] args) throws AWTException{
         JavaFXWindow controlWindow = new JavaFXWindow();
         Robot robot = new Robot();
 
         // 截取整个屏幕
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         Rectangle rec = new Rectangle(dimension);
-        BufferedImage image = robot.createScreenCapture(rec);;
+        BufferedImage image = robot.createScreenCapture(rec);
         byte imageBytes[] = ByteObjConverter.getImageBytes(image);
         controlWindow.repainImage(imageBytes);
     }

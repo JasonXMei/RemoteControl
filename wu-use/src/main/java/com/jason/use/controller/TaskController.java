@@ -175,6 +175,7 @@ public class TaskController implements Initializable {
 
     public void connectClient(ActionEvent actionEvent) {
         JavaFXWindow.isConnected = true;
+        JavaFXWindow.count = 0;
         NettyUtil.sendGoogleProtocolMsg(Constants.MSG_CONTROL, Integer.valueOf(LoginController.userId), Integer.valueOf(subUserId), null, null, null, (NioSocketChannel) CIMClient.channel);
         try {
             Thread.sleep(1000);

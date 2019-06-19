@@ -15,11 +15,15 @@ import com.jason.common.vo.UserDetailsVO;
 import com.jason.common.vo.UserPage;
 import com.jason.common.vo.UserVO;
 import com.jason.web.config.ParamsConfig;
+import com.jason.web.handler.SocketHandler;
 import com.jason.web.mapper.UserMapper;
 import com.jason.web.service.SubUserService;
 import com.jason.web.service.UserService;
 import com.jason.web.service.UserShopService;
+import com.jason.web.util.Constants;
 import com.jason.web.util.HttpUtil;
+import com.jason.web.util.NettyUtil;
+import io.netty.channel.socket.nio.NioSocketChannel;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.dozer.Mapper;
@@ -68,7 +72,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                     .eq("status",AccountStatusEnum.Normal.getStatus())
                     .last("LIMIT 1"));
             if(loginUser != null){
-                return new JSONResult<>(JWTUtil.createToken(loginUser.getPassword(), loginUser.getId()), HttpStatus.OK.status, String.format(HttpStatus.OK.message, "登陆"));
+                if(loginUser.getValidTime() >= BeanUtil.getCurrentTimeStamp(log)){
+                    return new JSONResult<>(JWTUtil.createToken(loginUser.getPassword(), loginUser.getId()), HttpStatus.OK.status, String.format(HttpStatus.OK.message, "登陆"));
+                }else{
+                    return new JSONResult<>(null, HttpStatus.USER_EXPIRED.status, HttpStatus.USER_EXPIRED.message);
+                }
             }
             return new JSONResult<>(null, HttpStatus.USER_NOT_MATCH.status, HttpStatus.USER_NOT_MATCH.message);
         }
@@ -297,6 +305,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         //更新jwt
         String jwt = JWTUtil.createToken(password, loginUser.getId());
         verifyJWT(jwt, request,true);
+
+        List<SubUser> subUserList = subUserService.list(new QueryWrapper<SubUser>().eq("user_id", loginUser.getId()));
+        for(SubUser subUser : subUserList){
+            NioSocketChannel nioSocketChannel = SocketHandler.getClient(subUser.getId());
+            if(nioSocketChannel != null){
+                NettyUtil.sendGoogleProtocolMsg(Constants.UPDATE_JWT, 0, subUser.getId(), null, null, jwt, nioSocketChannel);
+            }
+        }
+
+        NioSocketChannel nioSocketChannel = SocketHandler.getUse(loginUser.getId());
+        if(nioSocketChannel != null){
+            NettyUtil.sendGoogleProtocolMsg(Constants.UPDATE_JWT, 0, loginUser.getId(), null, null, jwt, nioSocketChannel);
+        }
         return new JSONResult<>(null, HttpStatus.OK.status, String.format(HttpStatus.OK.message, "修改密码"));
     }
 

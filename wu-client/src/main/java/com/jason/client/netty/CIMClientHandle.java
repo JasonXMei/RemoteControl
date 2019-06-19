@@ -1,6 +1,7 @@
 package com.jason.client.netty;
 
 import com.alibaba.fastjson.JSONObject;
+import com.jason.client.controller.LoginController;
 import com.jason.client.protocol.WUProto;
 import com.jason.client.util.ByteObjConverter;
 import com.jason.client.util.Constants;
@@ -56,41 +57,24 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
         if (msg.getMsgType() == Constants.MSG_CONTROL) {
             controlUserId = msg.getSendUserId();
             NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, msg.getReceiveUserId(), msg.getSendUserId(), getImgBytes(), null, null,(NioSocketChannel)ctx.channel());
-            /*Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (controlUserId != 0){
-                        // 截取整个屏幕
-                        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-                        Rectangle rec = new Rectangle(dimension);
-                        BufferedImage image = robot.createScreenCapture(rec);;
-                        byte imageBytes[] = ByteObjConverter.getImageBytes(image);
-                        NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, msg.getReceiveUserId(), msg.getSendUserId(), imageBytes, null, null,(NioSocketChannel)ctx.channel());
-                        try {
-                            Thread.sleep(50);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            });*/
+            return;
         }
 
         if (msg.getMsgType() == Constants.MSG_DIS_CONTROL) {
             controlUserId = 0;
+            return;
+        }
+
+        if (msg.getMsgType() == Constants.UPDATE_JWT) {
+            LoginController.jwt = msg.getMessage();
+            return;
         }
 
         if (msg.getMsgType() == Constants.MSG_EVENT) {
-            //回调消息
-            //callBackMsg(msg.getResMsg());
-            //LOGGER.info("收到服务端消息[{}]", msg.toString());
-            //InputEvent event = (InputEvent)ByteObjConverter.byteToObject(msg.getUserEvent().toByteArray());
             JSONObject jsonObject = (JSONObject) ByteObjConverter.byteToObject(msg.getUserEvent().toByteArray());
             handleEvents(robot, jsonObject);// 处理事件
-            /*if(flag){
-                Thread.sleep(500);
-            }*/
-            //NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, msg.getReceiveUserId(), msg.getSendUserId(), getImgBytes(), null, null,(NioSocketChannel)ctx.channel());
+            NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, msg.getReceiveUserId(), msg.getSendUserId(), getImgBytes(), null, null,(NioSocketChannel)ctx.channel());
+            return;
         }
     }
 
@@ -113,33 +97,27 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
         switch (event.getInteger("eventId")) {
             case MouseEvent.MOUSE_MOVED: // 鼠标移动
             case MouseEvent.MOUSE_DRAGGED: // 鼠标拖拽
-                //mevent = (MouvoidseEvent) event;
                 action.mouseMove(event.getInteger("moveX"), event.getInteger("moveY"));
                 break;
             case MouseEvent.MOUSE_PRESSED: // 鼠标键按下
-                //mevent = (MouseEvent) event;
                 action.mouseMove(event.getInteger("moveX"), event.getInteger("moveY"));
                 mousebuttonmask = getMouseClick(event.getInteger("btn"));
                 if (mousebuttonmask != -100)
                     action.mousePress(mousebuttonmask);
                 break;
             case MouseEvent.MOUSE_RELEASED: // 鼠标键松开
-                //mevent = (MouseEvent) event;
                 action.mouseMove(event.getInteger("moveX"), event.getInteger("moveY"));
                 mousebuttonmask = getMouseClick(event.getInteger("btn"));// 取得鼠标按键
                 if (mousebuttonmask != -100)
                     action.mouseRelease(mousebuttonmask);
                 break;
             case MouseEvent.MOUSE_WHEEL: // 鼠标滚动
-                //mwevent = (MouseWheelEvent) event;
                 action.mouseWheel(event.getInteger("wheelRotation"));
                 break;
             case KeyEvent.KEY_PRESSED: // 按键
-                //kevent = (KeyEvent) event;
                 action.keyPress(event.getInteger("keyCode"));
                 break;
             case KeyEvent.KEY_RELEASED: // 松键
-                //kevent = (KeyEvent) event;
                 action.keyRelease(event.getInteger("keyCode"));
                 break;
             default:
