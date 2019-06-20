@@ -46,7 +46,6 @@
         <dependency>
             <groupId>de.codecentric</groupId>
             <artifactId>spring-boot-admin-starter-client</artifactId>
-            <!--<version>1.5.6</version>-->
         </dependency>
 
         <!--<dependency>

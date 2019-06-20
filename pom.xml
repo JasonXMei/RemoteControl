@@ -48,11 +48,9 @@
 	<modules>
 		<module>wu-monitor</module>
 		<module>wu-web</module>
-		<module>wu-server</module>
 		<module>wu-client</module>
 		<module>wu-use</module>
 		<module>wu-common</module>
-		<module>wu-service</module>
 	</modules>
 
 	<dependencies>
