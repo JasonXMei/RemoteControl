@@ -1,5 +1,6 @@
 package com.jason.web.util;
 
+/**
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
@@ -63,3 +64,4 @@ public class ByteObjConverter {
         return baos.toByteArray();
     }
 }
+*/

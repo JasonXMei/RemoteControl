@@ -21,7 +21,7 @@
     </sql>
 
     <select id="findSubUserList" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List"/> , u.user_name, u.allow_order_times, u.location,
+        select <include refid="Base_Column_List"/> , u.user_name, u.sex, u.allow_order_times, u.location,
         (select count(sut.id) from sub_user_task sut
         JOIN task_replace_order tro on sut.id = tro.task_id WHERE sut.sub_user_id = su.id AND (sut.create_time BETWEEN #{pg.searchStartDate} AND #{pg.searchEndDate})
         )as order_times
@@ -34,6 +34,9 @@
                 su.sub_user_name LIKE concat(#{pg.searchName},'%') OR
                 u.user_name LIKE concat(#{pg.searchName},'%')
                 )
+            </if>
+            <if test="pg.searchStatus != -1">
+                AND u.sex = #{pg.searchStatus}
             </if>
         </where>
         ORDER BY su.connect_status,order_times,su.user_id

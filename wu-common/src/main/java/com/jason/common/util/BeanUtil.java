@@ -1,5 +1,6 @@
 package com.jason.common.util;
 
+import com.jason.common.enums.SexEnum;
 import com.jason.common.po.*;
 import com.jason.common.vo.*;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -71,6 +72,11 @@ public class BeanUtil {
         userVO.setOrderTimes(su.getOrderTimes() + "-" + su.getAllowOrderTimes());
         userVO.setTerminalStr(su.getTerminal().getDescription());
         userVO.setUserTypeStr(su.getUserType().getDescription());
+        if(su.getSex() == SexEnum.Man.getType()){
+            userVO.setSexStr("男");
+        }else if(su.getSex() == SexEnum.Woman.getType()){
+            userVO.setSexStr("女");
+        }else{}
         return userVO;
     }
 

@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.jason.use.JavafxApplication;
 import com.jason.use.config.APIConfig;
 import com.jason.use.enums.HttpStatus;
+import com.jason.use.enums.PaymentStatusEnum;
+import com.jason.use.enums.SexEnum;
 import com.jason.use.model.User;
 import com.jason.use.util.HttpUtil;
 import com.jason.use.util.StringUtil;
@@ -24,6 +26,7 @@ import javafx.scene.layout.StackPane;
 
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Function;
 
@@ -38,6 +41,8 @@ public class UserController implements Initializable {
     @FXML
     private JFXTreeTableColumn<User, String> subUserName;
     @FXML
+    private JFXTreeTableColumn<User, String> userSex;
+    @FXML
     private JFXTreeTableColumn<User, String> replaceOrderTimes;
    @FXML
     private JFXTreeTableColumn<User, String> location;
@@ -46,13 +51,13 @@ public class UserController implements Initializable {
     @FXML
     private JFXTreeTableColumn<User, Integer> subUserId;
     @FXML
+    public JFXComboBox<String> userSexCombo;
+    @FXML
     private Label pageRecord;
     @FXML
     private JFXTextField searchName;
     @FXML
     private JFXTextField searchPage;
-
-
     @FXML
     private StackPane stackPane;
 
@@ -62,6 +67,11 @@ public class UserController implements Initializable {
     @Override
     public void initialize(URL location1, ResourceBundle resources) {
         stackPane.setVisible(false);
+
+        List<String> sexList = SexEnum.getAllStatus();
+        ObservableList<String> sexItem = FXCollections.observableArrayList(sexList);
+        userSexCombo.setItems(sexItem);
+        userSexCombo.setValue(SexEnum.Unchoose.description);
 
         String data = HttpUtil.httpPost(new HashMap<>(), APIConfig.subUserListUrl, LoginController.jwt);
         showUserList(data);
@@ -86,6 +96,7 @@ public class UserController implements Initializable {
         setupCellValueFactory(id, p -> p.getId().asObject());
         setupCellValueFactory(userName, User::getUserName);
         setupCellValueFactory(subUserName, User::getSubUserName);
+        setupCellValueFactory(userSex, User::getSex);
         setupCellValueFactory(replaceOrderTimes, User::getReplaceOrderTimes);
         setupCellValueFactory(location, User::getLocation);
         setupCellValueFactory(connectionStatus, User::getConnectionStatus);
@@ -96,8 +107,9 @@ public class UserController implements Initializable {
         for (int i=0;i<jsonArray.size();i++){
             JSONObject subUserJSON = jsonArray.getJSONObject(i);
             users.add(
-                    new User(subUserJSON.getInteger("userId"), subUserJSON.getInteger("id"), subUserJSON.getString("userName"),
-                            subUserJSON.getString("subUserName"), subUserJSON.getString("orderTimes"),
+                    new User(subUserJSON.getInteger("userId"), subUserJSON.getInteger("id"),
+                            subUserJSON.getString("userName"), subUserJSON.getString("subUserName"),
+                            subUserJSON.getString("sexStr"), subUserJSON.getString("orderTimes"),
                             subUserJSON.getString("location"), subUserJSON.getString("connectStatusStr")));
         }
 
@@ -165,9 +177,8 @@ public class UserController implements Initializable {
     }
 
     public void searchUserList(ActionEvent actionEvent) {
-        String text = searchName.getText();
         HashMap<String, String> paramMap = new HashMap<>();
-        paramMap.put("searchName", text);
+        updateParamMap(paramMap);
         String data = HttpUtil.httpPost(paramMap, APIConfig.subUserListUrl, LoginController.jwt);
         showUserList(data);
     }
@@ -193,7 +204,7 @@ public class UserController implements Initializable {
 
         HashMap<String, String> paramMap = new HashMap<>();
         paramMap.put("searchCurrent", text);
-        paramMap.put("searchName", searchName.getText());
+        updateParamMap(paramMap);
         String data = HttpUtil.httpPost(paramMap, APIConfig.subUserListUrl, LoginController.jwt);
         showUserList(data);
     }
@@ -201,6 +212,7 @@ public class UserController implements Initializable {
     public void refreshUserList(ActionEvent actionEvent) {
         searchName.setText("");
         searchPage.setText("");
+        userSexCombo.setValue(SexEnum.Unchoose.description);
         String data = HttpUtil.httpPost(new HashMap<>(), APIConfig.subUserListUrl, LoginController.jwt);
         showUserList(data);
     }
@@ -213,7 +225,7 @@ public class UserController implements Initializable {
 
         HashMap<String, String> paramMap = new HashMap<>();
         paramMap.put("searchCurrent", String.valueOf(current - 1));
-        paramMap.put("searchName", searchName.getText());
+        updateParamMap(paramMap);
         String data = HttpUtil.httpPost(paramMap, APIConfig.subUserListUrl, LoginController.jwt);
         showUserList(data);
     }
@@ -226,8 +238,17 @@ public class UserController implements Initializable {
 
         HashMap<String, String> paramMap = new HashMap<>();
         paramMap.put("searchCurrent", String.valueOf(current + 1));
-        paramMap.put("searchName", searchName.getText());
+        updateParamMap(paramMap);
         String data = HttpUtil.httpPost(paramMap, APIConfig.subUserListUrl, LoginController.jwt);
         showUserList(data);
+    }
+
+    public void updateParamMap(HashMap<String, String> paramMap){
+        paramMap.put("searchName", searchName.getText());
+        String sex = userSexCombo.getValue();
+        int status = SexEnum.getPaymentStatus(sex);
+        if(status != -1){
+            paramMap.put("searchStatus", String.valueOf(status));
+        }
     }
 }

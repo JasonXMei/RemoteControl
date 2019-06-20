@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import javafx.geometry.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTreeTableColumn?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.*?>
-<VBox prefHeight="618.0" prefWidth="750.0" style="-fx-font-size: 18px;" stylesheets="@../css/list.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jason.use.controller.UserController">
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.scene.layout.StackPane?>
+<VBox prefHeight="618.0" prefWidth="750.0" style="-fx-font-size: 18px;" stylesheets="@../css/list.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jason.use.controller.UserController">
   <children>
   <AnchorPane prefHeight="616.0" prefWidth="713.0" style="-fx-background-color: lightblue;">
      <children>
@@ -12,9 +20,10 @@
            <children>
               <HBox prefHeight="59.0" prefWidth="776.0" spacing="10.0" style="-jfx-cell-horizontal-margin: 10;">
                  <children>
-                    <JFXTextField promptText=" 编号/分享用户/小号名" style="-fx-background-color: white;" fx:id="searchName"/>
-                    <JFXButton text="搜索" onAction="#searchUserList"/>
-                    <JFXButton text="刷新" onAction="#refreshUserList"/>
+                    <JFXTextField fx:id="searchName" promptText=" 编号/分享用户/小号名" style="-fx-background-color: white;" />
+                     <JFXComboBox fx:id="userSexCombo" focusColor="#4dadf7" labelFloat="true"/>
+                     <JFXButton onAction="#searchUserList" text="搜索" />
+                    <JFXButton onAction="#refreshUserList" text="刷新" />
                  </children>
                  <padding>
                     <Insets top="10.0" />
@@ -24,13 +33,14 @@
                  <children>
                      <JFXTreeTableView fx:id="userList" prefHeight="474.0" prefWidth="745.0" style="-fx-font-size: 16px;">
                          <columns>
-                             <JFXTreeTableColumn fx:id="id" editable="false" minWidth="62.0" prefWidth="62.0" resizable="false" sortable="false" text="编号" />
-                             <JFXTreeTableColumn fx:id="userName" editable="false" minWidth="98.0" prefWidth="158.0" resizable="false" sortable="false" text="分享用户" />
-                             <JFXTreeTableColumn fx:id="subUserName" editable="false" minWidth="39.0" prefWidth="160.0" resizable="false" sortable="false" text="小号名" />
-                             <JFXTreeTableColumn fx:id="replaceOrderTimes" editable="false" minWidth="48.0" prefWidth="113.0" resizable="false" sortable="false" text="日-日上限" />
-                             <JFXTreeTableColumn fx:id="connectionStatus" editable="false" minWidth="28.0" prefWidth="115.0" resizable="false" sortable="false" text="连接状态" />
-                             <JFXTreeTableColumn fx:id="location" editable="false" minWidth="35.0" prefWidth="135.0" resizable="false" sortable="false" text="地理位置" />
-                             <JFXTreeTableColumn fx:id="subUserId" visible="false" editable="false" minWidth="0" prefWidth="0" resizable="false" sortable="false" text="sub user id" />
+                             <JFXTreeTableColumn fx:id="id" editable="false" minWidth="48.0" prefWidth="48.0" resizable="false" sortable="false" text="编号" />
+                             <JFXTreeTableColumn fx:id="userName" editable="false" minWidth="98.0" prefWidth="150.0" resizable="false" sortable="false" text="分享用户" />
+                             <JFXTreeTableColumn fx:id="subUserName" editable="false" minWidth="39.0" prefWidth="136.0" resizable="false" sortable="false" text="小号名" />
+                             <JFXTreeTableColumn fx:id="userSex" editable="false" minWidth="31.0" prefWidth="48.0" resizable="false" sortable="false" text="性别" />
+                             <JFXTreeTableColumn fx:id="replaceOrderTimes" editable="false" minWidth="48.0" prefWidth="102.0" resizable="false" sortable="false" text="日-日上限" />
+                             <JFXTreeTableColumn fx:id="connectionStatus" editable="false" minWidth="28.0" prefWidth="92.0" resizable="false" sortable="false" text="连接状态" />
+                             <JFXTreeTableColumn fx:id="location" editable="false" minWidth="35.0" prefWidth="163.0" resizable="false" sortable="false" text="地理位置" />
+                             <JFXTreeTableColumn fx:id="subUserId" editable="false" minWidth="0" prefWidth="0" resizable="false" sortable="false" text="sub user id" visible="false" />
                          </columns>
                            <VBox.margin>
                               <Insets />
@@ -41,17 +51,17 @@
                               <Insets bottom="15.0" top="15.0" />
                            </VBox.margin>
                            <children>
-                              <Label prefHeight="42.0" prefWidth="215.0" text="第1/10页，共98条记录" textAlignment="CENTER" fx:id="pageRecord"/>
+                              <Label fx:id="pageRecord" prefHeight="42.0" prefWidth="215.0" text="第1/10页，共98条记录" textAlignment="CENTER" />
                               <Label prefHeight="42.0" prefWidth="57.0" text="转到：" />
                               <JFXTextField fx:id="searchPage" prefHeight="42.0" prefWidth="49.0" style="-fx-background-color: white; -fx-border-color: white;" />
                               <Label alignment="CENTER" prefHeight="42.0" prefWidth="60.0" text="页" />
-                              <JFXButton prefHeight="52.0" prefWidth="83.0" text="Go!" onAction="#searchPage"/>
-                              <JFXButton prefHeight="42.0" prefWidth="83.0" text="上一页" onAction="#previousPage">
+                              <JFXButton onAction="#searchPage" prefHeight="52.0" prefWidth="83.0" text="Go!" />
+                              <JFXButton onAction="#previousPage" prefHeight="42.0" prefWidth="83.0" text="上一页">
                                  <HBox.margin>
                                     <Insets left="10.0" right="10.0" />
                                  </HBox.margin>
                               </JFXButton>
-                              <JFXButton prefHeight="45.0" prefWidth="83.0" text="下一页"  onAction="#nextPage"/>
+                              <JFXButton onAction="#nextPage" prefHeight="45.0" prefWidth="83.0" text="下一页" />
                            </children>
                         </HBox>
                  </children>

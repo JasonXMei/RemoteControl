@@ -49,4 +49,5 @@ public class SubUserExt {
     private Integer allowOrderTimes;
     private Integer orderTimes;
     private String location;
+    private Integer sex;
 }
