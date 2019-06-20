@@ -69,13 +69,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             User loginUser = this.baseMapper.selectOne(new QueryWrapper<User>()
                     .eq("user_name", user.getUserName())
                     .eq("password", user.getPassword())
-                    .eq("status",AccountStatusEnum.Normal.getStatus())
+                    //.eq("status",AccountStatusEnum.Normal.getStatus())
                     .last("LIMIT 1"));
             if(loginUser != null){
-                if(loginUser.getValidTime() >= BeanUtil.getCurrentTimeStamp(log)){
-                    return new JSONResult<>(JWTUtil.createToken(loginUser.getPassword(), loginUser.getId()), HttpStatus.OK.status, String.format(HttpStatus.OK.message, "登陆"));
-                }else{
-                    return new JSONResult<>(null, HttpStatus.USER_EXPIRED.status, HttpStatus.USER_EXPIRED.message);
+                switch (loginUser.getStatus()){
+                    case Normal:
+                        if(loginUser.getValidTime() >= BeanUtil.getCurrentTimeStamp(log)){
+                            return new JSONResult<>(JWTUtil.createToken(loginUser.getPassword(), loginUser.getId()), HttpStatus.OK.status, String.format(HttpStatus.OK.message, "登陆"));
+                        }else{
+                            return new JSONResult<>(null, HttpStatus.USER_EXPIRED.status, HttpStatus.USER_EXPIRED.message);
+                        }
+                    case Forbidden:
+                    case Delete:
+                    case WaitAudit:
+                        return new JSONResult<>(null, HttpStatus.USER_NOT_PERMISSION.status, HttpStatus.USER_NOT_PERMISSION.message);
                 }
             }
             return new JSONResult<>(null, HttpStatus.USER_NOT_MATCH.status, HttpStatus.USER_NOT_MATCH.message);

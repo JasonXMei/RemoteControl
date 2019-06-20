@@ -5,10 +5,6 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;
-
-import java.util.Properties;
-
 /**
  * MybatisPlus配置文件
  */
@@ -16,7 +12,7 @@ import java.util.Properties;
 @MapperScan("com.jason.web.mapper")
 public class MybatisPlusConfig {
 
-    @Bean
+    /*@Bean
     public PerformanceInterceptor performanceInterceptor(){
         PerformanceInterceptor performanceInterceptor = new PerformanceInterceptor();
         //格式化sql语句
@@ -24,7 +20,7 @@ public class MybatisPlusConfig {
         properties.setProperty("format", "true");
         performanceInterceptor.setProperties(properties);
         return performanceInterceptor;
-    }
+    }*/
 
     /**
      * 分页插件
