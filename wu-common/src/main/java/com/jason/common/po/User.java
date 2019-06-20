@@ -96,9 +96,13 @@ public class User{
     private Long validTime;
 
     /**
-     * 连接状态
+     * 使用端连接状态
      */
-    private ConnectStatusEnum connectStatus;
+    private ConnectStatusEnum connectStatusUse;
+    /**
+     * 客户端连接状态
+     */
+    private ConnectStatusEnum connectStatusClient;
 
     /**
      * 邀请码

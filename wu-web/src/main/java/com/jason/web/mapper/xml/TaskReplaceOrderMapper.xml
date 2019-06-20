@@ -80,13 +80,14 @@
         JOIN user_shop as us ON us.id = sut.shop_id
         JOIN user as user ON user.id = su.user_id
         <where>
-            sut.sub_user_id = #{pg.searchUserId}
+            user.id = #{pg.searchUserId}
             <if test="pg.searchStatus != null and pg.searchStatus != -1">
                 AND tro.payment_status = #{pg.searchStatus}
             </if>
             <if test="pg.searchName != null">
                 AND (
                 us.shop_name LIKE concat(#{pg.searchName},'%') OR
+                su.sub_user_name LIKE concat(#{pg.searchName},'%') OR
                 tro.order_id LIKE concat(#{pg.searchName},'%')
                 )
             </if>

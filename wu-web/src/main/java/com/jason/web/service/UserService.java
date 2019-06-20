@@ -33,5 +33,5 @@ public interface UserService extends IService<User> {
 
     UserDetailsVO handleInfoClient(Integer loginUserId, Integer taskUserId);
 
-    Integer handleStatusClient(Integer userId);
+    Integer handleStatusClient(Integer id, Integer type);
 }

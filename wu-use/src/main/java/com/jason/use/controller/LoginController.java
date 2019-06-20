@@ -70,7 +70,7 @@ public class LoginController implements Initializable {
             boolean checkOrderCount = checkOrderCount();
 
             if(checkOrderCount){
-                String userStatusUrl = String.format(APIConfig.getUserStatusUrl, userId);
+                String userStatusUrl = String.format(APIConfig.getUserStatusUrl, userId, 0);
                 responseStr = HttpUtil.httpGet(userStatusUrl, jwt);
                 if(Integer.valueOf(responseStr) == ConnectStatusEnum.DisConnected.status){
                     boolean connectRemote = CIMClient.start();

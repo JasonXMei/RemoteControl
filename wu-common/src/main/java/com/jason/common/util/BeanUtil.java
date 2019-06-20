@@ -1,6 +1,5 @@
 package com.jason.common.util;
 
-import com.jason.common.enums.SexEnum;
 import com.jason.common.po.*;
 import com.jason.common.vo.*;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -68,15 +67,17 @@ public class BeanUtil {
 
     public static SubUserVO convertSubUserPO2VO(Mapper dozerMapper, SubUserExt su) {
         SubUserVO userVO = dozerMapper.map(su, SubUserVO.class);
-        userVO.setConnectStatusStr(su.getConnectStatus().getDescription());
+        userVO.setConnectStatusStr(su.getConnectStatusClient().getDescription());
         userVO.setOrderTimes(su.getOrderTimes() + "-" + su.getAllowOrderTimes());
         userVO.setTerminalStr(su.getTerminal().getDescription());
         userVO.setUserTypeStr(su.getUserType().getDescription());
-        if(su.getSex() == SexEnum.Man.getType()){
-            userVO.setSexStr("男");
-        }else if(su.getSex() == SexEnum.Woman.getType()){
-            userVO.setSexStr("女");
-        }else{}
+        userVO.setSexStr(su.getSex().getDescription());
+        return userVO;
+    }
+
+    public static SubUserVO convertSubUserPO2VO(Mapper dozerMapper, SubUser su) {
+        SubUserVO userVO = dozerMapper.map(su, SubUserVO.class);
+        userVO.setSexStr(su.getSex().getDescription());
         return userVO;
     }
 

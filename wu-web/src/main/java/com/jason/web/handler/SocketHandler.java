@@ -17,8 +17,9 @@ public class SocketHandler {
         return CHANNEL_MAP_USE.get(id);
     }
 
-    public static Integer removeUse(NioSocketChannel nioSocketChannel) {
-        return removeMap(CHANNEL_MAP_USE, nioSocketChannel);
+    public static void removeUse(Integer userId) {
+        CHANNEL_MAP_USE.remove(userId);
+        //return removeMap(CHANNEL_MAP_USE, nioSocketChannel);
     }
 
     public static void putClient(Integer id, NioSocketChannel socketChannel) {
@@ -29,8 +30,9 @@ public class SocketHandler {
         return CHANNEL_MAP_CLIENT.get(id);
     }
 
-    public static Integer removeClient(NioSocketChannel nioSocketChannel) {
-        return removeMap(CHANNEL_MAP_CLIENT, nioSocketChannel);
+    public static void removeClient(Integer userId) {
+        CHANNEL_MAP_CLIENT.remove(userId);
+        //return removeMap(CHANNEL_MAP_CLIENT, nioSocketChannel);
     }
 
     private static int removeMap(Map<Integer, NioSocketChannel> map, NioSocketChannel nioSocketChannel){

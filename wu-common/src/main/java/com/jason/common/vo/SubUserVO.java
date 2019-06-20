@@ -50,6 +50,11 @@ public class SubUserVO {
      */
     private String connectStatusStr;
 
+    /**
+     * 年龄
+     */
+    private Integer age;
+
     private String userName;
     private String orderTimes;
     private String location;

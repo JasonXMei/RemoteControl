@@ -36,6 +36,8 @@ public class ReplaceOrderListController implements Initializable {
     @FXML
     private JFXTreeTableView<ReplaceOrder> replaceOrderList;
     @FXML
+    private JFXTreeTableColumn<ReplaceOrder, String> subUserName;
+    @FXML
     private JFXTreeTableColumn<ReplaceOrder, String> orderId;
     @FXML
     private JFXTreeTableColumn<ReplaceOrder, String> shopName;
@@ -97,6 +99,7 @@ public class ReplaceOrderListController implements Initializable {
 
         setupCellValueFactory(orderId, ReplaceOrder::getOrderId);
         setupCellValueFactory(shopName, ReplaceOrder::getShopName);
+        setupCellValueFactory(subUserName, ReplaceOrder::getSubUserName);
         setupCellValueFactory(orderAmount, ReplaceOrder::getOrderAmount);
         setupCellValueFactory(orderComission, ReplaceOrder::getOrderComission);
         setupCellValueFactory(orderStatus, ReplaceOrder::getOrderStatus);
@@ -107,8 +110,8 @@ public class ReplaceOrderListController implements Initializable {
         for (int i=0;i<jsonArray.size();i++){
             JSONObject subUserJSON = jsonArray.getJSONObject(i);
             users.add(
-                    new ReplaceOrder(subUserJSON.getString("orderId"),
-                            subUserJSON.getString("shopName"), subUserJSON.getString("orderAmount"),
+                    new ReplaceOrder(subUserJSON.getString("orderId"), subUserJSON.getString("shopName"),
+                            subUserJSON.getString("subUserName"), subUserJSON.getString("orderAmount"),
                             subUserJSON.getString("orderCommission"), subUserJSON.getString("paymentStatusStr"),
                             subUserJSON.getString("id")));
         }

@@ -62,8 +62,8 @@
 			<tr class="active">
 				<td>编号</td>
 				<td>姓名</td>
-				<td>性别</td>
-				<td>年龄</td>
+				<#--<td>性别</td>
+				<td>年龄</td>-->
 				<td>位置</td>
 				<td>QQ号</td>
 				<td>手机号</td>
@@ -76,8 +76,8 @@
 				<tr>
 					<td>${userItem.id}</td>
 					<td>${userItem.userName}</td>
-					<td>${userItem.sexStr}</td>
-					<td>${userItem.age}</td>
+					<#--<td>${userItem.sexStr}</td>
+					<td>${userItem.age}</td>-->
 					<td>${userItem.location}</td>
 					<td>${userItem.qqNumber}</td>
 					<td>${userItem.mobile}</td>

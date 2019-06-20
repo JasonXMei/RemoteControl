@@ -22,4 +22,6 @@ public interface SubUserService extends IService<SubUser> {
     JSONResult<UserDetailsVO> userDetail(Integer loginUserId, Integer taskUserId);
 
     Integer handleStatus(Integer userId);
+
+    String getUserOrderTimes(Integer userId);
 }

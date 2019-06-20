@@ -2,8 +2,9 @@ package com.jason.use.config;
 
 public class APIConfig {
 
-    //public static String ipAddr = "www.zhlm.top";
-    public static String ipAddr = "192.168.100.142";
+    public static String ipAddr = "www.zhlm.top";
+    //public static String ipAddr = "192.168.1.27";
+    //public static String ipAddr = "192.168.100.142";
 
     private static String urlPrefix = "http://" + ipAddr + ":8082/";
 
@@ -23,8 +24,10 @@ public class APIConfig {
 
     public static String backEndLink = urlPrefix + "user/token/%s/";
 
-    public static String getUserStatusUrl = urlPrefix + "user/status/%s/client";
+    public static String getUserStatusUrl = urlPrefix + "user/status/%s/%s/client";
 
     public static String orderCountUrl = urlPrefix + "client/task/orderCount/%s/%s";
+
+    public static String userOrderTimesUrl = urlPrefix + "client/subUser/getUserOrderTimes/%s";
 
 }

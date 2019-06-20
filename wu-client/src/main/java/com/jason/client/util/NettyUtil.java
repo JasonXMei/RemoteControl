@@ -44,6 +44,7 @@ public class NettyUtil {
             case Constants.LOGIN:
             default:*/
             case Constants.LOGIN_CLIENT:
+            case Constants.LOGOUT_CLIENT:
                 protocol = WUProto.WUProtocol.newBuilder()
                         .setMsgType(msgType)
                         .setSendUserId(sendUserId)

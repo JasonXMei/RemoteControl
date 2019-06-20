@@ -1,14 +1,14 @@
 package com.jason.common.po;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.jason.common.enums.ConnectStatusEnum;
+import com.jason.common.enums.SexEnum;
 import com.jason.common.enums.TerminalEnum;
 import com.jason.common.enums.UserTypeEnum;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 /**
  * <p>
@@ -53,6 +53,16 @@ public class SubUser {
      * 连接状态
      */
     private ConnectStatusEnum connectStatus;
+
+    /**
+     * 性别
+     */
+    private SexEnum sex;
+
+    /**
+     * 年龄
+     */
+    private Integer age;
 
     /*private String userName;
     private Integer allowOrderTimes;

@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jason.common.enums.HttpStatus;
 import com.jason.common.po.SubUser;
 import com.jason.common.po.SubUserExt;
-import com.jason.common.po.User;
 import com.jason.common.po.UserShop;
 import com.jason.common.util.BeanUtil;
 import com.jason.common.vo.JSONResult;
@@ -63,11 +62,31 @@ public class SubUserServiceImpl extends ServiceImpl<SubUserMapper, SubUser> impl
     }
 
     @Override
+    public String getUserOrderTimes(Integer userId) {
+        List<SubUserExt> list = baseMapper.getUserOrderTimes(userId, BeanUtil.getCurrentTimeStamp(log));
+        StringBuilder sb = new StringBuilder();
+        for(SubUserExt subUserExt : list){
+            Integer orderTimes = subUserExt.getOrderTimes();
+            Integer allowOrderTimes = subUserExt.getAllowOrderTimes();
+            if(orderTimes >= allowOrderTimes){
+                sb.append("小号名:" + subUserExt.getSubUserName() + ",日" + orderTimes + "笔,当日已满。\n");
+            }else{
+                sb.append("小号名:" + subUserExt.getSubUserName() + ",日" + orderTimes + "笔,日限制" + allowOrderTimes + "笔,当日尚可补单。\n");
+            }
+        }
+        return sb.toString();
+    }
+
+    @Override
     public JSONResult<UserDetailsVO> userDetail(Integer loginUserId, Integer taskUserId) {
         List<SubUser> taskUserList = baseMapper.selectList(new QueryWrapper<SubUser>().in("user_id", taskUserId));
+        List<SubUserVO> subUserVOList = new ArrayList<>();
+        for(SubUser subUser : taskUserList){
+            subUserVOList.add(BeanUtil.convertSubUserPO2VO(dozerMapper, subUser));
+        }
         List<UserShop> shopList = userShopMapper.selectList(new QueryWrapper<UserShop>().in("user_id", loginUserId));
         UserDetailsVO userDetailsVO = new UserDetailsVO();
-        userDetailsVO.setSubUserList(taskUserList);
+        userDetailsVO.setSubUserList(subUserVOList);
         userDetailsVO.setShopList(shopList);
         return new JSONResult<>(userDetailsVO, HttpStatus.OK.getStatus(), String.format(HttpStatus.OK.getMessage(), "查询小号列表，店铺列表"));
     }
@@ -80,4 +99,5 @@ public class SubUserServiceImpl extends ServiceImpl<SubUserMapper, SubUser> impl
         }
         return -1;
     }
+
 }

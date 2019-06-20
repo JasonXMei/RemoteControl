@@ -8,14 +8,16 @@ public class ReplaceOrder extends RecursiveTreeObject<ReplaceOrder> {
 
     private StringProperty orderId;
     private StringProperty shopName;
+    private StringProperty subUserName;
     private StringProperty orderAmount;
     private StringProperty orderComission;
     private StringProperty orderStatus;
     private StringProperty replaceOrderId;
 
-    public ReplaceOrder(String orderId, String shopName, String orderAmount, String orderComission, String orderStatus, String replaceOrderId) {
+    public ReplaceOrder(String orderId, String shopName, String subUserName, String orderAmount, String orderComission, String orderStatus, String replaceOrderId) {
         this.orderId =  new SimpleStringProperty(orderId);
         this.shopName = new SimpleStringProperty(shopName);
+        this.subUserName = new SimpleStringProperty(subUserName);
         this.orderAmount = new SimpleStringProperty(orderAmount);
         this.orderComission = new SimpleStringProperty(orderComission);
         this.orderStatus = new SimpleStringProperty(orderStatus);
@@ -44,6 +46,18 @@ public class ReplaceOrder extends RecursiveTreeObject<ReplaceOrder> {
 
     public void setShopName(String shopName) {
         this.shopName.set(shopName);
+    }
+
+    public StringProperty getSubUserName() {
+        return subUserName;
+    }
+
+    public StringProperty subUserNameProperty() {
+        return subUserName;
+    }
+
+    public void setSubUserName(String subUserName) {
+        this.subUserName.set(subUserName);
     }
 
     public StringProperty getOrderAmount() {

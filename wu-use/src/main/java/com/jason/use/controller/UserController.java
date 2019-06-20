@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.jason.use.JavafxApplication;
 import com.jason.use.config.APIConfig;
 import com.jason.use.enums.HttpStatus;
-import com.jason.use.enums.PaymentStatusEnum;
 import com.jason.use.enums.SexEnum;
 import com.jason.use.model.User;
 import com.jason.use.util.HttpUtil;
@@ -106,9 +105,11 @@ public class UserController implements Initializable {
         ObservableList<User> users = FXCollections.observableArrayList();
         for (int i=0;i<jsonArray.size();i++){
             JSONObject subUserJSON = jsonArray.getJSONObject(i);
+            Integer userId = subUserJSON.getInteger("userId");
+            String subUserName = subUserJSON.getString("subUserName");
             users.add(
-                    new User(subUserJSON.getInteger("userId"), subUserJSON.getInteger("id"),
-                            subUserJSON.getString("userName"), subUserJSON.getString("subUserName"),
+                    new User(userId, subUserJSON.getInteger("id"),
+                            subUserJSON.getString("userName"), subUserName ,
                             subUserJSON.getString("sexStr"), subUserJSON.getString("orderTimes"),
                             subUserJSON.getString("location"), subUserJSON.getString("connectStatusStr")));
         }
@@ -152,21 +153,27 @@ public class UserController implements Initializable {
                 }
 
                 User user = (User) row.getItem();
-                String replaceOrderTimes = user.getReplaceOrderTimes().getValue();
+                /*String replaceOrderTimes = user.getReplaceOrderTimes().getValue();
                 String[] timesArr = replaceOrderTimes.split("-");
                 if (timesArr[0].equals(timesArr[1])) {
                     JavafxApplication.showAlert("操作提示", "小号：{" + user.getSubUserName().getValue() + "},当日补单次数已满!" , null, null, "确定");
                     return;
-                }
+                }*/
+                int userId = user.getId().get();
 
                 String connectionStatus = user.getConnectionStatus().getValue();
                 if(("可以连接").equals(connectionStatus)){
                     TaskController.userId = String.valueOf(user.getId().getValue());
-                    TaskController.subUserId = String.valueOf(user.getSubUserId().getValue());
-                    JavafxApplication.showConfirmed("操作提示", user.getUserName().getValue() + ":" + user.getSubUserName().getValue(),
-                            stackPane, "taskView", getClass());
+                    //TaskController.subUserId = String.valueOf(user.getSubUserId().getValue());
+                    String apiResponse = HttpUtil.httpPost(new HashMap<>(), String.format(APIConfig.userOrderTimesUrl, userId), LoginController.jwt);
+                    /*try {
+                        apiResponse = new String(apiResponse.getBytes("iso-8859-1"), "utf-8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }*/
+                    JavafxApplication.showConfirmed("操作提示", apiResponse, stackPane, "taskView", getClass());
                 }else{
-                    JavafxApplication.showAlert("操作提示", "小号：{" + user.getSubUserName().getValue() + "}," + connectionStatus, null, null, "确定");
+                    JavafxApplication.showAlert("操作提示", "用户：{" + user.getUserName().getValue() + "}," + connectionStatus, null, null, "确定");
                 }
             }
         });

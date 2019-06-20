@@ -1,6 +1,5 @@
 package com.jason.common.vo;
 
-import com.jason.common.po.SubUser;
 import com.jason.common.po.UserShop;
 import lombok.Data;
 
@@ -14,7 +13,7 @@ public class UserDetailsVO {
 	/**
      * 账号关联小号
      */
-    private List<SubUser> subUserList;
+    private List<SubUserVO> subUserList;
     private int subUserCount;
     
     /**

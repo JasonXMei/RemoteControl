@@ -33,6 +33,14 @@ public class SubUserController {
         return subUserService.handList(page);
     }
 
+    @RequestMapping(value = "getUserOrderTimes/{userId}", produces = "application/json;charset=utf-8")
+    @ResponseBody
+    public String getUserOrderTimes(
+            @PathVariable("userId") Integer userId
+    ){
+        return subUserService.getUserOrderTimes(userId);
+    }
+
     @ResponseBody
     @RequestMapping("{loginUserId}/{taskUserId}/get")
     public  JSONResult<UserDetailsVO> userDetail(
@@ -47,6 +55,7 @@ public class SubUserController {
      */
     @RequestMapping("status/{userId}")
     @ResponseBody
+    @Deprecated
     public Integer connectStatusClient(@PathVariable("userId") Integer userId){
         return subUserService.handleStatus(userId);
     }

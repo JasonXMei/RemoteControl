@@ -1,7 +1,6 @@
 package com.jason.web.netty;
 
 import com.jason.common.enums.ConnectStatusEnum;
-import com.jason.common.po.SubUser;
 import com.jason.common.po.User;
 import com.jason.web.handler.SocketHandler;
 import com.jason.web.mapper.SubUserMapper;
@@ -46,7 +45,7 @@ public class CIMServerHandle extends SimpleChannelInboundHandler<WUProto.WUProto
      * 用户下线
      */
     private void userOffLine(ChannelHandlerContext ctx) throws IOException {
-        NioSocketChannel nioSocketChannel = (NioSocketChannel) ctx.channel();
+        /*NioSocketChannel nioSocketChannel = (NioSocketChannel) ctx.channel();
         int userId = SocketHandler.removeClient(nioSocketChannel);
         if(userId != 0){
             log.info("客户端[{}]下线", userId);
@@ -60,10 +59,10 @@ public class CIMServerHandle extends SimpleChannelInboundHandler<WUProto.WUProto
                 log.info("使用端[{}]下线", userId);
                 User user = new User();
                 user.setId(userId);
-                user.setConnectStatus(ConnectStatusEnum.DisConnected);
+                user.setConnectStatusUse(ConnectStatusEnum.DisConnected);
                 userMapper.updateById(user);
             }
-        }
+        }*/
     }
 
     @Override
@@ -73,10 +72,10 @@ public class CIMServerHandle extends SimpleChannelInboundHandler<WUProto.WUProto
         if (msg.getMsgType() == Constants.LOGIN_USE) {
             int sendUserId = msg.getSendUserId();
             User user = userMapper.selectById(sendUserId);
-            if(user != null && user.getConnectStatus().getStatus() == ConnectStatusEnum.DisConnected.getStatus()){
+            if(user != null && user.getConnectStatusUse().getStatus() == ConnectStatusEnum.DisConnected.getStatus()){
                 SocketHandler.putUse(sendUserId, (NioSocketChannel) ctx.channel());
                 log.info("使用端[{}]上线", msg.toString());
-                user.setConnectStatus(ConnectStatusEnum.ToBeConnect);
+                user.setConnectStatusUse(ConnectStatusEnum.ToBeConnect);
                 userMapper.updateById(user);
             }
             return;
@@ -84,13 +83,35 @@ public class CIMServerHandle extends SimpleChannelInboundHandler<WUProto.WUProto
 
         if (msg.getMsgType() == Constants.LOGIN_CLIENT) {
             int sendUserId = msg.getSendUserId();
-            SubUser subUser = subUserMapper.selectById(sendUserId);
-            if(subUser != null && subUser.getConnectStatus().getStatus() == ConnectStatusEnum.DisConnected.getStatus()){
+            User user = userMapper.selectById(sendUserId);
+            if(user != null && user.getConnectStatusClient().getStatus() == ConnectStatusEnum.DisConnected.getStatus()){
                 SocketHandler.putClient(sendUserId, (NioSocketChannel) ctx.channel());
                 log.info("客户端[{}]上线", msg.toString());
-                subUser.setConnectStatus(ConnectStatusEnum.ToBeConnect);
-                subUserMapper.updateById(subUser);
+                user.setConnectStatusClient(ConnectStatusEnum.ToBeConnect);
+                userMapper.updateById(user);
             }
+            return;
+        }
+
+        if (msg.getMsgType() == Constants.LOGOUT_USE) {
+            int sendUserId = msg.getSendUserId();
+            SocketHandler.removeUse(sendUserId);
+            User user = new User();
+            user.setId(sendUserId);
+            user.setConnectStatusUse(ConnectStatusEnum.DisConnected);
+            userMapper.updateById(user);
+            log.info("使用端[{}]下线", sendUserId);
+            return;
+        }
+
+        if (msg.getMsgType() == Constants.LOGOUT_CLIENT) {
+            int sendUserId = msg.getSendUserId();
+            SocketHandler.removeClient(sendUserId);
+            User user = new User();
+            user.setId(sendUserId);
+            user.setConnectStatusClient(ConnectStatusEnum.DisConnected);
+            userMapper.updateById(user);
+            log.info("客户端[{}]下线", sendUserId);
             return;
         }
 
@@ -103,21 +124,21 @@ public class CIMServerHandle extends SimpleChannelInboundHandler<WUProto.WUProto
 
         if (msg.getMsgType() == Constants.MSG_CONTROL){
             int receiveUserId = msg.getReceiveUserId();
-            SubUser subUser = subUserMapper.selectById(receiveUserId);
-            if(subUser.getConnectStatus().getStatus() == ConnectStatusEnum.DisConnected.getStatus()){
+            User user = userMapper.selectById(receiveUserId);
+            if(user.getConnectStatusClient().getStatus() == ConnectStatusEnum.DisConnected.getStatus()){
                 NettyUtil.sendGoogleProtocolMsg(Constants.MSG_ERROR, 0, msg.getSendUserId(), null, null, "客户端已下线！", (NioSocketChannel) ctx.channel());
                 return;
             }
 
-            if(subUser.getConnectStatus().getStatus() == ConnectStatusEnum.ToBeConnect.getStatus()){
+            if(user.getConnectStatusClient().getStatus() == ConnectStatusEnum.ToBeConnect.getStatus()){
                 if(SocketHandler.getClient(receiveUserId) != null){
-                    subUser.setConnectStatus(ConnectStatusEnum.Connected);
+                    user.setConnectStatusClient(ConnectStatusEnum.Connected);
                     NettyUtil.sendGoogleProtocolMsg(Constants.MSG_CONTROL, msg.getSendUserId(), msg.getReceiveUserId(), null, null, null);
                 }else{
-                    subUser.setConnectStatus(ConnectStatusEnum.DisConnected);
+                    user.setConnectStatusClient(ConnectStatusEnum.DisConnected);
                     NettyUtil.sendGoogleProtocolMsg(Constants.MSG_ERROR, 0, msg.getSendUserId(), null, null, "客户端已下线！", (NioSocketChannel) ctx.channel());
                 }
-                subUserMapper.updateById(subUser);
+                userMapper.updateById(user);
             }else{
                 NettyUtil.sendGoogleProtocolMsg(Constants.MSG_ERROR, 0, msg.getSendUserId(), null, null, "客户端已被连接,请稍候重试！", (NioSocketChannel) ctx.channel());
             }
@@ -126,15 +147,15 @@ public class CIMServerHandle extends SimpleChannelInboundHandler<WUProto.WUProto
 
         if (msg.getMsgType() == Constants.MSG_DIS_CONTROL){
             int receiveUserId = msg.getReceiveUserId();
-            SubUser subUser = subUserMapper.selectById(receiveUserId);
-            if(subUser != null){
+            User user = userMapper.selectById(receiveUserId);
+            if(user != null){
                 if(SocketHandler.getClient(receiveUserId) != null){
-                    subUser.setConnectStatus(ConnectStatusEnum.ToBeConnect);
+                    user.setConnectStatusClient(ConnectStatusEnum.ToBeConnect);
                     NettyUtil.sendGoogleProtocolMsg(Constants.MSG_DIS_CONTROL, msg.getSendUserId(), msg.getReceiveUserId(), null, null, null);
                 }else{
-                    subUser.setConnectStatus(ConnectStatusEnum.DisConnected);
+                    user.setConnectStatusClient(ConnectStatusEnum.DisConnected);
                 }
-                subUserMapper.updateById(subUser);
+                userMapper.updateById(user);
             }
             return;
         }

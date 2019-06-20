@@ -157,7 +157,7 @@ public class JavaFXWindow extends JFrame{
         eventJSON.put("btn", event.getButton());
         if(MouseEvent.MOUSE_WHEEL == event.getID())
             eventJSON.put("wheelRotation", ((MouseWheelEvent) event).getWheelRotation());
-        NettyUtil.sendGoogleProtocolMsg(Constants.MSG_EVENT, Integer.parseInt(LoginController.userId), Integer.parseInt(TaskController.subUserId), null,
+        NettyUtil.sendGoogleProtocolMsg(Constants.MSG_EVENT, Integer.parseInt(LoginController.userId), Integer.parseInt(TaskController.userId), null,
                 ByteObjConverter.objectToByte(eventJSON), null, (NioSocketChannel) CIMClient.channel);
     }
 
@@ -166,7 +166,7 @@ public class JavaFXWindow extends JFrame{
         eventJSON.put("eventId", event.getID());
         eventJSON.put("keyCode", event.getKeyCode());
         //KeyEvent event1 = new KeyEvent(label, event.getID(), event.getWhen(), event.getModifiers(), ((KeyEvent) event).getKeyCode(), ((KeyEvent) event).getKeyChar());
-        NettyUtil.sendGoogleProtocolMsg(Constants.MSG_EVENT, Integer.parseInt(LoginController.userId), Integer.parseInt(TaskController.subUserId), null,
+        NettyUtil.sendGoogleProtocolMsg(Constants.MSG_EVENT, Integer.parseInt(LoginController.userId), Integer.parseInt(TaskController.userId), null,
                 ByteObjConverter.objectToByte(eventJSON), null, (NioSocketChannel) CIMClient.channel);
     }
 
@@ -175,7 +175,7 @@ public class JavaFXWindow extends JFrame{
             //处理JFrame关闭事件……
             this.setVisible(false);
             isConnected = false;
-            NettyUtil.sendGoogleProtocolMsg(Constants.MSG_DIS_CONTROL, Integer.parseInt(LoginController.userId), Integer.parseInt(TaskController.subUserId), null,
+            NettyUtil.sendGoogleProtocolMsg(Constants.MSG_DIS_CONTROL, Integer.parseInt(LoginController.userId), Integer.parseInt(TaskController.userId), null,
                     null, null, (NioSocketChannel) CIMClient.channel);
         }else{
             //忽略其他事件，交给JFrame处理

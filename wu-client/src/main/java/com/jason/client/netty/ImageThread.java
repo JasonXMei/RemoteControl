@@ -24,7 +24,7 @@ public class ImageThread implements Runnable{
                     byte imageBytes[] = ByteObjConverter.getImageBytes(image);
                     NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, Integer.valueOf(LoginController.userId), CIMClientHandle.controlUserId, imageBytes, null, null,(NioSocketChannel)CIMClient.channel);
                 }
-                Thread.sleep(500);
+                Thread.sleep(2000);
             }
         } catch (Exception e) {
             e.printStackTrace();

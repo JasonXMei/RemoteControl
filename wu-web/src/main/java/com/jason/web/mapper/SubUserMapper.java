@@ -21,4 +21,6 @@ public interface SubUserMapper extends BaseMapper<SubUser> {
     List<SubUserExt> findSubUserList(@Param("pg") TaskPage<SubUser> page);
 
     SubUserExt findSubUser(@Param("subUserId") Integer subUserId, @Param("currentDateTimeStamp") long currentDateTimeStamp);
+
+    List<SubUserExt> getUserOrderTimes(@Param("userId") Integer userId, @Param("currentDateTimeStamp") long currentTimeStamp);
 }

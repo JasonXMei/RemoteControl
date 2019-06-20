@@ -3,6 +3,7 @@ package com.jason.common.po;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.jason.common.enums.ConnectStatusEnum;
+import com.jason.common.enums.SexEnum;
 import com.jason.common.enums.TerminalEnum;
 import com.jason.common.enums.UserTypeEnum;
 import lombok.Data;
@@ -43,11 +44,20 @@ public class SubUserExt {
     /**
      * 连接状态
      */
-    private ConnectStatusEnum connectStatus;
+    private ConnectStatusEnum connectStatusClient;
+
+    /**
+     * 性别
+     */
+    private SexEnum sex;
+
+    /**
+     * 年龄
+     */
+    private Integer age;
 
     private String userName;
     private Integer allowOrderTimes;
     private Integer orderTimes;
     private String location;
-    private Integer sex;
 }

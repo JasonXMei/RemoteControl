@@ -98,7 +98,13 @@
 							<input type="text" class="form-control" id="userName" name="userName" value="${userDetail.userVO.userName!''}"  placeholder="请输入用户名"/>
 						</div>
 					</td>
-                    <td id="sexTd">
+                    <td>
+                        <div class="form-group">
+                            <label for="mobile">手机号:</label>
+                            <input type="text" class="form-control" id="mobile" name="mobile" value="${userDetail.userVO.mobile!''}"  placeholder="请输入手机号">
+                        </div>
+                    </td>
+                    <#--<td id="sexTd">
                         <div class="form-group">
                             <label>性别:</label>
                             <label class="radio-inline">
@@ -108,21 +114,21 @@
                                 <input type="radio" name="sexStr" value="1"> 女
                             </label>
                         </div>
-                    </td>
+                    </td>-->
 				</tr>
 				<tr>
-					<td>
-						<div class="form-group">
-							<label for="mobile">手机号:</label>
-							<input type="text" class="form-control" id="mobile" name="mobile" value="${userDetail.userVO.mobile!''}"  placeholder="请输入手机号">
-						</div>
-					</td>
 					<td>
 						<div class="form-group">
 							<label for="qqNumber">QQ号:</label>
 							<input type="text" class="form-control" id="qqNumber" name="qqNumber" value="${userDetail.userVO.qqNumber!''}"  placeholder="请输入QQ号">
 						</div>
 					</td>
+                    <td>
+                        <div class="form-group">
+                            <label for="location">位置:</label>
+                            <input type="text" class="form-control" id="location" name="location" value="${userDetail.userVO.location!''}"  placeholder="请输入位置">
+                        </div>
+                    </td>
 				</tr>
 				<tr>
                     <#if ((userDetail.userVO.id == 0))
@@ -161,20 +167,6 @@
                             </div>
                         </td>
                     </#if>
-				</tr>
-				<tr>
-                    <td>
-                        <div class="form-group">
-                            <label for="location">位置:</label>
-                            <input type="text" class="form-control" id="location" name="location" value="${userDetail.userVO.location!''}"  placeholder="请输入位置">
-                        </div>
-                    </td>
-					<td>
-						<div class="form-group">
-							<label for="age">年龄:</label>
-							<input type="text" class="form-control" id="age" name="age" value="${userDetail.userVO.age!''}"  placeholder="请输入年龄">
-						</div>
-					</td>
 				</tr>
                 <#if (referrerUserInviteCode)?? && (referrerUserInviteCode != '')>
                     <tr>
@@ -223,9 +215,22 @@
 									<#list userDetail.subUserList as subUserItem>
 										<div>
                                             <input type="text" class="form-control" name="subUserName" value="${subUserItem.subUserName}"  placeholder="请输入小号名">
+                                            <input type="text" class="form-control" name="age" value="${subUserItem.age}"  placeholder="请输入年龄">
+                                            <#if (subUserItem.sexStr == '男')>
+                                                <select class="form-control">
+                                                    <option value="0" selected>男</option>
+                                                    <option value="1">女</option>
+                                                </select>
+                                            <#else>
+                                                <select class="form-control">
+                                                    <option value="0">男</option>
+                                                    <option value="1" selected>女</option>
+                                                </select>
+                                            </#if>
+
                                             <input type="hidden" value="${subUserItem.id}" name="subUserId">
 
-                                            <#--保存按钮：1)推荐人邀请来注册；2)登陆用户本人的详情页;3)超管-->
+                                            <#--删除按钮：1)推荐人邀请来注册；2)登陆用户本人的详情页;3)超管-->
                                             <#if ((userDetail.userVO.id == 0))
                                             || ((user??) && (userDetail.userVO.id > 0) && (user.id == userDetail.userVO.id))
                                             || ((user.permission)?? && (user.permission.type == 0))>
@@ -239,6 +244,11 @@
 								</#if>
                                 <div id="defaultSubUserDiv">
                                     <input type="text" class="form-control" name="subUserName" placeholder="请输入小号名">
+                                    <input type="text" class="form-control" name="age" placeholder="请输入年龄">
+                                    <select class="form-control">
+                                        <option value="0" selected>男</option>
+                                        <option value="1">女</option>
+                                    </select>
                                     <input type="hidden" value="0" name="subUserId">
                                     <button class="btn btn-warning" type="button" onclick="trashElement(this)">
                                         <span class="glyphicon glyphicon-trash"></span>
@@ -382,14 +392,6 @@ $(function () {
                     }
                 }
             },
-            age: {
-                validators: {
-                    regexp: {
-                        regexp: /^\d+(\.{0,1}\d+){0,1}$/,
-                        message: '年龄应为非负整数'
-                    }
-                }
-            },
             file: {
                 validators: {
                     file: {
@@ -414,7 +416,9 @@ $(function () {
                 if(obj.val()){
                     var subUser = {};
                     subUser.subUserName = obj.val();
-                    subUser.id = obj.next().val();
+                    subUser.age = obj.next().val();
+                    subUser.sex = obj.next().next().val();
+                    subUser.id = obj.next().next().next().val();
                     subUserList[index] = subUser;
                 }
             });

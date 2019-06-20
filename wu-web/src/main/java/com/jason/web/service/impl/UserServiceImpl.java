@@ -5,15 +5,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jason.common.enums.AccountStatusEnum;
 import com.jason.common.enums.HttpStatus;
 import com.jason.common.enums.PermissionEnum;
-import com.jason.common.enums.SexEnum;
 import com.jason.common.po.SubUser;
 import com.jason.common.po.User;
 import com.jason.common.po.UserShop;
 import com.jason.common.util.*;
-import com.jason.common.vo.JSONResult;
-import com.jason.common.vo.UserDetailsVO;
-import com.jason.common.vo.UserPage;
-import com.jason.common.vo.UserVO;
+import com.jason.common.vo.*;
 import com.jason.web.config.ParamsConfig;
 import com.jason.web.handler.SocketHandler;
 import com.jason.web.mapper.UserMapper;
@@ -135,7 +131,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             userPO.setPermission(PermissionEnum.NormalUser);
         }
         userPO.setStatus(accountStatusEnum);
-        userPO.setSex(SexEnum.getSexEnumByType(Integer.valueOf(userVO.getSexStr())));
+        //userPO.setSex(SexEnum.getSexEnumByType(Integer.valueOf(userVO.getSexStr())));
         try {
             userPO.setValidTime(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.parse(userVO.getValidTimeStr()).getTime());
         } catch (ParseException e) {
@@ -176,7 +172,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
 
         //处理sub user
-        List<SubUser> subUsers = JsonUtil.json2JavaBeanList(subUserList, SubUser.class);
+        List<SubUser> subUsers = JsonUtil.json2SubUserList(subUserList);
         Set<Integer> subUserIds = new HashSet<>();
         for(SubUser su : subUsers){
             subUserIds.add(su.getId());
@@ -272,10 +268,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public Integer handleStatusClient(Integer userId) {
-        User userPO = baseMapper.selectById(userId);
+    public Integer handleStatusClient(Integer id, Integer type) {
+        User userPO = baseMapper.selectById(id);
         if(userPO != null){
-            return userPO.getConnectStatus().getStatus();
+            if(type == 0){
+                return userPO.getConnectStatusUse().getStatus();
+            }else{
+                return userPO.getConnectStatusClient().getStatus();
+            }
+
         }
         return -1;
     }
@@ -286,11 +287,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         List<UserShop> userShopList = userShopService.list(new QueryWrapper<UserShop>().eq("user_id", userVO.getId()));
 
         List<SubUser> subUserList = subUserService.list(new QueryWrapper<SubUser>().eq("user_id", taskUserId));
+        List<SubUserVO> subUserVOList = new ArrayList<>();
+        for(SubUser subUser : subUserList){
+            subUserVOList.add(BeanUtil.convertSubUserPO2VO(dozerMapper, subUser));
+        }
 
         UserDetailsVO userDetailsVO = new UserDetailsVO();
         userDetailsVO.setShopList(userShopList);
         userDetailsVO.setShopCount(userShopList.size());
-        userDetailsVO.setSubUserList(subUserList);
+        userDetailsVO.setSubUserList(subUserVOList);
         userDetailsVO.setSubUserCount(subUserList.size());
         userDetailsVO.setUserVO(userVO);
         return userDetailsVO;

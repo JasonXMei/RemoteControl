@@ -49,7 +49,7 @@ public class TaskController implements Initializable {
     public static Map<String,Integer> shopMap = new HashMap<>();
 
     public static String userId = "";
-    public static String subUserId = "";
+    //public static String subUserId = "";
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -176,7 +176,7 @@ public class TaskController implements Initializable {
     public void connectClient(ActionEvent actionEvent) {
         JavaFXWindow.isConnected = true;
         JavaFXWindow.count = 0;
-        NettyUtil.sendGoogleProtocolMsg(Constants.MSG_CONTROL, Integer.valueOf(LoginController.userId), Integer.valueOf(subUserId), null, null, null, (NioSocketChannel) CIMClient.channel);
+        NettyUtil.sendGoogleProtocolMsg(Constants.MSG_CONTROL, Integer.valueOf(LoginController.userId), Integer.valueOf(userId), null, null, null, (NioSocketChannel) CIMClient.channel);
         try {
             Thread.sleep(1000);
             if(CIMClientHandle.errorMsg != null){

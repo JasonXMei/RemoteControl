@@ -17,14 +17,15 @@
         <result column="status" property="status" />
         <result column="allow_order_times" property="allowOrderTimes" />
         <result column="valid_time" property="validTime" />
-        <result column="connect_status" property="connectStatus" />
+        <result column="connect_status_use" property="connectStatusUse" />
+        <result column="connect_status_client" property="connectStatusClient" />
         <result column="invite_code" property="inviteCode" />
         <result column="referrer_user_id" property="referrerUserId" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, user_name, password, sex, age, location, credit_values, payment_code_img, qq_number, mobile, permission, status, allow_order_times, valid_time, connect_status, invite_code, referrer_user_id
+        id, user_name, password, sex, age, location, credit_values, payment_code_img, qq_number, mobile, permission, status, allow_order_times, valid_time, connect_status_use, connect_status_client, invite_code, referrer_user_id
     </sql>
 
     <select id="findUserList" resultMap="BaseResultMap">

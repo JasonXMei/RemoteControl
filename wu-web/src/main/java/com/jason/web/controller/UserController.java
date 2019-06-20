@@ -112,10 +112,11 @@ public class UserController {
     /**
      *  获取用户连接状态
      */
-    @RequestMapping("status/{userId}/client")
+    @RequestMapping("status/{userId}/{type}/client")
     @ResponseBody
-    public Integer connectStatusClient(@PathVariable("userId") Integer userId){
-        return userService.handleStatusClient(userId);
+    public Integer connectStatusClient(@PathVariable("userId") Integer userId,
+                                       @PathVariable("type") Integer type){
+        return userService.handleStatusClient(userId, type);
     }
 
     @RequestMapping(value = "saveOrUpdate/", method = RequestMethod.POST)

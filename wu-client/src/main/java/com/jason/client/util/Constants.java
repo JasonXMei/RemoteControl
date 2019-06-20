@@ -8,13 +8,11 @@ public class Constants {
     public static final int LOGIN_USE = 0 ;
     public static final int LOGIN_CLIENT = 1 ;
     /**
-     * ping
+     * 退出
      */
-    public static final int PING = 2 ;
-    /**
-     * pong
-     */
-    public static final int PONG = 3 ;
+    public static final int LOGOUT_USE = 2 ;
+    public static final int LOGOUT_CLIENT = 3 ;
+
     /**
      * 业务消息
      */

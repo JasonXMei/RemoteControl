@@ -8,20 +8,22 @@
         <result column="sub_user_name" property="subUserName" />
         <result column="terminal" property="terminal" />
         <result column="user_type" property="userType" />
-        <result column="connect_status" property="connectStatus" />
+        <result column="connect_status_client" property="connectStatusClient" />
         <result column="user_name" property="userName" />
         <result column="allow_order_times" property="allowOrderTimes" />
         <result column="order_times" property="orderTimes" />
         <result column="location" property="location" />
+        <result column="sex" property="sex" />
+        <result column="age" property="age" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        su.id, su.user_id, su.sub_user_name, su.terminal, su.user_type, su.connect_status
+        su.id, su.user_id, su.sub_user_name, su.terminal, su.user_type, su.connect_status, su.sex, su.age
     </sql>
 
     <select id="findSubUserList" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List"/> , u.user_name, u.sex, u.allow_order_times, u.location,
+        select <include refid="Base_Column_List"/> , u.user_name, u.allow_order_times, u.location, u.connect_status_client,
         (select count(sut.id) from sub_user_task sut
         JOIN task_replace_order tro on sut.id = tro.task_id WHERE sut.sub_user_id = su.id AND (sut.create_time BETWEEN #{pg.searchStartDate} AND #{pg.searchEndDate})
         )as order_times
@@ -36,10 +38,10 @@
                 )
             </if>
             <if test="pg.searchStatus != -1">
-                AND u.sex = #{pg.searchStatus}
+                AND su.sex = #{pg.searchStatus}
             </if>
         </where>
-        ORDER BY su.connect_status,order_times,su.user_id
+        ORDER BY u.connect_status_client,order_times,su.user_id
     </select>
 
     <select id="findSubUser" resultMap="BaseResultMap">
@@ -50,5 +52,15 @@
         FROM sub_user su
         JOIN user u on su.user_id = u.id
         WHERE su.id = #{subUserId}
+    </select>
+
+    <select id="getUserOrderTimes" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> , u.user_name, u.allow_order_times, u.location,
+        (SELECT count(sut.id) from sub_user_task sut
+        JOIN task_replace_order tro on sut.id = tro.task_id WHERE sut.sub_user_id = su.id AND (sut.create_time BETWEEN #{currentDateTimeStamp} AND #{currentDateTimeStamp})
+        )as order_times
+        FROM sub_user su
+        JOIN user u on su.user_id = u.id
+        WHERE u.id = #{userId}
     </select>
 </mapper>

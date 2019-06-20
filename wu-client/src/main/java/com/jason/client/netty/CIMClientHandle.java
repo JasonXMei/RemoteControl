@@ -46,6 +46,7 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        NettyUtil.sendGoogleProtocolMsg(Constants.LOGOUT_CLIENT, Integer.valueOf(LoginController.userId), 0, null, null, null, (NioSocketChannel) ctx.channel());
     }
 
     @Override
@@ -73,6 +74,7 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
         if (msg.getMsgType() == Constants.MSG_EVENT) {
             JSONObject jsonObject = (JSONObject) ByteObjConverter.byteToObject(msg.getUserEvent().toByteArray());
             handleEvents(robot, jsonObject);// 处理事件
+            Thread.sleep(200);
             NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, msg.getReceiveUserId(), msg.getSendUserId(), getImgBytes(), null, null,(NioSocketChannel)ctx.channel());
             return;
         }

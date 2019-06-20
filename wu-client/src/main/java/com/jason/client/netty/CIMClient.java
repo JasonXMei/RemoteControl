@@ -1,6 +1,9 @@
 package com.jason.client.netty;
 
 import com.jason.client.config.APIConfig;
+import com.jason.client.controller.LoginController;
+import com.jason.client.util.Constants;
+import com.jason.client.util.NettyUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
@@ -64,6 +67,7 @@ public class CIMClient {
      */
     public static boolean close(){
         if (channel != null){
+            NettyUtil.sendGoogleProtocolMsg(Constants.LOGOUT_CLIENT, Integer.valueOf(LoginController.userId), 0, null, null, null, (NioSocketChannel) channel);
             channel.close();
             group.shutdownGracefully().syncUninterruptibly();
             return true;
