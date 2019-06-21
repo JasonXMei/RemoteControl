@@ -76,10 +76,10 @@ public class NettyUtil {
 
         nioSocketChannel.writeAndFlush(protocol).addListeners((ChannelFutureListener) future -> {
             if (!future.isSuccess()) {
-                //LOGGER.error("IO error,close Channel");
+                System.out.println("IO error,close Channel");
                 future.channel().close();
             }else{
-                //LOGGER.info("发送 Google Protocol Msg成功!");
+                System.out.println("发送 Google Protocol Msg成功!");
             }
         });
     }

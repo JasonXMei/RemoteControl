@@ -2,7 +2,9 @@ package com.jason.client.util;
 
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
+import net.coobird.thumbnailator.Thumbnails;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 
@@ -62,4 +64,28 @@ public class ByteObjConverter {
         // 转换成byte数组
         return baos.toByteArray();
     }
+    public static byte[] compressedImageAndGetByteArray(BufferedImage image, float quality) {
+
+        try {
+            final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            Thumbnails.of(image).scale(1f).outputFormat("jpg").outputQuality(quality).toOutputStream(byteArrayOutputStream);
+            return byteArrayOutputStream.toByteArray();
+        }catch (IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    /*public static void main(String[] args) throws AWTException {
+        //获取屏幕分辨率
+        Dimension d = Toolkit.getDefaultToolkit().getScreenSize ();
+        Robot robot = new Robot();
+        //以屏幕的尺寸创建个矩形
+        Rectangle screenRect = new Rectangle(d);
+        //截图（截取整个屏幕图片）
+        BufferedImage bufferedImage = robot.createScreenCapture(screenRect);
+
+        //System.out.println(compressedImageAndGetByteArray(bufferedImage, 50/100.0f).length);
+        System.out.println(getImageBytes(bufferedImage).length);
+    }*/
+
 }

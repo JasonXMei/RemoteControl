@@ -34,7 +34,7 @@ public class UserController implements Initializable {
     @FXML
     private JFXTreeTableView<User> userList;
     @FXML
-    private JFXTreeTableColumn<User, Integer> id;
+    private JFXTreeTableColumn<User, String> id;
     @FXML
     private JFXTreeTableColumn<User, String> userName;
     @FXML
@@ -49,6 +49,8 @@ public class UserController implements Initializable {
     private JFXTreeTableColumn<User, String> connectionStatus;
     @FXML
     private JFXTreeTableColumn<User, Integer> subUserId;
+    @FXML
+    private JFXTreeTableColumn<User, Integer> age;
     @FXML
     public JFXComboBox<String> userSexCombo;
     @FXML
@@ -92,7 +94,8 @@ public class UserController implements Initializable {
         String text = "第" + current + "/" + pages + "页，共" + total + "条记录";
         pageRecord.setText(text);
 
-        setupCellValueFactory(id, p -> p.getId().asObject());
+        setupCellValueFactory(id, User::getId);
+        setupCellValueFactory(age, p -> p.getAge().asObject());
         setupCellValueFactory(userName, User::getUserName);
         setupCellValueFactory(subUserName, User::getSubUserName);
         setupCellValueFactory(userSex, User::getSex);
@@ -108,7 +111,7 @@ public class UserController implements Initializable {
             Integer userId = subUserJSON.getInteger("userId");
             String subUserName = subUserJSON.getString("subUserName");
             users.add(
-                    new User(userId, subUserJSON.getInteger("id"),
+                    new User(String.format("%04d", userId), subUserJSON.getInteger("id"), subUserJSON.getInteger("age"),
                             subUserJSON.getString("userName"), subUserName ,
                             subUserJSON.getString("sexStr"), subUserJSON.getString("orderTimes"),
                             subUserJSON.getString("location"), subUserJSON.getString("connectStatusStr")));
@@ -159,11 +162,11 @@ public class UserController implements Initializable {
                     JavafxApplication.showAlert("操作提示", "小号：{" + user.getSubUserName().getValue() + "},当日补单次数已满!" , null, null, "确定");
                     return;
                 }*/
-                int userId = user.getId().get();
+                String userId = user.getId().get();
 
                 String connectionStatus = user.getConnectionStatus().getValue();
                 if(("可以连接").equals(connectionStatus)){
-                    TaskController.userId = String.valueOf(user.getId().getValue());
+                    TaskController.userId = userId;
                     //TaskController.subUserId = String.valueOf(user.getSubUserId().getValue());
                     String apiResponse = HttpUtil.httpPost(new HashMap<>(), String.format(APIConfig.userOrderTimesUrl, userId), LoginController.jwt);
                     /*try {

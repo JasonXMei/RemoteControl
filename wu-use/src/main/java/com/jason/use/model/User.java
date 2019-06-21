@@ -6,8 +6,9 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class User extends RecursiveTreeObject<User> {
-    private SimpleIntegerProperty id;
+    private StringProperty id;
     private SimpleIntegerProperty subUserId;
+    private SimpleIntegerProperty age;
     private StringProperty userName;
     private StringProperty subUserName;
     private StringProperty sex;
@@ -15,9 +16,10 @@ public class User extends RecursiveTreeObject<User> {
     private StringProperty location;
     private StringProperty connectionStatus;
 
-    public User(int id, int subUserId, String userName, String subUserName, String sex, String replaceOrderTimes, String location, String connectionStatus) {
-        this.id = new SimpleIntegerProperty(id);
+    public User(String id, int subUserId, int age, String userName, String subUserName, String sex, String replaceOrderTimes, String location, String connectionStatus) {
+        this.id = new SimpleStringProperty(id);
         this.subUserId = new SimpleIntegerProperty(subUserId);
+        this.age = new SimpleIntegerProperty(age);
         this.userName = new SimpleStringProperty(userName);
         this.subUserName = new SimpleStringProperty(subUserName);
         this.sex = new SimpleStringProperty(sex);
@@ -26,11 +28,11 @@ public class User extends RecursiveTreeObject<User> {
         this.connectionStatus = new SimpleStringProperty(connectionStatus);
     }
 
-    public SimpleIntegerProperty getId() {
+    public StringProperty getId() {
         return id;
     }
 
-    public void setId(SimpleIntegerProperty id) {
+    public void setId(StringProperty id) {
         this.id = id;
     }
 
@@ -40,6 +42,14 @@ public class User extends RecursiveTreeObject<User> {
 
     public void setSubUserId(SimpleIntegerProperty subUserId) {
         this.subUserId = subUserId;
+    }
+
+    public SimpleIntegerProperty getAge() {
+        return age;
+    }
+
+    public void setAge(SimpleIntegerProperty age) {
+        this.age = age;
     }
 
     public StringProperty getUserName() {

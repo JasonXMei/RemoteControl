@@ -37,9 +37,10 @@
                              <JFXTreeTableColumn fx:id="userName" editable="false" minWidth="98.0" prefWidth="150.0" resizable="false" sortable="false" text="分享用户" />
                              <JFXTreeTableColumn fx:id="subUserName" editable="false" minWidth="39.0" prefWidth="136.0" resizable="false" sortable="false" text="小号名" />
                              <JFXTreeTableColumn fx:id="userSex" editable="false" minWidth="31.0" prefWidth="48.0" resizable="false" sortable="false" text="性别" />
-                             <JFXTreeTableColumn fx:id="replaceOrderTimes" editable="false" minWidth="48.0" prefWidth="102.0" resizable="false" sortable="false" text="日-日上限" />
+                             <JFXTreeTableColumn fx:id="age" editable="false" minWidth="31.0" prefWidth="48.0" resizable="false" sortable="false" text="年龄" />
+                             <JFXTreeTableColumn fx:id="replaceOrderTimes" editable="false" minWidth="48.0" prefWidth="92.0" resizable="false" sortable="false" text="日-日上限" />
                              <JFXTreeTableColumn fx:id="connectionStatus" editable="false" minWidth="28.0" prefWidth="92.0" resizable="false" sortable="false" text="连接状态" />
-                             <JFXTreeTableColumn fx:id="location" editable="false" minWidth="35.0" prefWidth="163.0" resizable="false" sortable="false" text="地理位置" />
+                             <JFXTreeTableColumn fx:id="location" editable="false" minWidth="35.0" prefWidth="120.0" resizable="false" sortable="false" text="地理位置" />
                              <JFXTreeTableColumn fx:id="subUserId" editable="false" minWidth="0" prefWidth="0" resizable="false" sortable="false" text="sub user id" visible="false" />
                          </columns>
                            <VBox.margin>

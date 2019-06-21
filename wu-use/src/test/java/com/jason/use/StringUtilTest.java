@@ -14,4 +14,13 @@ public class StringUtilTest {
         System.out.println(StringUtil.isNumeric("1.1"));
     }
 
+    @Test
+    public void compWithZore(){
+        Integer userId = 288;
+        String str = String.format("%04d", userId);
+        System.out.println(str);
+        userId = Integer.valueOf(str);
+        System.out.println(userId);
+    }
+
 }
