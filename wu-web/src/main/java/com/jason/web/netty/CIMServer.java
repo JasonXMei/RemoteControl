@@ -34,10 +34,10 @@ public class CIMServer {
         ServerBootstrap bootstrap = new ServerBootstrap()
                 .group(boss, work)
                 .channel(NioServerSocketChannel.class)
+                .localAddress(new InetSocketAddress(nettyPort))
                 .option(ChannelOption.SO_BACKLOG,1024)
                 //保持长连接
                 .childOption(ChannelOption.SO_KEEPALIVE,true)
-                .localAddress(new InetSocketAddress(nettyPort))
                 .childHandler(cimServerInitializer);
 
         ChannelFuture future = bootstrap.bind().sync();

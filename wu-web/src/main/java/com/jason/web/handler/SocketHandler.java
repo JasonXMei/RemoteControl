@@ -18,8 +18,15 @@ public class SocketHandler {
     }
 
     public static void removeUse(Integer userId) {
+        NioSocketChannel nioSocketChannel = CHANNEL_MAP_USE.get(userId);
+        if(nioSocketChannel != null){
+            nioSocketChannel.close();
+        }
         CHANNEL_MAP_USE.remove(userId);
-        //return removeMap(CHANNEL_MAP_USE, nioSocketChannel);
+    }
+
+    public static int removeUse(NioSocketChannel nioSocketChannel) {
+        return removeMap(CHANNEL_MAP_USE, nioSocketChannel);
     }
 
     public static void putClient(Integer id, NioSocketChannel socketChannel) {
@@ -31,8 +38,15 @@ public class SocketHandler {
     }
 
     public static void removeClient(Integer userId) {
+        NioSocketChannel nioSocketChannel = CHANNEL_MAP_CLIENT.get(userId);
+        if(nioSocketChannel != null){
+            nioSocketChannel.close();
+        }
         CHANNEL_MAP_CLIENT.remove(userId);
-        //return removeMap(CHANNEL_MAP_CLIENT, nioSocketChannel);
+    }
+
+    public static int removeClient(NioSocketChannel nioSocketChannel) {
+        return removeMap(CHANNEL_MAP_CLIENT, nioSocketChannel);
     }
 
     private static int removeMap(Map<Integer, NioSocketChannel> map, NioSocketChannel nioSocketChannel){

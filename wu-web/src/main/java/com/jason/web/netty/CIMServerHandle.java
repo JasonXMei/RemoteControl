@@ -45,24 +45,24 @@ public class CIMServerHandle extends SimpleChannelInboundHandler<WUProto.WUProto
      * 用户下线
      */
     private void userOffLine(ChannelHandlerContext ctx) throws IOException {
-        /*NioSocketChannel nioSocketChannel = (NioSocketChannel) ctx.channel();
+        NioSocketChannel nioSocketChannel = (NioSocketChannel) ctx.channel();
         int userId = SocketHandler.removeClient(nioSocketChannel);
         if(userId != 0){
-            log.info("客户端[{}]下线", userId);
-            SubUser subUser = new SubUser();
-            subUser.setId(userId);
-            subUser.setConnectStatus(ConnectStatusEnum.DisConnected);
-            subUserMapper.updateById(subUser);
+            log.info("channelInactive客户端[{}]下线", userId);
+            User user = new User();
+            user.setId(userId);
+            user.setConnectStatusClient(ConnectStatusEnum.DisConnected);
+            userMapper.updateById(user);
         }else{
             userId = SocketHandler.removeUse(nioSocketChannel);
             if(userId != 0){
-                log.info("使用端[{}]下线", userId);
+                log.info("channelInactive使用端[{}]下线", userId);
                 User user = new User();
                 user.setId(userId);
                 user.setConnectStatusUse(ConnectStatusEnum.DisConnected);
                 userMapper.updateById(user);
             }
-        }*/
+        }
     }
 
     @Override

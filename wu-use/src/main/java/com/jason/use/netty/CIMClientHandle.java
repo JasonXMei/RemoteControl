@@ -4,7 +4,6 @@ import com.jason.use.controller.LoginController;
 import com.jason.use.protocol.WUProto;
 import com.jason.use.util.Constants;
 import com.jason.use.util.JavaFXWindow;
-import com.jason.use.util.NettyUtil;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.JFXAlert;
 import com.jfoenix.controls.JFXButton;
@@ -12,7 +11,6 @@ import com.jfoenix.controls.JFXDialogLayout;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.channel.socket.nio.NioSocketChannel;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 
@@ -58,7 +56,7 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        NettyUtil.sendGoogleProtocolMsg(Constants.LOGOUT_USE, Integer.valueOf(LoginController.userId), 0, null, null, null, (NioSocketChannel) ctx.channel());
+        //NettyUtil.sendGoogleProtocolMsg(Constants.LOGOUT_USE, Integer.valueOf(LoginController.userId), 0, null, null, null, (NioSocketChannel) ctx.channel());
     }
 
     @Override

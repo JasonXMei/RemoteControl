@@ -3,8 +3,8 @@ package com.jason.use.config;
 public class APIConfig {
 
     //public static String ipAddr = "www.zhlm.top";
-    //public static String ipAddr = "192.168.1.27";
-    public static String ipAddr = "192.168.100.142";
+    public static String ipAddr = "192.168.1.27";
+    //public static String ipAddr = "192.168.100.142";
 
     private static String urlPrefix = "http://" + ipAddr + ":8082/";
 
