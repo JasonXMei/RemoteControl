@@ -36,7 +36,6 @@ public class NettyUtil {
      * 发送 Google Protocol 编解码字符串
      */
     public static void sendGoogleProtocolMsg(int msgType, int sendUserId, int receiveUserId, byte[] screenImg, byte[] userEvent, String message, NioSocketChannel nioSocketChannel) {
-        System.out.println("send msg:" + sendUserId + ":" + receiveUserId + ":" + msgType);
         WUProto.WUProtocol protocol = null;
         switch (msgType){
             /*case Constants.PING:
@@ -64,14 +63,7 @@ public class NettyUtil {
                         .setReceiveUserId(receiveUserId)
                         .setScreenImg(ByteString.copyFrom(screenImg))
                         .build();
-                break;
-            case Constants.MSG_EVENT:
-                protocol = WUProto.WUProtocol.newBuilder()
-                        .setMsgType(msgType)
-                        .setSendUserId(sendUserId)
-                        .setReceiveUserId(receiveUserId)
-                        .setScreenImg(ByteString.copyFrom(userEvent))
-                        .build();
+                System.out.println("send msg:" + sendUserId + ":" + receiveUserId + ":" + msgType + ",data size:" + screenImg.length);
         }
 
         nioSocketChannel.writeAndFlush(protocol).addListeners((ChannelFutureListener) future -> {

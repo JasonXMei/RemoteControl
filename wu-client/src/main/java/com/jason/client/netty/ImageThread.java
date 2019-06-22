@@ -22,14 +22,15 @@ public class ImageThread implements Runnable{
             while (true){
                 if(CIMClientHandle.controlUserId != 0){
                     BufferedImage image = robot.createScreenCapture(rec);
-                    byte nowImageBytes[] = ImageUtils.compressedImageAndGetByteArray(image,50/100.0f);
+                    byte nowImageBytes[] = ImageUtils.compressedImageAndGetByteArray(image,35/100.0f);
                     if(ImageUtils.isDifferent(nowImageBytes, priviousImgBytes)){
+                        priviousImgBytes = nowImageBytes;
                         NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, Integer.valueOf(LoginController.userId), CIMClientHandle.controlUserId, nowImageBytes, null, null,(NioSocketChannel)CIMClient.channel);
                     }
                 }else{
                     priviousImgBytes = null;
                 }
-                Thread.sleep(1000);
+                Thread.sleep(3000);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -54,7 +54,7 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
         if(robot == null){
             robot = new Robot();
         }
-        System.out.println("收到服务端消息:" +  msg.toString());
+        System.out.println("收到服务端消息:" +  msg.getSendUserId() + "," + msg.getReceiveUserId() + "," + msg.getMsgType());
         if (msg.getMsgType() == Constants.MSG_CONTROL) {
             controlUserId = msg.getSendUserId();
             NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, msg.getReceiveUserId(), msg.getSendUserId(), getImgBytes(), null, null,(NioSocketChannel)ctx.channel());
@@ -73,9 +73,12 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
 
         if (msg.getMsgType() == Constants.MSG_EVENT) {
             JSONObject jsonObject = (JSONObject) ByteObjConverter.byteToObject(msg.getUserEvent().toByteArray());
-            handleEvents(robot, jsonObject);// 处理事件
-            Thread.sleep(200);
-            NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, msg.getReceiveUserId(), msg.getSendUserId(), getImgBytes(), null, null,(NioSocketChannel)ctx.channel());
+            boolean flag = handleEvents(robot, jsonObject);// 处理事件
+            if(flag){
+                Thread.sleep(300);
+                System.out.println(jsonObject);
+                NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, msg.getReceiveUserId(), msg.getSendUserId(), getImgBytes(), null, null,(NioSocketChannel)ctx.channel());
+            }
             return;
         }
     }
@@ -93,9 +96,9 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
     /**
      * 事件处理，用来判断事件类型，并用robot类执行
      */
-    public static void  handleEvents(Robot action, JSONObject event) {
+    public static boolean  handleEvents(Robot action, JSONObject event) {
         int mousebuttonmask = -100; // 鼠标按键
-
+        boolean flag = false;
         switch (event.getInteger("eventId")) {
             case MouseEvent.MOUSE_MOVED: // 鼠标移动
             case MouseEvent.MOUSE_DRAGGED: // 鼠标拖拽
@@ -112,6 +115,7 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
                 mousebuttonmask = getMouseClick(event.getInteger("btn"));// 取得鼠标按键
                 if (mousebuttonmask != -100)
                     action.mouseRelease(mousebuttonmask);
+                flag = true;
                 break;
             case MouseEvent.MOUSE_WHEEL: // 鼠标滚动
                 action.mouseWheel(event.getInteger("wheelRotation"));
@@ -121,10 +125,12 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
                 break;
             case KeyEvent.KEY_RELEASED: // 松键
                 action.keyRelease(event.getInteger("keyCode"));
+                flag = true;
                 break;
             default:
                 break;
         }
+        return flag;
     }
 
     private static int getMouseClick(int button) { // 取得鼠标按键
