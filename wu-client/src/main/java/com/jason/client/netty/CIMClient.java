@@ -69,7 +69,7 @@ public class CIMClient {
      */
     public static boolean close(){
         if (channel != null){
-            NettyUtil.sendGoogleProtocolMsg(Constants.LOGOUT_CLIENT, Integer.valueOf(LoginController.userId), 0, null, null, null, (NioSocketChannel) channel);
+            //NettyUtil.sendGoogleProtocolMsg(Constants.LOGOUT_CLIENT, Integer.valueOf(LoginController.userId), 0, null, null, null, (NioSocketChannel) channel);
             //channel.close();
             group.shutdownGracefully().syncUninterruptibly();
             return true;

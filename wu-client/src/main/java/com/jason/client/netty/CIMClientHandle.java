@@ -46,7 +46,7 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        NettyUtil.sendGoogleProtocolMsg(Constants.LOGOUT_CLIENT, Integer.valueOf(LoginController.userId), 0, null, null, null, (NioSocketChannel) ctx.channel());
+        //NettyUtil.sendGoogleProtocolMsg(Constants.LOGOUT_CLIENT, Integer.valueOf(LoginController.userId), 0, null, null, null, (NioSocketChannel) ctx.channel());
     }
 
     @Override
