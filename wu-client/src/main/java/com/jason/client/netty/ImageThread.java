@@ -22,7 +22,7 @@ public class ImageThread implements Runnable{
                 }else{
                     priviousImgBytes = null;
                 }
-                Thread.sleep(500);
+                Thread.sleep(1500);
             }
         } catch (Exception e) {
             e.printStackTrace();
