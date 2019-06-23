@@ -19,18 +19,22 @@ public class ImageThread implements Runnable{
             Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
             Rectangle rec = new Rectangle(dimension);
             byte[] priviousImgBytes = null;
+            int count = 0;
             while (true){
                 if(CIMClientHandle.controlUserId != 0){
                     BufferedImage image = robot.createScreenCapture(rec);
                     byte nowImageBytes[] = ImageUtils.compressedImageAndGetByteArray(image,35/100.0f);
-                    if(ImageUtils.isDifferent(nowImageBytes, priviousImgBytes)){
+                    if(ImageUtils.isDifferent(nowImageBytes, priviousImgBytes) || count >= 3){
                         priviousImgBytes = nowImageBytes;
                         NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, Integer.valueOf(LoginController.userId), CIMClientHandle.controlUserId, nowImageBytes, null, null,(NioSocketChannel)CIMClient.channel);
+                        count = 0;
+                    }else{
+                        count++;
                     }
                 }else{
                     priviousImgBytes = null;
                 }
-                Thread.sleep(3000);
+                Thread.sleep(1000);
             }
         } catch (Exception e) {
             e.printStackTrace();
