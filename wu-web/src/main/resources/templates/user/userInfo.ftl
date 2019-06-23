@@ -170,26 +170,41 @@
 				</tr>
                 <#if (referrerUserInviteCode)?? && (referrerUserInviteCode != '')>
                     <tr>
-                        <td colspan="2">
+                        <td>
                             <div class="form-group">
                                 <label for="referrerUserInviteCode">邀请码:</label>
-                                <input type="text" class="form-control"  id="referrerUserInviteCode" name="referrerUserInviteCode" value="${referrerUserInviteCode}" style="width: 300px;" readonly>
+                                <input type="text" class="form-control"  id="referrerUserInviteCode" name="referrerUserInviteCode" value="${referrerUserInviteCode}" readonly>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <label for="password">密码:</label>
+                                <input type="text" class="form-control"  id="password" name="password" value="${userDetail.userVO.password!'123456'}"/>
+                            </div>
+                        </td>
+                    </tr>
+                <#else>
+                    <tr>
+                        <td colspan="2">
+                            <div class="form-group">
+                                <label for="password">密码:</label>
+                                <input type="text" class="form-control"  id="password" name="password" value="${userDetail.userVO.password!'123456'}"/>
                             </div>
                         </td>
                     </tr>
                 </#if>
-				<tr>
-					<td colspan="2">
-						<div class="form-group">
-							<label for="paymentCodeImg">返款码图片:</label>
-							<#if (userDetail.userVO.paymentCodeImg)?? && (userDetail.userVO.paymentCodeImg != '')>
-							    <button type="button" class="btn btn-info" onclick="showPaymentCodeImg('${userDetail.userVO.paymentCodeImg}', 1)">查看图片</button>
-							</#if>
+                <tr>
+                    <td colspan="2">
+                        <div class="form-group">
+                            <label for="paymentCodeImg">返款码图片:</label>
+                                <#if (userDetail.userVO.paymentCodeImg)?? && (userDetail.userVO.paymentCodeImg != '')>
+                                    <button type="button" class="btn btn-info" onclick="showPaymentCodeImg('${userDetail.userVO.paymentCodeImg}', 1)">查看图片</button>
+                                </#if>
                             <input type="file" name="file" id="paymentCodeImg">
-						</div>
-					</td>
-				</tr>
-				<tr>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
 					<td colspan="2">
 						<div class="panel panel-default">
 							<div class="panel-heading">

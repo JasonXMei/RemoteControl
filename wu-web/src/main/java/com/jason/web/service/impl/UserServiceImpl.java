@@ -62,24 +62,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public JSONResult<String> handleLogin(UserVO userVO) {
         User user = dozerMapper.map(userVO, User.class);
         if(!StringUtils.isEmpty(user.getUserName()) && !StringUtils.isEmpty(user.getPassword())){
-            User loginUser = this.baseMapper.selectOne(new QueryWrapper<User>()
+            List<User> loginUserList = this.baseMapper.selectList(new QueryWrapper<User>()
                     .eq("user_name", user.getUserName())
-                    .eq("password", user.getPassword())
+                    .eq("password", user.getPassword()));
                     //.eq("status",AccountStatusEnum.Normal.getStatus())
-                    .last("LIMIT 1"));
-            if(loginUser != null){
-                switch (loginUser.getStatus()){
-                    case Normal:
-                        if(loginUser.getValidTime() >= BeanUtil.getCurrentTimeStamp(log)){
-                            return new JSONResult<>(JWTUtil.createToken(loginUser.getPassword(), loginUser.getId()), HttpStatus.OK.status, String.format(HttpStatus.OK.message, "登陆"));
-                        }else{
-                            return new JSONResult<>(null, HttpStatus.USER_EXPIRED.status, HttpStatus.USER_EXPIRED.message);
-                        }
-                    case Forbidden:
-                    case Delete:
-                    case WaitAudit:
-                        return new JSONResult<>(null, HttpStatus.USER_NOT_PERMISSION.status, HttpStatus.USER_NOT_PERMISSION.message);
+                    //.last("LIMIT 1"));
+            if(loginUserList != null){
+                for(User loginUser : loginUserList){
+                    switch (loginUser.getStatus()){
+                        case Normal:
+                            if(loginUser.getValidTime() >= BeanUtil.getCurrentTimeStamp(log)){
+                                return new JSONResult<>(JWTUtil.createToken(loginUser.getPassword(), loginUser.getId()), HttpStatus.OK.status, String.format(HttpStatus.OK.message, "登陆"));
+                            }else{
+                                return new JSONResult<>(null, HttpStatus.USER_EXPIRED.status, HttpStatus.USER_EXPIRED.message);
+                            }
+                        case Forbidden:
+                        case Delete:
+                        case WaitAudit:
+                            continue;
+                    }
                 }
+                return new JSONResult<>(null, HttpStatus.USER_NOT_PERMISSION.status, HttpStatus.USER_NOT_PERMISSION.message);
             }
             return new JSONResult<>(null, HttpStatus.USER_NOT_MATCH.status, HttpStatus.USER_NOT_MATCH.message);
         }

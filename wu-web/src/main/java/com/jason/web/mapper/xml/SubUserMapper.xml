@@ -30,6 +30,7 @@
         from sub_user su
         JOIN user u on su.user_id = u.id
         <where>
+            u.status = 0
             <if test="pg.searchName != null">
                 AND (
                 u.id = #{pg.searchName} OR

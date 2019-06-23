@@ -67,6 +67,7 @@
 				<td>位置</td>
 				<td>QQ号</td>
 				<td>手机号</td>
+                <td>密码</td>
 				<td>补单次数</td>
 				<td>有效时间</td>
 				<td>账号状态</td>
@@ -81,6 +82,7 @@
 					<td>${userItem.location}</td>
 					<td>${userItem.qqNumber}</td>
 					<td>${userItem.mobile}</td>
+					<td>${userItem.password}</td>
 					<td>${userItem.allowOrderTimes}</td>
 					<td>${userItem.validTimeStr}</td>
 					<td>${userItem.statusStr}</td>
