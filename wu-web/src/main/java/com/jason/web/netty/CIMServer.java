@@ -36,6 +36,7 @@ public class CIMServer {
                 .channel(NioServerSocketChannel.class)
                 .localAddress(new InetSocketAddress(nettyPort))
                 .option(ChannelOption.SO_BACKLOG,1024)
+                .option(ChannelOption.TCP_NODELAY, true)
                 //保持长连接
                 .childOption(ChannelOption.SO_KEEPALIVE,true)
                 .childHandler(cimServerInitializer);
