@@ -60,7 +60,6 @@ public class JavafxApplication extends Application {
         System.out.print("监听到窗口关闭");
         mainStage.close();
         CIMClient.close();
-
     }
 
     public static void showAlert(String headMsg, String bodyMsg, String methodName, Class<?> cls, String btnName){
@@ -264,7 +263,7 @@ public class JavafxApplication extends Application {
 
 	public static void main(String[] args) {
         Thread thread = new Thread(new ImageThread());
-        thread.setDaemon(true);
+	    thread.setDaemon(true);
         thread.start();
 		launch(args);
 	}

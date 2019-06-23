@@ -1,9 +1,6 @@
 package com.jason.client.netty;
 
 import com.jason.client.config.APIConfig;
-import com.jason.client.controller.LoginController;
-import com.jason.client.util.Constants;
-import com.jason.client.util.NettyUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
@@ -12,6 +9,8 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.concurrent.DefaultThreadFactory;
+
+import java.awt.*;
 
 public class CIMClient {
 
@@ -25,6 +24,11 @@ public class CIMClient {
     private static int errorCount;
     private static int port = 8989;
 
+    public static Robot robot;
+    // 截取整个屏幕
+    public static Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+    public static Rectangle rec = new Rectangle(dimension);
+
     /**
      * 启动客户端
      */
@@ -37,6 +41,7 @@ public class CIMClient {
 
         ChannelFuture future = null;
         try {
+            robot = new Robot();
             future = bootstrap.connect(APIConfig.ipAddr, port).sync();
 
             if (future.isSuccess()) {
@@ -52,6 +57,8 @@ public class CIMClient {
             }
             System.out.println("连接失败");
             start();
+        } catch (AWTException e) {
+            e.printStackTrace();
         }
 
         return false;

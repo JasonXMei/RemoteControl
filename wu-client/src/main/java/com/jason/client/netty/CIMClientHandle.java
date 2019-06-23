@@ -5,6 +5,7 @@ import com.jason.client.controller.LoginController;
 import com.jason.client.protocol.WUProto;
 import com.jason.client.util.ByteObjConverter;
 import com.jason.client.util.Constants;
+import com.jason.client.util.ImageUtils;
 import com.jason.client.util.NettyUtil;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -15,12 +16,9 @@ import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 
 @ChannelHandler.Sharable
 public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProtocol> {
-
-    Robot robot;
 
     public static volatile int controlUserId = 0;
 
@@ -51,13 +49,11 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx,  WUProto.WUProtocol msg) throws Exception {
-        if(robot == null){
-            robot = new Robot();
-        }
         System.out.println("收到服务端消息:" +  msg.getSendUserId() + "," + msg.getReceiveUserId() + "," + msg.getMsgType());
         if (msg.getMsgType() == Constants.MSG_CONTROL) {
             controlUserId = msg.getSendUserId();
-            NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, msg.getReceiveUserId(), msg.getSendUserId(), getImgBytes(), null, null,(NioSocketChannel)ctx.channel());
+            NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, msg.getReceiveUserId(), msg.getSendUserId(), ImageUtils.compressedImageAndGetByteArray(30/100.0f), null, null,(NioSocketChannel)ctx.channel());
+            //ctx.executor().scheduleAtFixedRate(screenTask, 0, 2000, TimeUnit.MILLISECONDS);
             return;
         }
 
@@ -73,25 +69,48 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
 
         if (msg.getMsgType() == Constants.MSG_EVENT) {
             JSONObject jsonObject = (JSONObject) ByteObjConverter.byteToObject(msg.getUserEvent().toByteArray());
-            boolean flag = handleEvents(robot, jsonObject);// 处理事件
+            boolean flag = handleEvents(CIMClient.robot, jsonObject);// 处理事件
             if(flag){
                 Thread.sleep(300);
                 System.out.println(jsonObject);
-                NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, msg.getReceiveUserId(), msg.getSendUserId(), getImgBytes(), null, null,(NioSocketChannel)ctx.channel());
+                NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, msg.getReceiveUserId(), msg.getSendUserId(), ImageUtils.compressedImageAndGetByteArray(30/100.0f), null, null,(NioSocketChannel)ctx.channel());
             }
             return;
         }
     }
 
-    private byte[] getImgBytes(){
-        // 截取整个屏幕
-        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-        Rectangle rec = new Rectangle(dimension);
-        BufferedImage image = robot.createScreenCapture(rec);;
-        byte imageBytes[] = ByteObjConverter.getImageBytes(image);
+    /*private Runnable screenTask = new  Runnable(){
 
-        return imageBytes;
-    }
+        @Override
+        public void run() {
+            try {
+                Robot robot = new Robot();
+                // 截取整个屏幕
+                Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+                Rectangle rec = new Rectangle(dimension);
+                byte[] priviousImgBytes = null;
+                int count = 0;
+                while (true){
+                    if(CIMClientHandle.controlUserId != 0){
+                        BufferedImage image = robot.createScreenCapture(rec);
+                        byte nowImageBytes[] = ImageUtils.compressedImageAndGetByteArray(image,35/100.0f);
+                        if(ImageUtils.isDifferent(nowImageBytes, priviousImgBytes) || count >= 3){
+                            priviousImgBytes = nowImageBytes;
+                            NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, Integer.valueOf(LoginController.userId), CIMClientHandle.controlUserId, nowImageBytes, null, null,(NioSocketChannel)CIMClient.channel);
+                            count = 0;
+                        }else{
+                            count++;
+                        }
+                    }else{
+                        priviousImgBytes = null;
+                    }
+                    Thread.sleep(3000);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };*/
 
     /**
      * 事件处理，用来判断事件类型，并用robot类执行

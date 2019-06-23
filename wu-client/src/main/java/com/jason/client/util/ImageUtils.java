@@ -1,5 +1,6 @@
 package com.jason.client.util;
 
+import com.jason.client.netty.CIMClient;
 import net.coobird.thumbnailator.Thumbnails;
 
 import javax.imageio.IIOImage;
@@ -161,18 +162,16 @@ public class ImageUtils {
 
     /**
      * 保持宽高比压缩图像
-     * @param image
-     *          图像
      * @param quality
      *          质量(0,1]
      * @return
      *          压缩后图像的字节数组
      */
-	public static byte[] compressedImageAndGetByteArray(BufferedImage image, float quality) {
-
+	public static byte[] compressedImageAndGetByteArray(float quality) {
 		try {
+            BufferedImage image = CIMClient.robot.createScreenCapture(CIMClient.rec);
 			final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-			Thumbnails.of(image).scale(1f).outputFormat("jpg").outputQuality(quality).toOutputStream(byteArrayOutputStream);
+			Thumbnails.of(image).scale(1.0f).outputFormat("jpg").outputQuality(quality).toOutputStream(byteArrayOutputStream);
 			return byteArrayOutputStream.toByteArray();
 		}catch (IOException e){
 			throw new RuntimeException(e);
