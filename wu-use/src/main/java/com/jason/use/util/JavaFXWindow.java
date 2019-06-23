@@ -93,11 +93,11 @@ public class JavaFXWindow extends JFrame{
         //initWindow();
 
         this.addKeyListener(new KeyAdapter() {//窗体增加键盘监听事件
-            /*@Override
+            @Override
             public void keyTyped(KeyEvent e) {
-                JOptionPane.showMessageDialog(null, KeyEvent.getKeyText(e.getKeyCode()));
-                sendMouseEvent(e);
-            }*/
+                //JOptionPane.showMessageDialog(null, KeyEvent.getKeyText(e.getKeyCode()));
+                sendKeyEvent(e);
+            }
 
             @Override
             public void keyReleased(KeyEvent e) {
@@ -111,38 +111,31 @@ public class JavaFXWindow extends JFrame{
                 sendKeyEvent(e);
             }
         });
-        /*this.addKeyListener(new KeyListener() {
-            public void keyTyped(KeyEvent e) {
-                sendMouseEvent(e);
-            }
-
-            public void keyReleased(KeyEvent e) {
-                sendMouseEvent(e);
-            }
-
-            public void keyPressed(KeyEvent e) {
-                JOptionPane.showMessageDialog(null, KeyEvent.getKeyText(e.getKeyCode()));
-                sendMouseEvent(e);
-            }
-        });*/
 
         label.addMouseListener(new MouseListener() {
+            @Override
             public void mouseReleased(MouseEvent e) {
                 sendMouseEvent(e);
             }
 
+            @Override
             public void mousePressed(MouseEvent e) {
                 sendMouseEvent(e);
             }
 
+            @Override
             public void mouseClicked(MouseEvent e) {
-                //sendMouseEvent(e);
+                sendMouseEvent(e);
             }
 
+            @Override
             public void mouseEntered(MouseEvent e) {
+                sendMouseEvent(e);
             }
 
+            @Override
             public void mouseExited(MouseEvent e) {
+                sendMouseEvent(e);
             }
         });
 
