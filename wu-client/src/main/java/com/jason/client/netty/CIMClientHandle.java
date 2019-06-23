@@ -16,11 +16,14 @@ import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.Random;
 
 @ChannelHandler.Sharable
 public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProtocol> {
 
     public static volatile int controlUserId = 0;
+
+    static Random random = new Random();
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
@@ -70,11 +73,11 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
         if (msg.getMsgType() == Constants.MSG_EVENT) {
             JSONObject jsonObject = (JSONObject) ByteObjConverter.byteToObject(msg.getUserEvent().toByteArray());
             boolean flag = handleEvents(CIMClient.robot, jsonObject);// 处理事件
-            if(flag){
+            /*if(flag){
                 Thread.sleep(300);
                 System.out.println(jsonObject);
                 NettyUtil.sendGoogleProtocolMsg(Constants.MSG_IMG, msg.getReceiveUserId(), msg.getSendUserId(), ImageUtils.compressedImageAndGetByteArray(30/100.0f), null, null,(NioSocketChannel)ctx.channel());
-            }
+            }*/
             return;
         }
     }
@@ -144,7 +147,9 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
                 break;
             case KeyEvent.KEY_RELEASED: // 松键
                 action.keyRelease(event.getInteger("keyCode"));
-                flag = true;
+                if (random.nextInt(100) < 35){
+                    flag = true;
+                }
                 break;
             default:
                 break;
