@@ -171,7 +171,7 @@ public class CIMServerHandle extends SimpleChannelInboundHandler<WUProto.WUProto
 
                 User sendUser = new User();
                 sendUser.setId(msg.getSendUserId());
-                sendUser.setConnectStatusUse(ConnectStatusEnum.ToBeConnect);
+                sendUser.setConnectStatusClient(ConnectStatusEnum.ToBeConnect);
                 userMapper.updateById(sendUser);
                 NettyUtil.sendGoogleProtocolMsg(Constants.MSG_DIS_CONTROL, msg.getReceiveUserId(), msg.getSendUserId(), null, null, null);
             }
