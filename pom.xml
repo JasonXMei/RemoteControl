@@ -48,10 +48,10 @@
 
 	<modules>
 		<module>wu-monitor</module>
-		<module>wu-web</module>
 		<module>wu-client</module>
-		<module>wu-use</module>
-		<module>wu-common</module>
+        <module>wu-use</module>
+        <module>wu-web</module>
+        <module>wu-common</module>
 	</modules>
 
 	<dependencies>

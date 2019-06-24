@@ -7,19 +7,15 @@ import com.jason.client.util.ByteObjConverter;
 import com.jason.client.util.Constants;
 import com.jason.client.util.ImageUtils;
 import com.jason.client.util.NettyUtil;
-import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.timeout.IdleState;
-import io.netty.handler.timeout.IdleStateEvent;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.Random;
 
 @ChannelHandler.Sharable
 public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProtocol> {
@@ -28,7 +24,7 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        if (evt instanceof IdleStateEvent){
+        /*if (evt instanceof IdleStateEvent){
             IdleStateEvent idleStateEvent = (IdleStateEvent) evt ;
             //System.out.println("定时检测服务端是否存活");
             if(ctx.channel() != null && ctx.channel().isActive()){
@@ -40,7 +36,7 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
                 CIMClient.reconnect();
             }
         }
-        super.userEventTriggered(ctx, evt);
+        super.userEventTriggered(ctx, evt);*/
     }
 
     @Override

@@ -9,13 +9,10 @@ import com.jason.web.protocol.WUProto;
 import com.jason.web.util.Constants;
 import com.jason.web.util.NettyAttrUtil;
 import com.jason.web.util.NettyUtil;
-import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.timeout.IdleState;
-import io.netty.handler.timeout.IdleStateEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -43,7 +40,7 @@ public class CIMServerHandle extends SimpleChannelInboundHandler<WUProto.WUProto
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        if (evt instanceof IdleStateEvent) {
+        /*if (evt instanceof IdleStateEvent) {
             IdleStateEvent idleStateEvent = (IdleStateEvent) evt;
             if (idleStateEvent.state() == IdleState.READER_IDLE) {
 
@@ -59,7 +56,7 @@ public class CIMServerHandle extends SimpleChannelInboundHandler<WUProto.WUProto
                 }
             }
         }
-        super.userEventTriggered(ctx, evt);
+        super.userEventTriggered(ctx, evt);*/
     }
 
     /**
