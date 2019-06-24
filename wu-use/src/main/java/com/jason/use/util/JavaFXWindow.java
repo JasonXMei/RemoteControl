@@ -112,7 +112,7 @@ public class JavaFXWindow extends JFrame{
             }
         });
 
-        label.addMouseListener(new MouseListener() {
+        label.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
                 sendMouseEvent(e);
@@ -130,11 +130,27 @@ public class JavaFXWindow extends JFrame{
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                sendMouseEvent(e);
+                //sendMouseEvent(e);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
+                //sendMouseEvent(e);
+            }
+
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e){}
+
+            @Override
+            public void mouseDragged(MouseEvent e){
+                System.out.println("mouseDragger");
+                //e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                sendMouseEvent(e);
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e){
+                System.out.println("mouseMove");
                 sendMouseEvent(e);
             }
         });
@@ -148,6 +164,7 @@ public class JavaFXWindow extends JFrame{
         eventJSON.put("moveX", event.getX());
         eventJSON.put("moveY", event.getY());
         eventJSON.put("btn", event.getButton());
+        System.out.println(eventJSON);
         if(MouseEvent.MOUSE_WHEEL == event.getID())
             eventJSON.put("wheelRotation", ((MouseWheelEvent) event).getWheelRotation());
         NettyUtil.sendGoogleProtocolMsg(Constants.MSG_EVENT, Integer.parseInt(LoginController.userId), Integer.parseInt(TaskController.userId), null,
