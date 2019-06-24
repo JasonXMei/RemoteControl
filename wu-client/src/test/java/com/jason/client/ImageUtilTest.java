@@ -9,6 +9,10 @@ public class ImageUtilTest {
     @Test
     public void testSameImage() throws AWTException, InterruptedException {
         Robot robot = new Robot();
+        Thread.sleep(65000);
+        robot.mouseMove(1908,190);
+        robot.mousePress(16);
+        robot.mouseRelease(16);
         // 截取整个屏幕
        /* Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         Rectangle rec = new Rectangle(dimension);

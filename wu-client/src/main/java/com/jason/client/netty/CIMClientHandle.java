@@ -126,6 +126,14 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
             case MouseEvent.MOUSE_DRAGGED: // 鼠标拖拽
                 action.mouseMove(event.getInteger("moveX"), event.getInteger("moveY"));
                 break;
+            case MouseEvent.MOUSE_CLICKED:
+                action.mouseMove(event.getInteger("moveX"), event.getInteger("moveY"));
+                mousebuttonmask = getMouseClick(event.getInteger("btn"));
+                if (mousebuttonmask != -100){
+                    action.mousePress(mousebuttonmask);
+                    action.mouseRelease(mousebuttonmask);
+                }
+                break;
             case MouseEvent.MOUSE_PRESSED: // 鼠标键按下
                 action.mouseMove(event.getInteger("moveX"), event.getInteger("moveY"));
                 mousebuttonmask = getMouseClick(event.getInteger("btn"));
