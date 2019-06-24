@@ -7,11 +7,15 @@ import com.jason.web.mapper.SubUserMapper;
 import com.jason.web.mapper.UserMapper;
 import com.jason.web.protocol.WUProto;
 import com.jason.web.util.Constants;
+import com.jason.web.util.NettyAttrUtil;
 import com.jason.web.util.NettyUtil;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.timeout.IdleState;
+import io.netty.handler.timeout.IdleStateEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,6 +43,23 @@ public class CIMServerHandle extends SimpleChannelInboundHandler<WUProto.WUProto
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+        if (evt instanceof IdleStateEvent) {
+            IdleStateEvent idleStateEvent = (IdleStateEvent) evt;
+            if (idleStateEvent.state() == IdleState.READER_IDLE) {
+
+                log.info("定时检测客户端是否存活");
+
+                long heartBeatTime = 30 * 1000;
+                Long lastReadTime = NettyAttrUtil.getReaderTime(ctx.channel());
+                long now = System.currentTimeMillis();
+                if (lastReadTime != null && now - lastReadTime > heartBeatTime){
+                    log.info("心跳超时[{}]ms，需要关闭连接!", now - lastReadTime);
+                    userOffLine(ctx);
+                    ctx.channel().close();
+                }
+            }
+        }
+        super.userEventTriggered(ctx, evt);
     }
 
     /**
@@ -69,7 +90,16 @@ public class CIMServerHandle extends SimpleChannelInboundHandler<WUProto.WUProto
     protected void channelRead0(ChannelHandlerContext ctx, WUProto.WUProtocol msg) throws Exception {
         log.info("收到msg={}", msg.getSendUserId() + ":" + msg.getReceiveUserId() + ":" + msg.getMsgType());
 
+        //心跳更新时间
+        if (msg.getMsgType() == Constants.PING){
+            NettyAttrUtil.updateReaderTime(ctx.channel(), System.currentTimeMillis());
+            //向客户端响应 pong 消息
+            //NettyUtil.sendGoogleProtocolMsg(Constants.PONG, 0, msg.getSendUserId(), null, null, null, (NioSocketChannel) ctx);
+            return;
+        }
+
         if (msg.getMsgType() == Constants.LOGIN_USE) {
+            NettyAttrUtil.updateReaderTime(ctx.channel(), System.currentTimeMillis());
             int sendUserId = msg.getSendUserId();
             User user = userMapper.selectById(sendUserId);
             if(user != null && user.getConnectStatusUse().getStatus() == ConnectStatusEnum.DisConnected.getStatus()){
@@ -82,6 +112,7 @@ public class CIMServerHandle extends SimpleChannelInboundHandler<WUProto.WUProto
         }
 
         if (msg.getMsgType() == Constants.LOGIN_CLIENT) {
+            NettyAttrUtil.updateReaderTime(ctx.channel(), System.currentTimeMillis());
             int sendUserId = msg.getSendUserId();
             User user = userMapper.selectById(sendUserId);
             if(user != null && user.getConnectStatusClient().getStatus() == ConnectStatusEnum.DisConnected.getStatus()){
@@ -114,13 +145,6 @@ public class CIMServerHandle extends SimpleChannelInboundHandler<WUProto.WUProto
             log.info("客户端[{}]下线", sendUserId);
             return;
         }
-
-        //心跳更新时间
-        /*if (msg.getMsgType() == Constants.PING){
-            //NettyUtil.updateReaderTime(ctx.channel(),System.currentTimeMillis());
-            //向客户端响应 pong 消息
-            NettyUtil.sendGoogleProtocolMsg(Constants.PONG, 0, 1, null, null);
-        }*/
 
         if (msg.getMsgType() == Constants.MSG_CONTROL){
             int receiveUserId = msg.getReceiveUserId();

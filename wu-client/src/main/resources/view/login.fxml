@@ -60,5 +60,5 @@
          </padding>
       </VBox>
     </children>
-    <StackPane fx:id="stackPane" prefHeight="618.0" prefWidth="750.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+    <!--<StackPane fx:id="stackPane" prefHeight="618.0" prefWidth="750.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />-->
 </AnchorPane>

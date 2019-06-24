@@ -22,4 +22,10 @@ public class Constants {
     public static final int MSG_ERROR = 7 ;
     public static final int MSG_DIS_CONTROL = 8 ;
     public static final int UPDATE_JWT = 9 ;
+
+    /**
+     * 心跳
+     */
+    public static final int PING = 10;
+    public static final int PONG = 11;
 }

@@ -41,10 +41,12 @@ public class NettyUtil {
     public static void sendGoogleProtocolMsg(int msgType, int sendUserId, int receiveUserId, byte[] screenImg, byte[] userEvent, String message, NioSocketChannel nioSocketChannel) {
         WUProto.WUProtocol protocol = null;
         switch (msgType){
-            /*case Constants.PING:
             case Constants.PONG:
-            case Constants.LOGIN:
-            default:*/
+                protocol = WUProto.WUProtocol.newBuilder()
+                        .setMsgType(msgType)
+                        .setSendUserId(sendUserId)
+                        .build();
+                break;
             case Constants.MSG_ERROR:
             case Constants.UPDATE_JWT:
                 protocol = WUProto.WUProtocol.newBuilder()

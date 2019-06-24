@@ -7,10 +7,13 @@ import com.jason.client.util.ByteObjConverter;
 import com.jason.client.util.Constants;
 import com.jason.client.util.ImageUtils;
 import com.jason.client.util.NettyUtil;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.timeout.IdleState;
+import io.netty.handler.timeout.IdleStateEvent;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
@@ -23,20 +26,21 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
 
     public static volatile int controlUserId = 0;
 
-    static Random random = new Random();
-
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        /*if (evt instanceof IdleStateEvent){
+        if (evt instanceof IdleStateEvent){
             IdleStateEvent idleStateEvent = (IdleStateEvent) evt ;
-
-            //LOGGER.info("定时检测服务端是否存活");
-            if (idleStateEvent.state() == IdleState.WRITER_IDLE){
-                NioSocketChannel nioSocketChannel = (NioSocketChannel) ctx.channel();
-                //NettyUtil.sendGoogleProtocolMsg(Constants.CommandType.PING, 1, 0, null, null, nioSocketChannel);
+            //System.out.println("定时检测服务端是否存活");
+            if(ctx.channel() != null && ctx.channel().isActive()){
+                if (idleStateEvent.state() == IdleState.WRITER_IDLE){
+                    NioSocketChannel nioSocketChannel = (NioSocketChannel) ctx.channel();
+                    NettyUtil.sendGoogleProtocolMsg(Constants.PING, Integer.valueOf(LoginController.userId), 0, null, null, null, nioSocketChannel);
+                }
+            }else{
+                CIMClient.reconnect();
             }
         }
-        super.userEventTriggered(ctx, evt);*/
+        super.userEventTriggered(ctx, evt);
     }
 
     @Override
@@ -155,9 +159,6 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
                 break;
             case KeyEvent.KEY_RELEASED: // 松键
                 action.keyRelease(event.getInteger("keyCode"));
-                if (random.nextInt(100) < 35){
-                    flag = true;
-                }
                 break;
             default:
                 break;

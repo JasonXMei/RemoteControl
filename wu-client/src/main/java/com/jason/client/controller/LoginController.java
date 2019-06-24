@@ -6,10 +6,7 @@ import com.jason.client.config.APIConfig;
 import com.jason.client.enums.ConnectStatusEnum;
 import com.jason.client.enums.HttpStatus;
 import com.jason.client.netty.CIMClient;
-import com.jason.client.util.Constants;
-import com.jason.client.util.HttpUtil;
-import com.jason.client.util.JWTUtil;
-import com.jason.client.util.NettyUtil;
+import com.jason.client.util.*;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
@@ -26,34 +23,33 @@ import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
 
-    //@FXML
-    //private JFXCheckBox rememberInfo;
-
     @FXML
     private JFXTextField userName;
-
     @FXML
     private JFXPasswordField password;
 
-    @FXML
-    private StackPane stackPane;
-
-    static JFXComboBox<String> subUserListComboBox = new JFXComboBox<>();
-    public static ObservableList<String> subUserItem;
-
     public static String jwt;
     public static String userId;
+
+    /*
+    @FXML
+    private JFXCheckBox rememberInfo;
+    @FXML
+    private StackPane stackPane;
     public static String userNameStr;
     public static String passwordStr;
     public static boolean rememberFlag = false;
     public static Map<String, Integer> subUserMap = new HashMap<>();
+    static JFXComboBox<String> subUserListComboBox = new JFXComboBox<>();
+    public static ObservableList<String> subUserItem;
+    */
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        stackPane.setVisible(false);
-        //rememberInfo.setSelected(true);
+        /*stackPane.setVisible(false);
+        rememberInfo.setSelected(true);
 
-        /*String[] userInfo = FileUtil.getUserAndPass();
+        String[] userInfo = FileUtil.getUserAndPass();
         if (userInfo.length == 2) {
             userName.setText(userInfo[0]);
             password.setText(userInfo[1]);
@@ -104,8 +100,8 @@ public class LoginController implements Initializable {
         }
     }
 
-    public void getSubUserList(){
-        /*String data = HttpUtil.httpPost(new HashMap<>(), String.format(APIConfig.userInfoUrl, userId, userId), LoginController.jwt);
+    /*public void getSubUserList(){
+        *//*String data = HttpUtil.httpPost(new HashMap<>(), String.format(APIConfig.userInfoUrl, userId, userId), LoginController.jwt);
         JSONObject jsonObject = JSONObject.parseObject(data);
 
         JSONArray jsonArray = jsonObject.getJSONArray("subUserList");
@@ -122,21 +118,21 @@ public class LoginController implements Initializable {
         }
         subUserItem = FXCollections.observableArrayList(subUserList);
         subUserListComboBox.setPromptText("请选择登陆小号");
-        subUserListComboBox.setItems(subUserItem);*/
+        subUserListComboBox.setItems(subUserItem);*//*
     }
 
    public static void chooseAndCheckSubUser(){
-       /*if(rememberFlag){
+       *//*if(rememberFlag){
            FileUtil.setUserAndPass(userNameStr, passwordStr, true);
-       }*/
+       }*//*
 
-       /*String selectSubUser = subUserListComboBox.getValue();
+       *//*String selectSubUser = subUserListComboBox.getValue();
        if (StringUtil.isEmpty(selectSubUser)){
            JavafxApplication.showAlert("温馨提示", "请选择小号!", null, null, "确定");
            return;
        }
-       userId = String.valueOf(subUserMap.get(selectSubUser));*/
-   }
+       userId = String.valueOf(subUserMap.get(selectSubUser));*//*
+   }*/
 
    public static void listView(){
        JavafxApplication.switchView("/view/replaceOrderList.fxml");

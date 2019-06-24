@@ -1,6 +1,7 @@
 package com.jason.use.util;
 
 import com.google.protobuf.ByteString;
+import com.jason.use.netty.CIMClient;
 import com.jason.use.protocol.WUProto;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
@@ -38,10 +39,7 @@ public class NettyUtil {
     public static void sendGoogleProtocolMsg(int msgType, int sendUserId, int receiveUserId, byte[] screenImg, byte[] userEvent, String message, NioSocketChannel nioSocketChannel) {
         WUProto.WUProtocol protocol = null;
         switch (msgType){
-            /*case Constants.PING:
-            case Constants.PONG:
-            case Constants.LOGIN:
-            default:*/
+            case Constants.PING:
             case Constants.LOGIN_USE:
             case Constants.LOGOUT_USE:
                 protocol = WUProto.WUProtocol.newBuilder()
