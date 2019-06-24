@@ -125,7 +125,7 @@ public class JavaFXWindow extends JFrame{
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                sendMouseEvent(e);
+                //sendMouseEvent(e);
             }
 
             @Override
