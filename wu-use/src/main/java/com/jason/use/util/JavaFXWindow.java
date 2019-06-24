@@ -24,6 +24,8 @@ public class JavaFXWindow extends JFrame{
     Toolkit toolkit = Toolkit.getDefaultToolkit();
     private int DEFAULE_WIDTH = 1000;
     private int DEFAULE_HEIGH = 618;
+
+    private volatile  boolean sendClickFlag = false;
     //private int MAX_WIDTH = 1000;
     //private int MAX_HEIGH = 618;
 
@@ -52,9 +54,11 @@ public class JavaFXWindow extends JFrame{
         if(imgWidth > screenWidth){
             DEFAULE_WIDTH = screenWidth;
             Location_x = 0;
+            sendClickFlag = true;
         }else{
             DEFAULE_WIDTH = imgWidth;
             Location_x = (screenWidth - DEFAULE_WIDTH) / 2;
+            sendClickFlag = false;
         }
 
         if(imgHeigh > screenHeight){
@@ -96,7 +100,7 @@ public class JavaFXWindow extends JFrame{
             @Override
             public void keyTyped(KeyEvent e) {
                 //JOptionPane.showMessageDialog(null, KeyEvent.getKeyText(e.getKeyCode()));
-                sendKeyEvent(e);
+                //sendKeyEvent(e);
             }
 
             @Override
@@ -125,7 +129,9 @@ public class JavaFXWindow extends JFrame{
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                //sendMouseEvent(e);
+                if(sendClickFlag){
+                    sendMouseEvent(e);
+                }
             }
 
             @Override
