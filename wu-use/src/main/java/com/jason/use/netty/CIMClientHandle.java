@@ -4,6 +4,7 @@ import com.jason.use.controller.LoginController;
 import com.jason.use.protocol.WUProto;
 import com.jason.use.util.Constants;
 import com.jason.use.util.JavaFXWindow;
+import com.jason.use.util.NettyUtil;
 import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.JFXAlert;
 import com.jfoenix.controls.JFXButton;
@@ -11,6 +12,9 @@ import com.jfoenix.controls.JFXDialogLayout;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.timeout.IdleState;
+import io.netty.handler.timeout.IdleStateEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 
@@ -35,7 +39,7 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        /*if (evt instanceof IdleStateEvent){
+        if (evt instanceof IdleStateEvent){
             IdleStateEvent idleStateEvent = (IdleStateEvent) evt ;
             //System.out.println("定时检测服务端是否存活");
             if(ctx.channel() != null && ctx.channel().isActive()){
@@ -47,7 +51,7 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
                 CIMClient.reconnect();
             }
         }
-        super.userEventTriggered(ctx, evt);*/
+        super.userEventTriggered(ctx, evt);
     }
 
     @Override
