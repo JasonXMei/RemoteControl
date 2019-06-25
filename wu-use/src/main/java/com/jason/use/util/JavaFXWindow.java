@@ -25,7 +25,7 @@ public class JavaFXWindow extends JFrame{
     private int DEFAULE_WIDTH = 1000;
     private int DEFAULE_HEIGH = 618;
 
-    private volatile  boolean sendClickFlag = false;
+    private volatile  boolean compareScreenFlag = false;
     //private int MAX_WIDTH = 1000;
     //private int MAX_HEIGH = 618;
 
@@ -37,7 +37,7 @@ public class JavaFXWindow extends JFrame{
     private int screenWidth = (int) toolkit.getScreenSize().getWidth();
     private int screenHeight = (int) toolkit.getScreenSize().getHeight();
     public static volatile int count = 0;
-    public static int barWidth = 50;
+    //public static int barWidth = 50;
 
     //重写背景图片方法
     public void repainImage(byte [] imageBytes){
@@ -55,11 +55,11 @@ public class JavaFXWindow extends JFrame{
         if(imgWidth > screenWidth){
             DEFAULE_WIDTH = screenWidth;
             Location_x = 0;
-            sendClickFlag = true;
+            compareScreenFlag = true;
         }else{
             DEFAULE_WIDTH = imgWidth;
             Location_x = (screenWidth - DEFAULE_WIDTH) / 2;
-            sendClickFlag = false;
+            compareScreenFlag = false;
         }
 
         if(imgHeigh > screenHeight){
@@ -70,7 +70,11 @@ public class JavaFXWindow extends JFrame{
             Location_y = (screenHeight - DEFAULE_HEIGH) / 2;
         }
 
-        setSize(DEFAULE_WIDTH + barWidth, DEFAULE_HEIGH + barWidth);// 设置窗体默认大小,使其适应屏幕大小
+        if(compareScreenFlag){
+            setSize(DEFAULE_WIDTH, DEFAULE_HEIGH);// 设置窗体默认大小,使其适应屏幕大小
+        }else{
+            setSize(DEFAULE_WIDTH + 25, DEFAULE_HEIGH + 50);// 设置窗体默认大小,使其适应屏幕大小
+        }
         setLocation(Location_x, Location_y);//设置窗体在屏幕中的位置
     }
 
@@ -93,7 +97,7 @@ public class JavaFXWindow extends JFrame{
         p.add(label);
 
         JScrollPane scroll = new JScrollPane(p);//给p面板添加滚动条
-        scroll.setPreferredSize(new Dimension(barWidth, barWidth));
+        //scroll.setPreferredSize(new Dimension(barWidth, barWidth));
         scroll.setWheelScrollingEnabled(false);
         scroll.addMouseWheelListener(new MouseWheelListener() {
             @Override
@@ -139,7 +143,7 @@ public class JavaFXWindow extends JFrame{
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(sendClickFlag){
+                if(compareScreenFlag){
                     sendMouseEvent(e);
                 }
             }

@@ -85,14 +85,15 @@ public class NettyUtil {
                         .build();
         }
 
-        nioSocketChannel.writeAndFlush(protocol).addListeners((ChannelFutureListener) future -> {
+        nioSocketChannel.writeAndFlush(protocol);
+        /*nioSocketChannel.writeAndFlush(protocol).addListeners((ChannelFutureListener) future -> {
             if (!future.isSuccess()) {
                 System.out.println("IO error,close Channel");
                 future.channel().close();
             }else{
                 System.out.println("发送 Google Protocol Msg成功!");
             }
-        });
+        });*/
     }
 
 }
