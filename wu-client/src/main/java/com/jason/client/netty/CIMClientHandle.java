@@ -11,6 +11,8 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.timeout.IdleState;
+import io.netty.handler.timeout.IdleStateEvent;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
@@ -24,7 +26,7 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        /*if (evt instanceof IdleStateEvent){
+        if (evt instanceof IdleStateEvent){
             IdleStateEvent idleStateEvent = (IdleStateEvent) evt ;
             //System.out.println("定时检测服务端是否存活");
             if(ctx.channel() != null && ctx.channel().isActive()){
@@ -36,7 +38,7 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
                 CIMClient.reconnect();
             }
         }
-        super.userEventTriggered(ctx, evt);*/
+        super.userEventTriggered(ctx, evt);
     }
 
     @Override
@@ -137,14 +139,16 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
             case MouseEvent.MOUSE_PRESSED: // 鼠标键按下
                 action.mouseMove(event.getInteger("moveX"), event.getInteger("moveY"));
                 mousebuttonmask = getMouseClick(event.getInteger("btn"));
-                if (mousebuttonmask != -100)
+                if (mousebuttonmask != -100){
                     action.mousePress(mousebuttonmask);
+                }
                 break;
             case MouseEvent.MOUSE_RELEASED: // 鼠标键松开
                 action.mouseMove(event.getInteger("moveX"), event.getInteger("moveY"));
                 mousebuttonmask = getMouseClick(event.getInteger("btn"));// 取得鼠标按键
-                if (mousebuttonmask != -100)
+                if (mousebuttonmask != -100){
                     action.mouseRelease(mousebuttonmask);
+                }
                 flag = true;
                 break;
             case MouseEvent.MOUSE_WHEEL: //

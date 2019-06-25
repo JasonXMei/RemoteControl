@@ -92,6 +92,13 @@ public class JavaFXWindow extends JFrame{
         p.add(label);
 
         JScrollPane scroll = new JScrollPane(p);//给p面板添加滚动条
+        scroll.setWheelScrollingEnabled(false);
+        scroll.addMouseWheelListener(new MouseWheelListener() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                sendMouseEvent(e);
+            }
+        });
         this.add(scroll);
 
         //initWindow();
@@ -124,6 +131,7 @@ public class JavaFXWindow extends JFrame{
 
             @Override
             public void mousePressed(MouseEvent e) {
+                //if(e.getButton() == MouseEvent.BUTTON2)
                 sendMouseEvent(e);
             }
 
@@ -145,7 +153,9 @@ public class JavaFXWindow extends JFrame{
             }
 
             @Override
-            public void mouseWheelMoved(MouseWheelEvent e){}
+            public void mouseWheelMoved(MouseWheelEvent e){
+                //System.out.println("mouse wheel move");
+            }
 
             @Override
             public void mouseDragged(MouseEvent e){
@@ -170,9 +180,10 @@ public class JavaFXWindow extends JFrame{
         eventJSON.put("moveX", event.getX());
         eventJSON.put("moveY", event.getY());
         eventJSON.put("btn", event.getButton());
-        System.out.println(eventJSON);
-        if(MouseEvent.MOUSE_WHEEL == event.getID())
+        if(MouseEvent.MOUSE_WHEEL == event.getID()) {
             eventJSON.put("wheelRotation", ((MouseWheelEvent) event).getWheelRotation());
+        }
+        System.out.println(eventJSON);
         NettyUtil.sendGoogleProtocolMsg(Constants.MSG_EVENT, Integer.parseInt(LoginController.userId), Integer.parseInt(TaskController.userId), null,
                 ByteObjConverter.objectToByte(eventJSON), null, (NioSocketChannel) CIMClient.channel);
     }
