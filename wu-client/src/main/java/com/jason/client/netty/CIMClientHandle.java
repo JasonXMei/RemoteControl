@@ -147,7 +147,8 @@ public class CIMClientHandle extends SimpleChannelInboundHandler<WUProto.WUProto
                     action.mouseRelease(mousebuttonmask);
                 flag = true;
                 break;
-            case MouseEvent.MOUSE_WHEEL: // 鼠标滚动
+            case MouseEvent.MOUSE_WHEEL: //
+                action.mouseMove(event.getInteger("moveX"), event.getInteger("moveY"));
                 action.mouseWheel(event.getInteger("wheelRotation"));
                 break;
             case KeyEvent.KEY_PRESSED: // 按键
