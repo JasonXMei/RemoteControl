@@ -36,7 +36,8 @@ public class JavaFXWindow extends JFrame{
     public static volatile boolean isConnected = false;
     private int screenWidth = (int) toolkit.getScreenSize().getWidth();
     private int screenHeight = (int) toolkit.getScreenSize().getHeight();
-    public static volatile  int count = 0;
+    public static volatile int count = 0;
+    public static int barWidth = 50;
 
     //重写背景图片方法
     public void repainImage(byte [] imageBytes){
@@ -69,7 +70,7 @@ public class JavaFXWindow extends JFrame{
             Location_y = (screenHeight - DEFAULE_HEIGH) / 2;
         }
 
-        setSize(DEFAULE_WIDTH, DEFAULE_HEIGH);// 设置窗体默认大小,使其适应屏幕大小
+        setSize(DEFAULE_WIDTH + barWidth, DEFAULE_HEIGH + barWidth);// 设置窗体默认大小,使其适应屏幕大小
         setLocation(Location_x, Location_y);//设置窗体在屏幕中的位置
     }
 
@@ -92,6 +93,7 @@ public class JavaFXWindow extends JFrame{
         p.add(label);
 
         JScrollPane scroll = new JScrollPane(p);//给p面板添加滚动条
+        scroll.setPreferredSize(new Dimension(barWidth, barWidth));
         scroll.setWheelScrollingEnabled(false);
         scroll.addMouseWheelListener(new MouseWheelListener() {
             @Override
@@ -183,7 +185,7 @@ public class JavaFXWindow extends JFrame{
         if(MouseEvent.MOUSE_WHEEL == event.getID()) {
             eventJSON.put("wheelRotation", ((MouseWheelEvent) event).getWheelRotation());
         }
-        System.out.println(eventJSON);
+        //System.out.println(eventJSON);
         NettyUtil.sendGoogleProtocolMsg(Constants.MSG_EVENT, Integer.parseInt(LoginController.userId), Integer.parseInt(TaskController.userId), null,
                 ByteObjConverter.objectToByte(eventJSON), null, (NioSocketChannel) CIMClient.channel);
     }
