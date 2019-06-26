@@ -1,15 +1,12 @@
 package com.jason.common.po;
 
-import com.jason.common.enums.ConnectStatusEnum;
+import com.jason.common.enums.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.jason.common.enums.AccountStatusEnum;
-import com.jason.common.enums.PermissionEnum;
-import com.jason.common.enums.SexEnum;
 
 /**
  * <p>
@@ -113,4 +110,9 @@ public class User{
      * 推荐人id
      */
     private Integer referrerUserId;
+
+    /**
+     * 使用端连接状态
+     */
+    private NeedClientLoginEnum needClientLogin;
 }

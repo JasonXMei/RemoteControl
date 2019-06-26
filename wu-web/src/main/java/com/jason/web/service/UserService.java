@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface UserService extends IService<User> {
 
-    JSONResult<String> handleLogin(UserVO user);
+    JSONResult<UserVO> handleLogin(UserVO user);
 
     JSONResult<Integer> handleRegister(UserVO user, String subUserList, String userShopList, MultipartFile file, User loginUser);
 

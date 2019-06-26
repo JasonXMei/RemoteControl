@@ -17,6 +17,9 @@ public class BeanUtil {
         userVO.setPermissionInt(userPO.getPermission().getType());
         userVO.setSexStr(userPO.getSex().getDescription());
         userVO.setStatusStr(userPO.getStatus().getDescription());
+        userVO.setNeedClientLoginStr(userPO.getNeedClientLogin().getDescription());
+        userVO.setConnectStatusClientStr(userPO.getConnectStatusClient().getDescription());
+        userVO.setConnectStatusUseStr(userPO.getConnectStatusUse().getDescription());
 
         userVO.setValidTimeStr(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(userPO.getValidTime()));
         return userVO;

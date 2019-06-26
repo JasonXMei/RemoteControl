@@ -2,9 +2,7 @@ package com.jason.web.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.jason.common.enums.AccountStatusEnum;
-import com.jason.common.enums.HttpStatus;
-import com.jason.common.enums.PermissionEnum;
+import com.jason.common.enums.*;
 import com.jason.common.po.SubUser;
 import com.jason.common.po.User;
 import com.jason.common.po.UserShop;
@@ -59,7 +57,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private SubUserService subUserService;
 
     @Override
-    public JSONResult<String> handleLogin(UserVO userVO) {
+    public JSONResult<UserVO> handleLogin(UserVO userVO) {
         User user = dozerMapper.map(userVO, User.class);
         if(!StringUtils.isEmpty(user.getUserName()) && !StringUtils.isEmpty(user.getPassword())){
             List<User> loginUserList = this.baseMapper.selectList(new QueryWrapper<User>()
@@ -72,7 +70,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                     switch (loginUser.getStatus()){
                         case Normal:
                             if(loginUser.getValidTime() >= BeanUtil.getCurrentTimeStamp(log)){
-                                return new JSONResult<>(JWTUtil.createToken(loginUser.getPassword(), loginUser.getId()), HttpStatus.OK.status, String.format(HttpStatus.OK.message, "登陆"));
+                                UserVO loginUserVO = BeanUtil.convertUserPO2VO(dozerMapper, loginUser);
+                                loginUserVO.setJwt(JWTUtil.createToken(loginUser.getPassword(), loginUser.getId()));
+                                return new JSONResult<>(loginUserVO, HttpStatus.OK.status, String.format(HttpStatus.OK.message, "登陆"));
                             }else{
                                 return new JSONResult<>(null, HttpStatus.USER_EXPIRED.status, HttpStatus.USER_EXPIRED.message);
                             }
@@ -134,7 +134,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             userPO.setPermission(PermissionEnum.NormalUser);
         }
         userPO.setStatus(accountStatusEnum);
-        //userPO.setSex(SexEnum.getSexEnumByType(Integer.valueOf(userVO.getSexStr())));
+        //userPO.setSex(SexEnum.getEnumByType(Integer.valueOf(userVO.getSexStr())));
+        userPO.setNeedClientLogin(NeedClientLoginEnum.getEnumByType(Integer.valueOf(userVO.getNeedClientLoginStr())));
 
         try {
             if(userVO.getValidTimeStr() != null){

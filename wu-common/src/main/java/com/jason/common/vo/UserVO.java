@@ -1,5 +1,6 @@
 package com.jason.common.vo;
 
+import com.jason.common.enums.ConnectStatusEnum;
 import lombok.Data;
 
 @Data
@@ -89,4 +90,17 @@ public class UserVO {
      * 推荐人邀请码
      */
     private String referrerUserInviteCode;
+
+    private String needClientLoginStr;
+
+    private String jwt;
+
+    /**
+     * 使用端连接状态
+     */
+    private String connectStatusUseStr;
+    /**
+     * 客户端连接状态
+     */
+    private String connectStatusClientStr;
 }

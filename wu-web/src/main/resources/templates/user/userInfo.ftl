@@ -167,10 +167,21 @@
                     </tr>
                 <#else>
                     <tr>
-                        <td colspan="2">
+                        <td>
                             <div class="form-group">
                                 <label for="password">密码:</label>
                                 <input type="text" class="form-control"  id="password" name="password" value="${userDetail.userVO.password!'123456'}"/>
+                            </div>
+                        </td>
+                        <td style="vertical-align: middle;">
+                            <div class="form-group">
+                                <label style="display:inline-block;width:150px;">需要登录客户端:</label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="needClientLoginStr" value="0" checked="checked"> 需要
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="needClientLoginStr" value="1"> 不需要
+                                </label>
                             </div>
                         </td>
                     </tr>
@@ -312,11 +323,11 @@ $(function () {
         showAlertModal("温馨提示", message);
     }
 
-    var sex = "${(userDetail.userVO.sexStr)!''}";
-    if(sex == "男"){
-        $("input[type=radio][name=sexStr][value=0]").attr("checked", "checked");
-    }else if(sex == "女"){
-        $("input[type=radio][name=sexStr][value=1]").attr("checked", "checked");
+    var needClientLogin = "${(userDetail.userVO.needClientLoginStr)!''}";
+    if(needClientLogin == "需要"){
+        $("input[type=radio][name=needClientLoginStr][value=0]").attr("checked", "checked");
+    }else if(needClientLogin == "不需要"){
+        $("input[type=radio][name=needClientLoginStr][value=1]").attr("checked", "checked");
     }else{}
 
     $('#datetimepickerValid').datetimepicker({

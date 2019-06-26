@@ -33,7 +33,7 @@ public class UserController {
 
 	@RequestMapping("login")
 	@ResponseBody
-	public JSONResult<String> login(UserVO user){
+	public JSONResult<UserVO> login(UserVO user){
 		return userService.handleLogin(user);
 	}
 
