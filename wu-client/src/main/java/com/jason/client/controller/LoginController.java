@@ -6,19 +6,16 @@ import com.jason.client.config.APIConfig;
 import com.jason.client.enums.ConnectStatusEnum;
 import com.jason.client.enums.HttpStatus;
 import com.jason.client.netty.CIMClient;
-import com.jason.client.util.*;
-import com.jfoenix.controls.JFXComboBox;
+import com.jason.client.util.Constants;
+import com.jason.client.util.HttpUtil;
+import com.jason.client.util.NettyUtil;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.layout.StackPane;
 
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
@@ -71,12 +68,13 @@ public class LoginController implements Initializable {
         String responseStr = HttpUtil.httpGet(loginUrl, null);
         JSONObject jsonObject = JSONObject.parseObject(responseStr);
         if (jsonObject.getInteger("status").equals(HttpStatus.OK.status)){
-            jwt = jsonObject.getString("obj");
-            userId = String.valueOf(JWTUtil.decodeToken(jwt));
+            JSONObject userJSON = jsonObject.getJSONObject("obj");
+            userId = userJSON.getString("id");
+            jwt = userJSON.getString("jwt");
 
-            String userStatusUrl = String.format(APIConfig.getUserStatusUrl, userId, 1);
-            responseStr = HttpUtil.httpGet(userStatusUrl, jwt);
-            if(Integer.valueOf(responseStr) == ConnectStatusEnum.DisConnected.status){
+            String connectStatusClientStr = userJSON.getString("connectStatusClientStr");
+
+            if(connectStatusClientStr.equals(ConnectStatusEnum.DisConnected.description)){
                 boolean connectRemote = CIMClient.start();
                 if(connectRemote){
                     NettyUtil.sendGoogleProtocolMsg(Constants.LOGIN_CLIENT, Integer.valueOf(userId), 0, null, null, null, (NioSocketChannel) CIMClient.channel);

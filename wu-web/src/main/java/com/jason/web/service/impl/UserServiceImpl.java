@@ -135,11 +135,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         userPO.setStatus(accountStatusEnum);
         //userPO.setSex(SexEnum.getEnumByType(Integer.valueOf(userVO.getSexStr())));
-        userPO.setNeedClientLogin(NeedClientLoginEnum.getEnumByType(Integer.valueOf(userVO.getNeedClientLoginStr())));
+        if(userVO.getNeedClientLoginStr() != null){
+            userPO.setNeedClientLogin(NeedClientLoginEnum.getEnumByType(Integer.valueOf(userVO.getNeedClientLoginStr())));
+        }else{
+            userPO.setNeedClientLogin(NeedClientLoginEnum.Need);
+        }
 
         try {
             if(userVO.getValidTimeStr() != null){
                 userPO.setValidTime(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.parse(userVO.getValidTimeStr()).getTime());
+            }else{
+                userPO.setValidTime(BeanUtil.getCurrentTimeStamp(log));
             }
         } catch (ParseException e) {
             LoggerUtil.printErrorLog(log, e);

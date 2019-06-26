@@ -166,25 +166,36 @@
                         </td>
                     </tr>
                 <#else>
-                    <tr>
-                        <td>
-                            <div class="form-group">
-                                <label for="password">密码:</label>
-                                <input type="text" class="form-control"  id="password" name="password" value="${userDetail.userVO.password!'123456'}"/>
-                            </div>
-                        </td>
-                        <td style="vertical-align: middle;">
-                            <div class="form-group">
-                                <label style="display:inline-block;width:150px;">需要登录客户端:</label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="needClientLoginStr" value="0" checked="checked"> 需要
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="needClientLoginStr" value="1"> 不需要
-                                </label>
-                            </div>
-                        </td>
-                    </tr>
+                    <#if ((user.permission)?? && (user.permission.type == 0))>
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                    <label for="password">密码:</label>
+                                    <input type="text" class="form-control"  id="password" name="password" value="${userDetail.userVO.password!'123456'}"/>
+                                </div>
+                            </td>
+                            <td style="vertical-align: middle;">
+                                <div class="form-group">
+                                    <label style="display:inline-block;width:150px;">需要登录客户端:</label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="needClientLoginStr" value="0" checked="checked"> 需要
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="needClientLoginStr" value="1"> 不需要
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                    <#else>
+                        <tr>
+                            <td colspan="2">
+                                <div class="form-group">
+                                    <label for="password">密码:</label>
+                                    <input type="text" class="form-control"  id="password" name="password" value="${userDetail.userVO.password!'123456'}"/>
+                                </div>
+                            </td>
+                        </tr>
+                    </#if>
                 </#if>
                 <tr>
                     <td colspan="2">

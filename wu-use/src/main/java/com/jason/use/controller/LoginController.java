@@ -9,7 +9,6 @@ import com.jason.use.enums.NeedClientLoginEnum;
 import com.jason.use.netty.CIMClient;
 import com.jason.use.util.Constants;
 import com.jason.use.util.HttpUtil;
-import com.jason.use.util.JWTUtil;
 import com.jason.use.util.NettyUtil;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXPasswordField;
@@ -34,6 +33,7 @@ public class LoginController implements Initializable {
 
     public static String jwt;
     public static String userId;
+    public static boolean needClientLogin = false;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -75,15 +75,14 @@ public class LoginController implements Initializable {
             }else{
                 FileUtil.setUserAndPass(userName, password, false);
             }*/
-            //String clientStatusUrl = String.format(APIConfig.getUserStatusUrl, userId, 1);
-            //responseStr = HttpUtil.httpGet(clientStatusUrl, jwt);
-            if(connectStatusClientStr.equals(ConnectStatusEnum.DisConnected.description) &&
-                    needClientLoginStr.equals(NeedClientLoginEnum.Need.description)){
+
+            if(needClientLoginStr.equals(NeedClientLoginEnum.Need.description)){
+                needClientLogin = true;
+            }
+            if(connectStatusClientStr.equals(ConnectStatusEnum.DisConnected.description) && needClientLogin){
                 JavafxApplication.showAlert("操作提示", "请先登录智慧联盟客户端!", null, null, "确定");
             }else{
                 String connectStatusUseStr = userJSON.getString("connectStatusUseStr");
-                //String userStatusUrl = String.format(APIConfig.getUserStatusUrl, userId, 0);
-                //responseStr = HttpUtil.httpGet(userStatusUrl, jwt);
                 if(connectStatusUseStr.equals(ConnectStatusEnum.DisConnected.description)){
                     boolean connectRemote = CIMClient.start();
                     if(connectRemote){

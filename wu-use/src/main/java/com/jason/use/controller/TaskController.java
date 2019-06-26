@@ -176,7 +176,7 @@ public class TaskController implements Initializable {
 
     public void connectClient(ActionEvent actionEvent) {
         boolean checkOrderCount = checkOrderCount();
-        if(checkOrderCount){
+        if(checkOrderCount || !LoginController.needClientLogin){
             JavaFXWindow.isConnected = true;
             JavaFXWindow.count = 0;
             NettyUtil.sendGoogleProtocolMsg(Constants.MSG_CONTROL, Integer.valueOf(LoginController.userId), Integer.valueOf(userId), null, null, null, (NioSocketChannel) CIMClient.channel);
