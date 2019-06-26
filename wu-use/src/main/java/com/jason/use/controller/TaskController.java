@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jason.use.JavafxApplication;
 import com.jason.use.config.APIConfig;
+import com.jason.use.enums.PaymentStatusEnum;
 import com.jason.use.enums.TagTypeEnum;
 import com.jason.use.netty.CIMClient;
 import com.jason.use.netty.CIMClientHandle;
@@ -174,17 +175,32 @@ public class TaskController implements Initializable {
     }
 
     public void connectClient(ActionEvent actionEvent) {
-        JavaFXWindow.isConnected = true;
-        JavaFXWindow.count = 0;
-        NettyUtil.sendGoogleProtocolMsg(Constants.MSG_CONTROL, Integer.valueOf(LoginController.userId), Integer.valueOf(userId), null, null, null, (NioSocketChannel) CIMClient.channel);
-        try {
-            Thread.sleep(1000);
-            if(CIMClientHandle.errorMsg != null){
-                JavafxApplication.showAlert("温馨提示", CIMClientHandle.errorMsg, null, null, "确定");
-                CIMClientHandle.errorMsg = null;
+        boolean checkOrderCount = checkOrderCount();
+        if(checkOrderCount){
+            JavaFXWindow.isConnected = true;
+            JavaFXWindow.count = 0;
+            NettyUtil.sendGoogleProtocolMsg(Constants.MSG_CONTROL, Integer.valueOf(LoginController.userId), Integer.valueOf(userId), null, null, null, (NioSocketChannel) CIMClient.channel);
+            try {
+                Thread.sleep(1000);
+                if(CIMClientHandle.errorMsg != null){
+                    JavafxApplication.showAlert("温馨提示", CIMClientHandle.errorMsg, null, null, "确定");
+                    CIMClientHandle.errorMsg = null;
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        }else{
+            JavafxApplication.showAlert("温馨提示", "您有补单尚未完成支付，请先完成补单才可使用高速连接功能!", null, null, "确定");
+        }
+    }
+
+    private boolean checkOrderCount() {
+        String orderCountUrl = String.format(APIConfig.orderCountUrl, PaymentStatusEnum.Unpaid.status, LoginController.userId);
+        String responseStr = HttpUtil.httpGet(orderCountUrl, LoginController.jwt);
+        if("0".equals(responseStr)){
+            return true;
+        }else{
+            return false;
         }
     }
 }

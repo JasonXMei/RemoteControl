@@ -130,9 +130,8 @@
                         </div>
                     </td>
 				</tr>
-				<tr>
-                    <#if ((userDetail.userVO.id == 0))
-                    || ((user.permission)?? && (user.permission.type == 0))>
+                <#if ((user.permission)?? && (user.permission.type == 0))>
+                    <tr>
                         <td>
                             <div class="form-group">
                                 <label for="allowOrderTimes">日补单次数:</label>
@@ -149,25 +148,8 @@
                                 </div>
                             </div>
                         </td>
-                    <#else>
-                        <td>
-                            <div class="form-group">
-                                <label for="allowOrderTimes">日补单次数:</label>
-                                <input type="text" class="form-control" id="allowOrderTimes" name="allowOrderTimes" readonly value="${userDetail.userVO.allowOrderTimes!2}"  placeholder="请设置账号日补单次数">
-                            </div>
-                        </td>
-                        <td>
-                            <div class="form-group">
-                                <label>有效时间:</label>
-                                <div class='input-group date' id='datetimepickerValid'>
-                                    <input type='text' class="form-control" name="validTimeStr" id="validTimeStr" readonly value="${userDetail.userVO.validTimeStr!''}" placeholder="请设置账号有效时间"/>
-                                    <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar">
-                                </div>
-                            </div>
-                        </td>
-                    </#if>
-				</tr>
+				    </tr>
+                </#if>
                 <#if (referrerUserInviteCode)?? && (referrerUserInviteCode != '')>
                     <tr>
                         <td>

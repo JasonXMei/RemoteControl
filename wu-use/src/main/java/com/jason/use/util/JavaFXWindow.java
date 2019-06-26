@@ -52,7 +52,7 @@ public class JavaFXWindow extends JFrame{
     }
 
     public void initWindow(int imgWidth, int imgHeigh){
-        if(imgWidth > screenWidth){
+        if(imgWidth >= screenWidth){
             DEFAULE_WIDTH = screenWidth;
             Location_x = 0;
             compareScreenFlag = true;
@@ -62,7 +62,7 @@ public class JavaFXWindow extends JFrame{
             compareScreenFlag = false;
         }
 
-        if(imgHeigh > screenHeight){
+        if(imgHeigh >= screenHeight){
             DEFAULE_HEIGH = screenHeight;
             Location_y = 0;
         }else{

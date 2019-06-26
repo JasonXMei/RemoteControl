@@ -5,9 +5,11 @@ import com.jason.use.JavafxApplication;
 import com.jason.use.config.APIConfig;
 import com.jason.use.enums.ConnectStatusEnum;
 import com.jason.use.enums.HttpStatus;
-import com.jason.use.enums.PaymentStatusEnum;
 import com.jason.use.netty.CIMClient;
-import com.jason.use.util.*;
+import com.jason.use.util.Constants;
+import com.jason.use.util.HttpUtil;
+import com.jason.use.util.JWTUtil;
+import com.jason.use.util.NettyUtil;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
@@ -67,9 +69,9 @@ public class LoginController implements Initializable {
                 FileUtil.setUserAndPass(userName, password, false);
             }*/
 
-            boolean checkOrderCount = checkOrderCount();
-
-            if(checkOrderCount){
+            String clientStatusUrl = String.format(APIConfig.getUserStatusUrl, userId, 1);
+            responseStr = HttpUtil.httpGet(clientStatusUrl, jwt);
+            if(Integer.valueOf(responseStr) != ConnectStatusEnum.DisConnected.status){
                 String userStatusUrl = String.format(APIConfig.getUserStatusUrl, userId, 0);
                 responseStr = HttpUtil.httpGet(userStatusUrl, jwt);
                 if(Integer.valueOf(responseStr) == ConnectStatusEnum.DisConnected.status){
@@ -84,20 +86,10 @@ public class LoginController implements Initializable {
                     JavafxApplication.showAlert("操作提示", "账号已在别处登录，请先退出再尝试登录!", null, null, "确定");
                 }
             }else{
-                JavafxApplication.showAlert("温馨提示", "您有补单尚未完成支付，请先完成补单才可登录使用端!", null, null, "确定");
+                JavafxApplication.showAlert("操作提示", "请先登录智慧联盟客户端!", null, null, "确定");
             }
         }else{
             JavafxApplication.showAlert("操作提示", jsonObject.getString("description"), null, null, "确定");
-        }
-    }
-
-    private boolean checkOrderCount() {
-        String orderCountUrl = String.format(APIConfig.orderCountUrl, PaymentStatusEnum.Unpaid.status, LoginController.userId);
-        String responseStr = HttpUtil.httpGet(orderCountUrl, LoginController.jwt);
-        if("0".equals(responseStr)){
-            return true;
-        }else{
-            return false;
         }
     }
 

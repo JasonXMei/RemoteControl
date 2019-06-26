@@ -135,8 +135,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         userPO.setStatus(accountStatusEnum);
         //userPO.setSex(SexEnum.getSexEnumByType(Integer.valueOf(userVO.getSexStr())));
+
         try {
-            userPO.setValidTime(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.parse(userVO.getValidTimeStr()).getTime());
+            if(userVO.getValidTimeStr() != null){
+                userPO.setValidTime(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.parse(userVO.getValidTimeStr()).getTime());
+            }
         } catch (ParseException e) {
             LoggerUtil.printErrorLog(log, e);
             return new JSONResult<>(userVO.getId(),HttpStatus.PARAMETER_INVALID.status,String.format(HttpStatus.PARAMETER_INVALID.message, "有效时间", "格式不正确,请在日期插件中选择日期!"));
