@@ -57,4 +57,12 @@
         ORDER BY status ASC, id DESC
     </select>
 
+    <update id="updateId">
+        update user set id = #{exepectedUserId} where id = #{currentUserId}
+    </update>
+
+    <select id="getMaxId" resultType="java.lang.Integer">
+        select max(id) from user
+    </select>
+
 </mapper>

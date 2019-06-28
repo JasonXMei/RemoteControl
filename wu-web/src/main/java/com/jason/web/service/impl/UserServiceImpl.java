@@ -1,6 +1,7 @@
 package com.jason.web.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jason.common.enums.*;
 import com.jason.common.po.SubUser;
@@ -98,7 +99,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             User user = baseMapper.selectById(userVO.getId());
             existUser = checkExistUser(userVO.getUserName(), user.getPassword(), user.getId());
         } else {
-            existUser = checkExistUser(userVO.getUserName(), paramsConfig.defaultPassword, 0);
+            existUser = checkExistUser(userVO.getUserName(), userVO.getPassword(), 0);
         }
         if (existUser) {
             return new JSONResult<>(userVO.getId(), HttpStatus.PARAMETER_INVALID.status, String.format(HttpStatus.PARAMETER_INVALID.message, "账号,密码", "该账号密码数据库已存在，请修改注册信息!"));
@@ -124,6 +125,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             }else{
                 accountStatusEnum = AccountStatusEnum.WaitAudit;
             }
+
+            int userId = baseMapper.getMaxId();
+            userVO.setId(userId + 1);
         }
 
         //保存用户信息，获取返回id作为图片名
@@ -151,9 +155,39 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             LoggerUtil.printErrorLog(log, e);
             return new JSONResult<>(userVO.getId(),HttpStatus.PARAMETER_INVALID.status,String.format(HttpStatus.PARAMETER_INVALID.message, "有效时间", "格式不正确,请在日期插件中选择日期!"));
         }
+
+        Integer exepectedUserId = 0;
+        if(userVO.getIdStr() != null){
+            exepectedUserId = Integer.valueOf(userVO.getIdStr());
+            if(exepectedUserId != userVO.getId()){
+                if(baseMapper.selectById(exepectedUserId) != null){
+                    return new JSONResult<>(userVO.getId(), HttpStatus.PARAMETER_INVALID.status, String.format(HttpStatus.PARAMETER_INVALID.message, "用户编号", "该用户编号数据库已存在，请重新设置!"));
+                }
+            }
+        }
+
         if(userPO.getId() > 0){
             baseMapper.updateById(userPO);
+            if(exepectedUserId != 0){
+                baseMapper.updateId(exepectedUserId, userPO.getId());
+
+                Integer beforeUserId = userPO.getId();
+                userPO = baseMapper.selectById(exepectedUserId);
+                if(userPO.getPaymentCodeImg() != null){
+                    String fileName = userPO.getPaymentCodeImg();
+                    String fileSuffix = fileName.substring(fileName.lastIndexOf(".") + 1);
+                    File currentFile = new File(paramsConfig.imagePath + beforeUserId + "." + fileSuffix);
+                    File dest = new File(paramsConfig.imagePath + exepectedUserId + "." + fileSuffix);
+                    currentFile.renameTo(dest);
+
+                    userPO.setPaymentCodeImg("/images/" + exepectedUserId + "." + fileSuffix);
+                    baseMapper.updateById(userPO);
+                }
+            }
         }else{
+            if(exepectedUserId != 0){
+                userPO.setId(exepectedUserId);
+            }
             baseMapper.insert(userPO);
         }
 
@@ -266,8 +300,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public void handleUser(Integer userId, Integer status) {
         User user = new User();
         user.setId(userId);
-        user.setStatus(AccountStatusEnum.getEnum(status));
-        baseMapper.updateById(user);
+        if(status == AccountStatusEnum.Delete.getStatus()){
+            baseMapper.deleteById(userId);
+        }else{
+            user.setStatus(AccountStatusEnum.getEnum(status));
+            baseMapper.updateById(user);
+        }
     }
 
     @Override

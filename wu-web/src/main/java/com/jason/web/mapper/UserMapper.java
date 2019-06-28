@@ -16,4 +16,8 @@ import org.apache.ibatis.annotations.Param;
 public interface UserMapper extends BaseMapper<User> {
 
     UserPage<User> findUserList(@Param("pg") UserPage<User> userPage);
+
+    void updateId(@Param("exepectedUserId") Integer exepectedUserId, @Param("currentUserId") Integer currentUserId);
+
+    int getMaxId();
 }
