@@ -103,4 +103,6 @@ public class UserVO {
      * 客户端连接状态
      */
     private String connectStatusClientStr;
+
+    private String idStr;
 }

@@ -75,7 +75,7 @@
 			</tr>
 			<#list userPageList.records as userItem>
 				<tr>
-					<td>${userItem.id}</td>
+					<td>${userItem.idStr}</td>
 					<td>${userItem.userName}</td>
 					<#--<td>${userItem.sexStr}</td>
 					<td>${userItem.age}</td>-->

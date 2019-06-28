@@ -20,6 +20,7 @@ public class BeanUtil {
         userVO.setNeedClientLoginStr(userPO.getNeedClientLogin().getDescription());
         userVO.setConnectStatusClientStr(userPO.getConnectStatusClient().getDescription());
         userVO.setConnectStatusUseStr(userPO.getConnectStatusUse().getDescription());
+        userVO.setIdStr(String.format("%04d", userPO.getId()));
 
         userVO.setValidTimeStr(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(userPO.getValidTime()));
         return userVO;

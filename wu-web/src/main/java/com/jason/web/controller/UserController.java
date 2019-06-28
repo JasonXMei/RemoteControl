@@ -131,7 +131,8 @@ public class UserController {
             loginUser = (User) request.getAttribute("user");
         }
 
-        JSONResult<Integer> handleResult = userService.handleRegister(userVO, subUserList, userShopList, file, loginUser);
+        JSONResult<Integer> integerJSONResult = userService.handleRegister(userVO, subUserList, userShopList, file, loginUser);
+        JSONResult<Integer> handleResult = integerJSONResult;
 
         redirectAttributes.addFlashAttribute("message", handleResult.getDescription());
         if(userVO.getId() > 0 || handleResult.getStatus() ==  HttpStatus.OK.status){

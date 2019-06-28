@@ -198,15 +198,33 @@
                     </#if>
                 </#if>
                 <tr>
-                    <td colspan="2">
-                        <div class="form-group">
-                            <label for="paymentCodeImg">返款码图片:</label>
-                                <#if (userDetail.userVO.paymentCodeImg)?? && (userDetail.userVO.paymentCodeImg != '')>
-                                    <button type="button" class="btn btn-info" onclick="showPaymentCodeImg('${userDetail.userVO.paymentCodeImg}', 1)">查看图片</button>
-                                </#if>
-                            <input type="file" name="file" id="paymentCodeImg">
-                        </div>
-                    </td>
+                    <#if ((user.permission)?? && (user.permission.type == 0))>
+                        <td>
+                            <div class="form-group">
+                                <label for="paymentCodeImg">返款码图片:</label>
+                                    <#if (userDetail.userVO.paymentCodeImg)?? && (userDetail.userVO.paymentCodeImg != '')>
+                                        <button type="button" class="btn btn-info" onclick="showPaymentCodeImg('${userDetail.userVO.paymentCodeImg}', 1)">查看图片</button>
+                                    </#if>
+                                <input type="file" name="file" id="paymentCodeImg">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <label for="memberNumber">用户编号:</label>
+                                <input type="text" class="form-control"  id="idStr" name="idStr" value="${userDetail.userVO.idStr ! '0000'}"/>
+                            </div>
+                        </td>
+                    <#else>
+                        <td colspan="2">
+                            <div class="form-group">
+                                <label for="paymentCodeImg">返款码图片:</label>
+                                    <#if (userDetail.userVO.paymentCodeImg)?? && (userDetail.userVO.paymentCodeImg != '')>
+                                        <button type="button" class="btn btn-info" onclick="showPaymentCodeImg('${userDetail.userVO.paymentCodeImg}', 1)">查看图片</button>
+                                    </#if>
+                                <input type="file" name="file" id="paymentCodeImg">
+                            </div>
+                        </td>
+                    </#if>
                 </tr>
                 <tr>
 					<td colspan="2">
