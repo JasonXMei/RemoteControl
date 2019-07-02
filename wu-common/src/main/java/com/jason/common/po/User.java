@@ -24,7 +24,8 @@ public class User{
     /**
      * 主键
      */
-    @TableId(value = "id", type = IdType.AUTO)
+    //@TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id",type = IdType.INPUT)
     private Integer id;
 
     /**

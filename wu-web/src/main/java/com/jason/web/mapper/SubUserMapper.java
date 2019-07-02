@@ -23,4 +23,6 @@ public interface SubUserMapper extends BaseMapper<SubUser> {
     SubUserExt findSubUser(@Param("subUserId") Integer subUserId, @Param("currentDateTimeStamp") long currentDateTimeStamp);
 
     List<SubUserExt> getUserOrderTimes(@Param("userId") Integer userId, @Param("currentDateTimeStamp") long currentTimeStamp);
+
+    SubUserExt findUserDesc(@Param("userId") Integer userId);
 }

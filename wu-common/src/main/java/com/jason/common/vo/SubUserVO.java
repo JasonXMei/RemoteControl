@@ -59,4 +59,5 @@ public class SubUserVO {
     private String orderTimes;
     private String location;
     private String sexStr;
+    private String desc;
 }

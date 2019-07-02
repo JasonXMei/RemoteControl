@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
@@ -11,10 +10,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.layout.StackPane?>
-<AnchorPane id="AnchorPane" fx:id="anchorPane" maxHeight="618.0" maxWidth="1000.0" minHeight="618.0" minWidth="1000.0" prefHeight="618.0" prefWidth="1000.0" style="-fx-background-color: LightBLue;" stylesheets="@../css/login.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jason.use.controller.LoginController">
+<AnchorPane id="AnchorPane" fx:id="anchorPane" maxHeight="618.0" maxWidth="1200.0" minHeight="618.0" minWidth="1200.0" prefHeight="618.0" prefWidth="1000.0" style="-fx-background-color: LightBLue;" stylesheets="@../css/login.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jason.use.controller.LoginController">
     <children>
-      <VBox layoutX="320.0" layoutY="140.0" prefHeight="338.0" prefWidth="361.0" spacing="15.0">
+      <VBox layoutX="433.0" layoutY="140.0" prefHeight="338.0" prefWidth="361.0" spacing="15.0">
          <children>
       
               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="55.0" prefWidth="718.0" text="智慧联盟" textAlignment="CENTER" textFill="DIMGRAY" textOverrun="CLIP">

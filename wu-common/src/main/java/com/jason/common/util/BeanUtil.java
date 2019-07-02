@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.Map;
 
 public class BeanUtil {
 
@@ -69,13 +70,14 @@ public class BeanUtil {
         return ttv;
     }
 
-    public static SubUserVO convertSubUserPO2VO(Mapper dozerMapper, SubUserExt su) {
+    public static SubUserVO convertSubUserPO2VO(Mapper dozerMapper, SubUserExt su, Map<Integer, String> userDescMap) {
         SubUserVO userVO = dozerMapper.map(su, SubUserVO.class);
         userVO.setConnectStatusStr(su.getConnectStatusClient().getDescription());
         userVO.setOrderTimes(su.getOrderTimes() + "-" + su.getAllowOrderTimes());
         userVO.setTerminalStr(su.getTerminal().getDescription());
         userVO.setUserTypeStr(su.getUserType().getDescription());
         userVO.setSexStr(su.getSex().getDescription());
+        userVO.setDesc(userDescMap.get(userVO.getUserId()));
         return userVO;
     }
 

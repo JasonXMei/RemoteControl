@@ -26,7 +26,7 @@ public class JavafxApplication extends Application {
 
 	private static Stage mainStage;
 	private static String title = "智慧联盟使用端";
-	private static double width = 1000;
+	private static double width = 1200;
 	private static double height = 618;
 
     private static BorderPane borderPane;

@@ -15,6 +15,8 @@
         <result column="location" property="location" />
         <result column="sex" property="sex" />
         <result column="age" property="age" />
+        <result column="shop_name" property="shopName" />
+        <result column="create_time" property="createTime" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -63,5 +65,16 @@
         FROM sub_user su
         JOIN user u on su.user_id = u.id
         WHERE u.id = #{userId}
+    </select>
+    
+    <select id="findUserDesc" resultMap="BaseResultMap">
+        select sut.create_time,su.sub_user_name,us.shop_name from sub_user_task sut
+        join sub_user su on su.id = sut.sub_user_id
+        join user_shop us on us.id = sut.shop_id
+        join task_replace_order tro on sut.id = tro.task_id
+        join user u on u.id = su.user_id
+        where u.id = #{userId}
+        order by create_time DESC
+        limit 1
     </select>
 </mapper>

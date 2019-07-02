@@ -10,25 +10,25 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="618.0" prefWidth="750.0" style="-fx-font-size: 18px;" stylesheets="@../css/list.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jason.use.controller.TagController">
+<VBox prefHeight="618.0" prefWidth="950.0" style="-fx-font-size: 18px;" stylesheets="@../css/list.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jason.use.controller.TagController">
   <children>
-  <AnchorPane prefHeight="616.0" prefWidth="713.0" style="-fx-background-color: lightblue;">
+  <AnchorPane prefHeight="616.0" prefWidth="913.0" style="-fx-background-color: lightblue;">
      <children>
-        <VBox layoutY="1.0" prefHeight="612.0" prefWidth="775.0">
+        <VBox layoutY="1.0" prefHeight="612.0" prefWidth="975.0">
            <children>
-              <HBox prefHeight="59.0" prefWidth="776.0" spacing="10.0" style="-jfx-cell-horizontal-margin: 10;">
+              <HBox prefHeight="59.0" prefWidth="976.0" spacing="10.0" style="-jfx-cell-horizontal-margin: 10;">
                  <padding>
                     <Insets top="10.0" />
                  </padding>
               </HBox>
-              <VBox prefHeight="552.0" prefWidth="775.0">
+              <VBox prefHeight="552.0" prefWidth="975.0">
                  <children>
-                     <JFXTreeTableView fx:id="tagList" prefHeight="474.0" prefWidth="745.0" style="-fx-font-size: 16px;">
+                     <JFXTreeTableView fx:id="tagList" prefHeight="474.0" prefWidth="945.0" style="-fx-font-size: 16px;">
                          <columns>
                              <JFXTreeTableColumn fx:id="tagType" editable="false" minWidth="98.0" prefWidth="158.0" resizable="false" sortable="false" text="标签类型" />
                              <JFXTreeTableColumn fx:id="subUserName" editable="false" minWidth="39.0" prefWidth="160.0" resizable="false" sortable="false" text="使用小号" />
                              <JFXTreeTableColumn fx:id="shopName" editable="false" minWidth="48.0" prefWidth="139.0" resizable="false" sortable="false" text="使用店铺" />
-                             <JFXTreeTableColumn fx:id="tagDescription" editable="false" minWidth="28.0" prefWidth="279.0" resizable="false" sortable="false" text="标签描述" />
+                             <JFXTreeTableColumn fx:id="tagDescription" editable="false" minWidth="28.0" prefWidth="479.0" resizable="false" sortable="false" text="标签描述" />
                          </columns>
                            <VBox.margin>
                               <Insets />

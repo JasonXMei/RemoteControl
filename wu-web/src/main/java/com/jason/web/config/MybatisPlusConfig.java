@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @MapperScan("com.jason.web.mapper")
 public class MybatisPlusConfig {
 
-    /*@Bean
+   /* @Bean
     public PerformanceInterceptor performanceInterceptor(){
         PerformanceInterceptor performanceInterceptor = new PerformanceInterceptor();
         //格式化sql语句

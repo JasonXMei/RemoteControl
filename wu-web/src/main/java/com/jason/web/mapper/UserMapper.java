@@ -20,4 +20,5 @@ public interface UserMapper extends BaseMapper<User> {
     void updateId(@Param("exepectedUserId") Integer exepectedUserId, @Param("currentUserId") Integer currentUserId);
 
     int getMaxId();
+
 }

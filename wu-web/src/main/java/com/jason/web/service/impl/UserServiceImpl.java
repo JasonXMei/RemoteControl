@@ -1,9 +1,11 @@
 package com.jason.web.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.jason.common.enums.*;
+import com.jason.common.enums.AccountStatusEnum;
+import com.jason.common.enums.HttpStatus;
+import com.jason.common.enums.NeedClientLoginEnum;
+import com.jason.common.enums.PermissionEnum;
 import com.jason.common.po.SubUser;
 import com.jason.common.po.User;
 import com.jason.common.po.UserShop;
@@ -126,8 +128,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 accountStatusEnum = AccountStatusEnum.WaitAudit;
             }
 
-            int userId = baseMapper.getMaxId();
-            userVO.setId(userId + 1);
+            /*int userId = baseMapper.getMaxId();
+            userVO.setId(userId + 1);*/
         }
 
         //保存用户信息，获取返回id作为图片名
@@ -173,7 +175,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
                 Integer beforeUserId = userPO.getId();
                 userPO = baseMapper.selectById(exepectedUserId);
-                if(userPO.getPaymentCodeImg() != null){
+                if(!StringUtils.isEmpty(userPO.getPaymentCodeImg())){
                     String fileName = userPO.getPaymentCodeImg();
                     String fileSuffix = fileName.substring(fileName.lastIndexOf(".") + 1);
                     File currentFile = new File(paramsConfig.imagePath + beforeUserId + "." + fileSuffix);
@@ -187,6 +189,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }else{
             if(exepectedUserId != 0){
                 userPO.setId(exepectedUserId);
+            }else{
+                userPO.setId(baseMapper.getMaxId() + 1);
             }
             baseMapper.insert(userPO);
         }

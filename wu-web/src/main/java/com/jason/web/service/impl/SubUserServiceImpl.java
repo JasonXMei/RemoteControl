@@ -20,9 +20,7 @@ import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * <p>
@@ -50,8 +48,18 @@ public class SubUserServiceImpl extends ServiceImpl<SubUserMapper, SubUser> impl
 
         TaskPage<SubUserVO> pagesVO = new TaskPage<>();
         List<SubUserVO> voList = new ArrayList<>();
+        Map<Integer, String> userDescMap = new HashMap<>();
         for (SubUserExt su: list) {
-            voList.add(BeanUtil.convertSubUserPO2VO(dozerMapper, su));
+            if(!userDescMap.containsKey(su.getUserId())){
+                SubUserExt desc = baseMapper.findUserDesc(su.getUserId());
+                if(desc != null && desc.getCreateTime() != null){
+                    String latestOrderTime = DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(desc.getCreateTime());
+                    userDescMap.put(su.getUserId(), latestOrderTime + "/\n" + desc.getShopName() + "/" + desc.getSubUserName());
+                }else{
+                    userDescMap.put(su.getUserId(), " ");
+                }
+            }
+            voList.add(BeanUtil.convertSubUserPO2VO(dozerMapper, su, userDescMap));
         }
         pagesVO.setRecords(voList);
 

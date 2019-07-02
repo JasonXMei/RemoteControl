@@ -60,4 +60,6 @@ public class SubUserExt {
     private Integer allowOrderTimes;
     private Integer orderTimes;
     private String location;
+    private String shopName;
+    private Long createTime;
 }

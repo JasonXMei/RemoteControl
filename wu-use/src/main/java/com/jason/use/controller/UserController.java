@@ -43,10 +43,12 @@ public class UserController implements Initializable {
     private JFXTreeTableColumn<User, String> userSex;
     @FXML
     private JFXTreeTableColumn<User, String> replaceOrderTimes;
-   @FXML
+    @FXML
     private JFXTreeTableColumn<User, String> location;
     @FXML
     private JFXTreeTableColumn<User, String> connectionStatus;
+    @FXML
+    private JFXTreeTableColumn<User, String> desc;
     @FXML
     private JFXTreeTableColumn<User, Integer> subUserId;
     @FXML
@@ -102,6 +104,7 @@ public class UserController implements Initializable {
         setupCellValueFactory(replaceOrderTimes, User::getReplaceOrderTimes);
         setupCellValueFactory(location, User::getLocation);
         setupCellValueFactory(connectionStatus, User::getConnectionStatus);
+        setupCellValueFactory(desc, User::getDesc);
         setupCellValueFactory(subUserId, p -> p.getSubUserId().asObject());
 
         JSONArray jsonArray = recordObj.getJSONArray("records");
@@ -114,7 +117,7 @@ public class UserController implements Initializable {
                     new User(String.format("%04d", userId), subUserJSON.getInteger("id"), subUserJSON.getInteger("age"),
                             subUserJSON.getString("userName"), subUserName ,
                             subUserJSON.getString("sexStr"), subUserJSON.getString("orderTimes"),
-                            subUserJSON.getString("location"), subUserJSON.getString("connectStatusStr")));
+                            subUserJSON.getString("location"), subUserJSON.getString("connectStatusStr"), subUserJSON.getString("desc")));
         }
 
         mouseClickedOnRow();
@@ -136,6 +139,9 @@ public class UserController implements Initializable {
                         }
                     }
                 }*/
+                if (column.getText().equals("最后使用/店/号")) {
+                    column.setStyle("-fx-font-size:12;");
+                }
                 return mapper.apply(param.getValue().getValue());
             } else {
                 return column.getComputedValue(param);

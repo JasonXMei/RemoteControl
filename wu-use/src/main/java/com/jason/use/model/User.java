@@ -15,8 +15,10 @@ public class User extends RecursiveTreeObject<User> {
     private StringProperty replaceOrderTimes;
     private StringProperty location;
     private StringProperty connectionStatus;
+    private StringProperty desc;
 
-    public User(String id, int subUserId, int age, String userName, String subUserName, String sex, String replaceOrderTimes, String location, String connectionStatus) {
+    public User(String id, int subUserId, int age, String userName, String subUserName, String sex,
+                String replaceOrderTimes, String location, String connectionStatus, String desc) {
         this.id = new SimpleStringProperty(id);
         this.subUserId = new SimpleIntegerProperty(subUserId);
         this.age = new SimpleIntegerProperty(age);
@@ -26,6 +28,15 @@ public class User extends RecursiveTreeObject<User> {
         this.replaceOrderTimes = new SimpleStringProperty(replaceOrderTimes);
         this.location = new SimpleStringProperty(location);
         this.connectionStatus = new SimpleStringProperty(connectionStatus);
+        this.desc = new SimpleStringProperty(desc);
+    }
+
+    public StringProperty getDesc() {
+        return desc;
+    }
+
+    public void setDesc(StringProperty desc) {
+        this.desc = desc;
     }
 
     public StringProperty getId() {
